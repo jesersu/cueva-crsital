@@ -206,18 +206,22 @@
         schedule();
         return;
       }
-      img.loading = 'eager';
-      img.addEventListener('load', schedule, { once: true });
-      img.addEventListener('error', () => {
+      const drop = () => {
         img.remove();
         slides = slides.filter((s) => s !== img);
         current = slides.findIndex((s) => s.classList.contains('activa'));
+        syncButton();
         schedule();
-      }, { once: true });
+      };
+      // An image that already failed never fires 'error' again.
+      if (img.complete) { drop(); return; }
+      img.loading = 'eager';
+      img.addEventListener('load', schedule, { once: true });
+      img.addEventListener('error', drop, { once: true });
     }
 
     const syncButton = () => {
-      pauseButton.hidden = reducedMotion;
+      pauseButton.hidden = reducedMotion || slides.length < 2;
       pauseButton.classList.toggle('pausado', userPaused);
       pauseButton.setAttribute('aria-label', userPaused ? 'Reanudar fotos' : 'Pausar fotos');
     };
