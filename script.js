@@ -26,18 +26,96 @@
     });
   }
 
-  /* ---------- Scroll reveal ---------- */
-  const revealTargets = document.querySelectorAll('.tarjeta-tour, .bloque, .titulo-seccion');
-  if (!reducedMotion && 'IntersectionObserver' in window && revealTargets.length) {
+  /* ---------- Scroll reveal (staggered) ---------- */
+  // .revelar is only ever added here, so content stays visible if JS fails.
+  // Elements entering the viewport in the same batch get an increasing --i,
+  // which styles.css turns into a transition delay.
+  const revealTargets = document.querySelectorAll([
+    '.titulo-seccion', '.tarjeta-tour', '.banda-cta .contenedor > *',
+    '.portada-tour .contenedor > *', '.bloque:not(.legal)', '.galeria a', '.bloque.legal > *',
+    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-arcilla',
+    '.contacto-formulario-intro', 'form.contacto',
+  ].join(', '));
+  const timelines = document.querySelectorAll('.itinerario');
+  if (!reducedMotion && 'IntersectionObserver' in window && (revealTargets.length || timelines.length)) {
+    const MAX_STEP = 8;
+    const byDocumentOrder = (a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+    // threshold 0 + bottom margin: tall blocks (long legal texts) still reveal.
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .map((entry) => entry.target)
+        .sort(byDocumentOrder)
+        .forEach((el, i) => {
+          el.style.setProperty('--i', String(Math.min(i, MAX_STEP)));
+          el.classList.add('visible');
+          io.unobserve(el);
+        });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+
     revealTargets.forEach((el) => { el.classList.add('revelar'); io.observe(el); });
+    // Itinerary: one group; each item keeps its own index so dots pop in order.
+    timelines.forEach((list) => {
+      Array.from(list.children).forEach((li, i) => li.style.setProperty('--i', String(i)));
+      list.classList.add('revelar-grupo');
+      io.observe(list);
+    });
+  }
+
+  /* ---------- Subtle parallax ---------- */
+  // Hero photo panel and tour cover drift slower than the page.
+  // Only transform-type properties change; layers outside the viewport are skipped.
+  const heroPhoto = document.querySelector('.hero-foto');
+  const tourCover = document.querySelector('.portada-tour');
+  if (!reducedMotion && 'IntersectionObserver' in window && (heroPhoto || tourCover)) {
+    const layers = [];
+    if (heroPhoto) {
+      layers.push({
+        el: heroPhoto,
+        factor: 0.06,
+        limit: () => Infinity,
+        apply: (v) => { heroPhoto.style.translate = `0 ${v}px`; },
+      });
+    }
+    if (tourCover) {
+      // The cover image layer (::after) extends 10% above the section.
+      layers.push({
+        el: tourCover,
+        factor: 0.12,
+        limit: () => tourCover.offsetHeight * 0.1,
+        apply: (v) => { tourCover.style.setProperty('--desplazar', `${v}px`); },
+      });
+    }
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = Math.max(0, window.scrollY);
+      layers.forEach((layer) => {
+        if (layer.inView) layer.apply(Math.min(y * layer.factor, layer.max).toFixed(1));
+      });
+    };
+    const requestUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+    const measure = () => {
+      layers.forEach((layer) => { layer.max = layer.limit(); });
+      requestUpdate();
+    };
+
+    const viewIo = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const layer = layers.find((l) => l.el === entry.target);
+        if (layer) layer.inView = entry.isIntersecting;
+      });
+      requestUpdate();
+    });
+    layers.forEach((layer) => viewIo.observe(layer.el));
+    measure();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', measure, { passive: true });
   }
 
   /* ---------- Contact form: compose a WhatsApp message ---------- */
@@ -93,6 +171,8 @@
     const items = links.map((a) => ({ src: a.href, alt: a.querySelector('img')?.alt || '' }));
     let index = 0;
     let lastFocus = null;
+    let hideTimer = null;
+    const FADE_MS = reducedMotion ? 0 : 400; // matches the .lightbox opacity transition
 
     const box = document.createElement('div');
     box.className = 'lightbox';
@@ -117,17 +197,24 @@
       img.alt = items[index].alt;
       caption.textContent = `${items[index].alt} (${index + 1}/${items.length})`;
     };
+    const isOpen = () => box.classList.contains('abierto');
     const open = (i) => {
+      window.clearTimeout(hideTimer);
       lastFocus = document.activeElement;
       show(i);
       box.hidden = false;
       document.body.classList.add('lb-abierto');
+      void box.offsetWidth; // commit display before fading in
+      box.classList.add('abierto');
       closeBtn.focus();
     };
     const close = () => {
-      box.hidden = true;
+      if (!isOpen()) return;
+      box.classList.remove('abierto');
       document.body.classList.remove('lb-abierto');
       if (lastFocus) lastFocus.focus();
+      // Restore `hidden` once the fade-out has finished.
+      hideTimer = window.setTimeout(() => { box.hidden = true; }, FADE_MS);
     };
 
     links.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); open(i); }));
@@ -137,7 +224,7 @@
     box.addEventListener('click', (e) => { if (e.target === box) close(); });
 
     document.addEventListener('keydown', (e) => {
-      if (box.hidden) return;
+      if (!isOpen()) return;
       if (e.key === 'Escape') close();
       else if (e.key === 'ArrowLeft') show(index - 1);
       else if (e.key === 'ArrowRight') show(index + 1);
