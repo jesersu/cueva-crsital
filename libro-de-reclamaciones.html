@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libro de Reclamaciones | Los Cristales</title>
+  <meta name="description" content="Libro de reclamaciones virtual de Los Cristales - CORPORACIÓN TULUMAYO MYSTIC S.A.C.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="barra-superior">
+    <div class="contenedor">
+      <span>📍 C.P. NARANJILLO JR. J KUSUNOKY Lt 03-</span>
+      <span>📞 <a href="tel:+51978571323">978571323</a></span>
+      <span>✉️ <a href="mailto:info@turismoloscristales.com">info@turismoloscristales.com</a></span>
+    </div>
+  </div>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="index.html" aria-label="Los Cristales - Agencia de viajes y turismo - Inicio">
+        <img src="logo-header.png" alt="Los Cristales - Agencia de viajes y turismo">
+      </a>
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="boton-menu" aria-label="Abrir menú">☰</label>
+      <nav>
+        <ul class="menu">
+          <li><a href="index.html">INICIO</a></li>
+          <li>
+            <a href="index.html#tours">TOURS ▾</a>
+            <ul class="submenu">
+              <li><a href="parque-nacional-tingo-maria.html">01 · Parque Nacional de Tingo María</a></li>
+              <li><a href="laguna-de-los-milagros.html">02 · Laguna de los Milagros</a></li>
+              <li><a href="catarata-honolulo.html">03 · Catarata Honolulo</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="contenedor">
+      <p class="migas"><a href="index.html">Inicio</a> › Libro de reclamaciones</p>
+
+      <div class="hoja">
+        <div class="hoja-cabecera">
+          <div>
+            <h1>📖 Libro de Reclamaciones</h1>
+            <p>Hoja de reclamación virtual</p>
+          </div>
+          <div class="proveedor">
+            <strong>CORPORACIÓN TULUMAYO MYSTIC S.A.C.</strong><br>
+            Nombre comercial: Los Cristales<br>
+            RUC: 20616494750<br>
+            C.P. NARANJILLO JR. J KUSUNOKY Lt 03-
+          </div>
+        </div>
+
+        <!--
+          IMPORTANTE: al enviar, el formulario abre el correo del cliente con el reclamo dirigido a mistyctulum@gmail.com.
+          Para recibir los reclamos de forma automática y guardarlos, cambia el
+          atributo action por el enlace de un servicio de formularios
+          (por ejemplo Formspree) o por tu propio backend.
+        -->
+        <form class="reclamo" action="mailto:mistyctulum@gmail.com?subject=Libro%20de%20Reclamaciones%20-%20Los%20Cristales" method="post" enctype="text/plain">
+
+          <!-- 1. Identificación del consumidor -->
+          <fieldset>
+            <legend>1. Identificación del consumidor reclamante</legend>
+            <p style="font-size:.82rem;color:var(--gris);margin:6px 0 4px;"><span style="color:#c0392b">*</span> Datos requeridos</p>
+            <div class="campos">
+              <div class="campo">
+                <label for="nombre">Nombre <span class="req">*</span></label>
+                <input type="text" id="nombre" name="Nombre" required>
+              </div>
+              <div class="campo">
+                <label for="apellido1">Primer apellido <span class="req">*</span></label>
+                <input type="text" id="apellido1" name="Primer apellido" required>
+              </div>
+              <div class="campo">
+                <label for="apellido2">Segundo apellido <span class="req">*</span></label>
+                <input type="text" id="apellido2" name="Segundo apellido" required>
+              </div>
+              <div class="campo">
+                <label for="tipo-doc">Tipo de documentación <span class="req">*</span></label>
+                <select id="tipo-doc" name="Tipo de documento" required>
+                  <option value="">Selección de documentación</option>
+                  <option>DNI</option>
+                  <option>CE</option>
+                  <option>Pasaporte</option>
+                  <option>RUC</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="num-doc">Número de documentación <span class="req">*</span></label>
+                <input type="text" id="num-doc" name="Número de documento" required>
+              </div>
+              <div class="campo">
+                <label for="celular">Celular <span class="req">*</span></label>
+                <input type="tel" id="celular" name="Celular" required>
+              </div>
+              <div class="campo">
+                <label for="departamento">Departamento <span class="req">*</span></label>
+                <select id="departamento" name="Departamento" required>
+                  <option value="">Seleccionar departamento</option>
+                  <option>AMAZONAS</option><option>ANCASH</option><option>APURIMAC</option>
+                  <option>AREQUIPA</option><option>AYACUCHO</option><option>CAJAMARCA</option>
+                  <option>CALLAO</option><option>CUSCO</option><option>HUANCAVELICA</option>
+                  <option>HUANUCO</option><option>ICA</option><option>JUNIN</option>
+                  <option>LA LIBERTAD</option><option>LAMBAYEQUE</option><option>LIMA</option>
+                  <option>LORETO</option><option>MADRE DE DIOS</option><option>MOQUEGUA</option>
+                  <option>PASCO</option><option>PIURA</option><option>PUNO</option>
+                  <option>SAN MARTIN</option><option>TACNA</option><option>TUMBES</option>
+                  <option>UCAYALI</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="provincia">Provincia <span class="req">*</span></label>
+                <input type="text" id="provincia" name="Provincia" required>
+              </div>
+              <div class="campo">
+                <label for="distrito">Distrito <span class="req">*</span></label>
+                <input type="text" id="distrito" name="Distrito" required>
+              </div>
+              <div class="campo ancho">
+                <label for="direccion">Dirección <span class="req">*</span></label>
+                <input type="text" id="direccion" name="Dirección" required>
+              </div>
+              <div class="campo ancho">
+                <label for="referencia">Referencia</label>
+                <input type="text" id="referencia" name="Referencia">
+              </div>
+              <div class="campo ancho">
+                <label for="correo">Correo electrónico <span class="req">*</span></label>
+                <input type="email" id="correo" name="Correo electrónico" required>
+              </div>
+              <div class="campo ancho">
+                <label>¿Eres menor de edad?</label>
+                <div class="opciones">
+                  <label><input type="radio" name="Menor de edad" id="menor-si" value="Sí"> Sí</label>
+                  <label><input type="radio" name="Menor de edad" id="menor-no" value="No" checked> No</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Se muestra solo si es menor de edad -->
+            <div class="tutor">
+              <h3 style="font-size:1rem;color:var(--verde-oscuro);margin:6px 0 8px;">Padre / Madre / Tutor</h3>
+              <div class="campos">
+                <div class="campo">
+                  <label for="tutor-nombre">Nombre</label>
+                  <input type="text" id="tutor-nombre" name="Tutor - Nombre">
+                </div>
+                <div class="campo">
+                  <label for="tutor-correo">Correo electrónico</label>
+                  <input type="email" id="tutor-correo" name="Tutor - Correo">
+                </div>
+                <div class="campo">
+                  <label for="tutor-tipo-doc">Tipo de documentación</label>
+                  <select id="tutor-tipo-doc" name="Tutor - Tipo de documento">
+                    <option value="">Selección de documentación</option>
+                    <option>DNI</option>
+                    <option>CE</option>
+                    <option>Pasaporte</option>
+                    <option>RUC</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="tutor-num-doc">Número de documento</label>
+                  <input type="text" id="tutor-num-doc" name="Tutor - Número de documento">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 2. Detalle del reclamo -->
+          <fieldset>
+            <legend>2. Detalle del reclamo y orden del consumidor</legend>
+            <div class="campos">
+              <div class="campo">
+                <label for="tipo-reclamo">Tipo de reclamo <span class="req">*</span></label>
+                <select id="tipo-reclamo" name="Tipo de reclamo" required>
+                  <option value="">Tipo de reclamo</option>
+                  <option>Reclamación (1)</option>
+                  <option>Queja (2)</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="tipo-consumo">Tipo de consumo <span class="req">*</span></label>
+                <select id="tipo-consumo" name="Tipo de consumo" required>
+                  <option value="">Tipo de consumo</option>
+                  <option>Producto</option>
+                  <option>Servicio</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="pedido">N.º de pedido <span class="req">*</span></label>
+                <input type="text" id="pedido" name="N° de pedido" required>
+              </div>
+              <div class="campo">
+                <label for="fecha-reclamo">Fecha de reclamación / queja</label>
+                <input type="date" id="fecha-reclamo" name="Fecha de reclamación">
+              </div>
+              <div class="campo">
+                <label for="proveedor">Proveedor</label>
+                <input type="text" id="proveedor" name="Proveedor" value="CORPORACIÓN TULUMAYO MYSTIC S.A.C. (Los Cristales)">
+              </div>
+              <div class="campo">
+                <label for="monto">Monto reclamado (S/.)</label>
+                <input type="number" id="monto" name="Monto reclamado" min="0" step="0.01">
+              </div>
+              <div class="campo ancho">
+                <label for="descripcion">Descripción del producto o servicio <span class="req">*</span></label>
+                <input type="text" id="descripcion" name="Descripción del producto o servicio" required>
+              </div>
+              <div class="campo">
+                <label for="fecha-compra">Fecha de compra</label>
+                <input type="date" id="fecha-compra" name="Fecha de compra">
+              </div>
+              <div class="campo">
+                <label for="fecha-consumo">Fecha de consumo</label>
+                <input type="date" id="fecha-consumo" name="Fecha de consumo">
+              </div>
+              <div class="campo">
+                <label for="fecha-caducidad">Fecha de caducidad</label>
+                <input type="date" id="fecha-caducidad" name="Fecha de caducidad">
+              </div>
+              <div class="campo ancho">
+                <label for="detalle">Detalle de la reclamación / queja, según lo indicado por el cliente <span class="req">*</span></label>
+                <textarea id="detalle" name="Detalle de la reclamación o queja" required></textarea>
+              </div>
+              <div class="campo ancho">
+                <label for="pedido-cliente">Pedido del cliente <span class="req">*</span></label>
+                <textarea id="pedido-cliente" name="Pedido del cliente" required></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="nota-legal">
+            <p><strong>(1) Reclamación:</strong> desacuerdo relacionado con productos y/o servicios.</p>
+            <p><strong>(2) Queja:</strong> desacuerdo no relacionado con productos y/o servicios; o malestar o insatisfacción con la atención al público.</p>
+            <p>* La formulación del reclamo no excluye el recurso a otros medios de resolución de controversias ni es un requisito previo para presentar una denuncia ante el Indecopi.</p>
+            <p>* El proveedor debe responder a la reclamación en un plazo no superior a quince (15) días naturales, pudiendo ampliar el plazo hasta quince días más.</p>
+            <p>* Con el envío de este documento, el cliente autoriza a ser contactado después de la tramitación de la reclamación para evaluar la calidad y satisfacción del proceso de atención de reclamaciones.</p>
+          </div>
+
+          <label class="aceptacion">
+            <input type="checkbox" name="Declaración jurada" required>
+            <span>Declaro que soy el dueño del servicio y acepto el contenido de este formulario, declarando bajo Declaración Jurada la veracidad de los hechos descritos.</span>
+          </label>
+
+          <label class="aceptacion">
+            <input type="checkbox" name="Acepta políticas" required>
+            <span>He leído y acepto la
+              <a href="politicas-de-privacidad.html">Política de privacidad</a> y la
+              <a href="proteccion-de-datos-personales.html">Protección de datos personales</a>.
+            </span>
+          </label>
+
+          <div class="envio">
+            <button type="submit" class="boton verde">Enviar reclamo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie-grid">
+      <div>
+        <h4>Datos de la empresa</h4>
+        <ul>
+          <li class="dato"><strong>Razón social:</strong> CORPORACIÓN TULUMAYO MYSTIC S.A.C.</li>
+          <li class="dato"><strong>Nombre comercial:</strong> Los Cristales</li>
+          <li class="dato"><strong>RUC:</strong> 20616494750</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li class="dato"><strong>Teléfono:</strong> <a href="tel:+51978571323">978571323</a></li>
+          <li class="dato"><strong>Correo:</strong> <a href="mailto:info@turismoloscristales.com">info@turismoloscristales.com</a></li>
+          <li class="dato"><strong>Dirección:</strong> C.P. NARANJILLO JR. J KUSUNOKY Lt 03-</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Políticas</h4>
+        <ul>
+          <li><a href="terminos-y-condiciones.html">Términos y condiciones</a></li>
+          <li><a href="politicas-de-pago.html">Políticas de pago</a></li>
+          <li><a href="politicas-de-privacidad.html">Políticas de privacidad</a></li>
+          <li><a href="proteccion-de-datos-personales.html">Protección de datos personales</a></li>
+          <li><a href="prevencion-esnna.html">Políticas de prevención ESNNA</a></li>
+          <li><a href="libro-de-reclamaciones.html">📖 Libro de reclamaciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie-copy">© 2026 Los Cristales – CORPORACIÓN TULUMAYO MYSTIC S.A.C. Todos los derechos reservados.</div>
+  </footer>
+
+<a class="wa-flotante" href="https://wa.me/51978571323?text=Hola%2C%20Los%20Cristales%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp al 978 571 323" title="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path fill="#fff" d="M16.0 3C8.8 3 3 8.8 3 15.9c0 2.3.6 4.5 1.8 6.4L3 29l6.9-1.8c1.8 1 3.9 1.5 6 1.5 7.2 0 13-5.8 13-12.9S23.2 3 16 3zm0 23.4c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.1 1.1-4-.3-.4a10.4 10.4 0 0 1-1.6-5.5C5.3 10.200 10.100 5.400 16 5.400s10.700 4.800 10.700 10.600S21.900 26.400 16 26.400zm5.900-7.800c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.2-.8 1-1 1.200-.4.200-.7.100a8.700 8.700 0 0 1-4.300-3.800c-.3-.6.300-.5.900-1.700.1-.2 0-.4 0-.5l-1-2.300c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.100-.9.400s-1.200 1.200-1.200 2.800 1.200 3.300 1.400 3.500 2.400 3.700 5.800 5.100c2.100.9 2.900.9 3.900.8.600-.1 1.900-.8 2.200-1.500s.3-1.400.2-1.500-.3-.2-.6-.4z"/></svg>
+  <span>WhatsApp</span>
+</a>
+<script src="script.js" defer></script>
+</body>
+</html>
