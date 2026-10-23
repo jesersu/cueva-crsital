@@ -40,6 +40,8 @@ Both forms post to `action="mailto:…"`. Chrome treats a mailto: form submissio
 
 - Review: slice a8a4daf..414186c (787 lines), consent GRANTED, 1-lens reliability review approved and acknowledged. Advisories: R3-network-fallback-duplicate (accepted, fixed: a fetch rejection now shows an error and never resubmits natively); R3-target-notice-lingers (accepted, fixed: JS hides `.aviso-envio` on submit + `.aviso-envio[hidden] { display: none; }`); R3-opaque-validation-errors (acknowledged: rare edge cases such as dotless-domain emails and `1e3`; generic message kept); R3-rate-limit-shared-ip (checked: plain cPanel Apache, REMOTE_ADDR is the client; counting attempts before mail() is intentional anti-abuse); R3-test-inbox-destination (intentional, user-requested testing inbox; restore before go-live, tracked as next step); R3-no-automated-php-checks (acknowledged; the Docker harness is documented above).
 
+- Re-review (a8a4daf..aae57c8, 794 lines): consent GRANTED; approved and acknowledged. Advisories: R3-nojs-claim-number-lost (accepted, fixed: the no-JS reclamo success now renders a minimal noindex page with the escaped message incl. the claim number and whether the copy was sent, instead of a static #enviado redirect; Docker php -l 7.4/8.3 clean; php:8.3 harness: no-JS reclamo → 200 page with the number, JSON unchanged, contact no-JS still 303 #enviado); R3-test-inbox-in-consumer-copy (intentional for testing; restore DESTINO before go-live); R3-no-repeatable-php-checks (acknowledged).
+
 ## Status
 Done on `fix/forms-php-mailer` (local). The user decides push/merge (push to `main` = production deploy).
 

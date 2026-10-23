@@ -113,7 +113,7 @@ function quiere_json()
  * Sends the response and stops. $formulario is always a whitelisted key or
  * '' (never raw input), so the redirect target is fixed.
  */
-function responder($formulario, $ok, $estado, $mensaje)
+function responder($formulario, $ok, $estado, $mensaje, $mostrarMensaje = false)
 {
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
@@ -126,6 +126,26 @@ function responder($formulario, $ok, $estado, $mensaje)
     }
 
     $pagina = array_key_exists($formulario, PAGINAS) ? PAGINAS[$formulario] : PAGINAS['contacto'];
+
+    // Without JS, a message that carries generated data (the claim number)
+    // can't travel in a redirect fragment, so render it on a minimal page.
+    if ($mostrarMensaje) {
+        http_response_code($estado);
+        header('Content-Type: text/html; charset=UTF-8');
+        $texto = htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8');
+        echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">'
+            . '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+            . '<meta name="theme-color" content="#000000"><meta name="color-scheme" content="dark">'
+            . '<meta name="robots" content="noindex">'
+            . '<title>Reclamo registrado | Los Cristales</title>'
+            . '<link rel="stylesheet" href="styles.css"></head><body>'
+            . '<main class="seccion"><div class="contenedor"><div class="bloque legal">'
+            . '<h1>Reclamo registrado.</h1><p role="status">' . $texto . '</p>'
+            . '<p><a class="boton" href="' . $pagina . '">Volver al Libro de Reclamaciones</a></p>'
+            . '</div></div></main></body></html>';
+        exit;
+    }
+
     header('Location: ' . $pagina . ($ok ? '#enviado' : '#error'), true, 303);
     exit;
 }
@@ -463,6 +483,6 @@ $copia = 'Hola, ' . $valores['nombre'] . ":\n\n"
 
 if (!enviar_correo($valores['correo'], 'Copia de tu reclamo ' . $numero . ' - Los Cristales', $copia, DESTINO)) {
     error_log('enviar.php: mail() failed (formulario=reclamo, consumer copy)');
-    responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. No pudimos enviarte la copia por correo: guarda este número.');
+    responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. No pudimos enviarte la copia por correo: guarda este número.', true);
 }
-responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. Te enviamos una copia a tu correo electrónico.');
+responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. Te enviamos una copia a tu correo electrónico.', true);
