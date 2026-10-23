@@ -62,13 +62,23 @@
           </div>
         </div>
 
-        <!--
-          IMPORTANTE: al enviar, el formulario abre el correo del cliente con el reclamo dirigido a mistyctulum@gmail.com.
-          Para recibir los reclamos de forma automática y guardarlos, cambia el
-          atributo action por el enlace de un servicio de formularios
-          (por ejemplo Formspree) o por tu propio backend.
-        -->
-        <form class="reclamo" action="mailto:mistyctulum@gmail.com?subject=Libro%20de%20Reclamaciones%20-%20Los%20Cristales" method="post" enctype="text/plain">
+        <!-- El reclamo se envía a enviar.php, que lo remite por correo con un número de reclamo
+             y envía una copia al correo del consumidor. Sin JavaScript, enviar.php redirige a #enviado o #error. -->
+        <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
+          <p><strong>Reclamo registrado.</strong> Te enviamos una copia con el número de reclamo al correo electrónico que indicaste.</p>
+        </div>
+        <div class="aviso-envio" id="error" role="alert" tabindex="-1">
+          <p><strong>No pudimos registrar tu reclamo.</strong> Revisa los campos obligatorios e inténtalo de nuevo, o comunícate con nosotros al <a href="tel:+51978571323">978571323</a>.</p>
+        </div>
+
+        <form class="reclamo" action="enviar.php" method="post">
+          <input type="hidden" name="formulario" value="reclamo">
+          <input type="hidden" name="tiempo" value="">
+          <!-- Campo trampa antispam: oculto a la vista; las personas lo dejan vacío -->
+          <div class="campo-trampa">
+            <label for="r-control">No completes este campo si eres una persona</label>
+            <input type="text" id="r-control" name="campo_control" tabindex="-1" autocomplete="off">
+          </div>
 
           <!-- 1. Identificación del consumidor -->
           <fieldset>
@@ -77,19 +87,19 @@
             <div class="campos">
               <div class="campo">
                 <label for="nombre">Nombre <span class="req">*</span></label>
-                <input type="text" id="nombre" name="Nombre" required>
+                <input type="text" id="nombre" name="nombre" maxlength="120" required>
               </div>
               <div class="campo">
                 <label for="apellido1">Primer apellido <span class="req">*</span></label>
-                <input type="text" id="apellido1" name="Primer apellido" required>
+                <input type="text" id="apellido1" name="apellido1" maxlength="80" required>
               </div>
               <div class="campo">
                 <label for="apellido2">Segundo apellido <span class="req">*</span></label>
-                <input type="text" id="apellido2" name="Segundo apellido" required>
+                <input type="text" id="apellido2" name="apellido2" maxlength="80" required>
               </div>
               <div class="campo">
                 <label for="tipo-doc">Tipo de documentación <span class="req">*</span></label>
-                <select id="tipo-doc" name="Tipo de documento" required>
+                <select id="tipo-doc" name="tipo_doc" required>
                   <option value="">Selección de documentación</option>
                   <option>DNI</option>
                   <option>CE</option>
@@ -99,15 +109,15 @@
               </div>
               <div class="campo">
                 <label for="num-doc">Número de documentación <span class="req">*</span></label>
-                <input type="text" id="num-doc" name="Número de documento" required>
+                <input type="text" id="num-doc" name="num_doc" maxlength="30" required>
               </div>
               <div class="campo">
                 <label for="celular">Celular <span class="req">*</span></label>
-                <input type="tel" id="celular" name="Celular" required>
+                <input type="tel" id="celular" name="celular" maxlength="30" required>
               </div>
               <div class="campo">
                 <label for="departamento">Departamento <span class="req">*</span></label>
-                <select id="departamento" name="Departamento" required>
+                <select id="departamento" name="departamento" required>
                   <option value="">Seleccionar departamento</option>
                   <option>AMAZONAS</option><option>ANCASH</option><option>APURIMAC</option>
                   <option>AREQUIPA</option><option>AYACUCHO</option><option>CAJAMARCA</option>
@@ -122,29 +132,29 @@
               </div>
               <div class="campo">
                 <label for="provincia">Provincia <span class="req">*</span></label>
-                <input type="text" id="provincia" name="Provincia" required>
+                <input type="text" id="provincia" name="provincia" maxlength="80" required>
               </div>
               <div class="campo">
                 <label for="distrito">Distrito <span class="req">*</span></label>
-                <input type="text" id="distrito" name="Distrito" required>
+                <input type="text" id="distrito" name="distrito" maxlength="80" required>
               </div>
               <div class="campo ancho">
                 <label for="direccion">Dirección <span class="req">*</span></label>
-                <input type="text" id="direccion" name="Dirección" required>
+                <input type="text" id="direccion" name="direccion" maxlength="200" required>
               </div>
               <div class="campo ancho">
                 <label for="referencia">Referencia</label>
-                <input type="text" id="referencia" name="Referencia">
+                <input type="text" id="referencia" name="referencia" maxlength="200">
               </div>
               <div class="campo ancho">
                 <label for="correo">Correo electrónico <span class="req">*</span></label>
-                <input type="email" id="correo" name="Correo electrónico" required>
+                <input type="email" id="correo" name="correo" maxlength="254" required>
               </div>
               <div class="campo ancho">
                 <label>¿Eres menor de edad?</label>
                 <div class="opciones">
-                  <label><input type="radio" name="Menor de edad" id="menor-si" value="Sí"> Sí</label>
-                  <label><input type="radio" name="Menor de edad" id="menor-no" value="No" checked> No</label>
+                  <label><input type="radio" name="menor" id="menor-si" value="Sí"> Sí</label>
+                  <label><input type="radio" name="menor" id="menor-no" value="No" checked> No</label>
                 </div>
               </div>
             </div>
@@ -155,15 +165,15 @@
               <div class="campos">
                 <div class="campo">
                   <label for="tutor-nombre">Nombre</label>
-                  <input type="text" id="tutor-nombre" name="Tutor - Nombre">
+                  <input type="text" id="tutor-nombre" name="tutor_nombre" maxlength="160">
                 </div>
                 <div class="campo">
                   <label for="tutor-correo">Correo electrónico</label>
-                  <input type="email" id="tutor-correo" name="Tutor - Correo">
+                  <input type="email" id="tutor-correo" name="tutor_correo" maxlength="254">
                 </div>
                 <div class="campo">
                   <label for="tutor-tipo-doc">Tipo de documentación</label>
-                  <select id="tutor-tipo-doc" name="Tutor - Tipo de documento">
+                  <select id="tutor-tipo-doc" name="tutor_tipo_doc">
                     <option value="">Selección de documentación</option>
                     <option>DNI</option>
                     <option>CE</option>
@@ -173,7 +183,7 @@
                 </div>
                 <div class="campo">
                   <label for="tutor-num-doc">Número de documento</label>
-                  <input type="text" id="tutor-num-doc" name="Tutor - Número de documento">
+                  <input type="text" id="tutor-num-doc" name="tutor_num_doc" maxlength="30">
                 </div>
               </div>
             </div>
@@ -185,7 +195,7 @@
             <div class="campos">
               <div class="campo">
                 <label for="tipo-reclamo">Tipo de reclamo <span class="req">*</span></label>
-                <select id="tipo-reclamo" name="Tipo de reclamo" required>
+                <select id="tipo-reclamo" name="tipo_reclamo" required>
                   <option value="">Tipo de reclamo</option>
                   <option>Reclamación (1)</option>
                   <option>Queja (2)</option>
@@ -193,7 +203,7 @@
               </div>
               <div class="campo">
                 <label for="tipo-consumo">Tipo de consumo <span class="req">*</span></label>
-                <select id="tipo-consumo" name="Tipo de consumo" required>
+                <select id="tipo-consumo" name="tipo_consumo" required>
                   <option value="">Tipo de consumo</option>
                   <option>Producto</option>
                   <option>Servicio</option>
@@ -201,43 +211,43 @@
               </div>
               <div class="campo">
                 <label for="pedido">N.º de pedido <span class="req">*</span></label>
-                <input type="text" id="pedido" name="N° de pedido" required>
+                <input type="text" id="pedido" name="pedido" maxlength="80" required>
               </div>
               <div class="campo">
                 <label for="fecha-reclamo">Fecha de reclamación / queja</label>
-                <input type="date" id="fecha-reclamo" name="Fecha de reclamación">
+                <input type="date" id="fecha-reclamo" name="fecha_reclamo">
               </div>
               <div class="campo">
                 <label for="proveedor">Proveedor</label>
-                <input type="text" id="proveedor" name="Proveedor" value="CORPORACIÓN TULUMAYO MYSTIC S.A.C. (Los Cristales)">
+                <input type="text" id="proveedor" name="proveedor" maxlength="200" value="CORPORACIÓN TULUMAYO MYSTIC S.A.C. (Los Cristales)">
               </div>
               <div class="campo">
                 <label for="monto">Monto reclamado (S/.)</label>
-                <input type="number" id="monto" name="Monto reclamado" min="0" step="0.01">
+                <input type="number" id="monto" name="monto" min="0" max="999999999.99" step="0.01">
               </div>
               <div class="campo ancho">
                 <label for="descripcion">Descripción del producto o servicio <span class="req">*</span></label>
-                <input type="text" id="descripcion" name="Descripción del producto o servicio" required>
+                <input type="text" id="descripcion" name="descripcion" maxlength="300" required>
               </div>
               <div class="campo">
                 <label for="fecha-compra">Fecha de compra</label>
-                <input type="date" id="fecha-compra" name="Fecha de compra">
+                <input type="date" id="fecha-compra" name="fecha_compra">
               </div>
               <div class="campo">
                 <label for="fecha-consumo">Fecha de consumo</label>
-                <input type="date" id="fecha-consumo" name="Fecha de consumo">
+                <input type="date" id="fecha-consumo" name="fecha_consumo">
               </div>
               <div class="campo">
                 <label for="fecha-caducidad">Fecha de caducidad</label>
-                <input type="date" id="fecha-caducidad" name="Fecha de caducidad">
+                <input type="date" id="fecha-caducidad" name="fecha_caducidad">
               </div>
               <div class="campo ancho">
                 <label for="detalle">Detalle de la reclamación / queja, según lo indicado por el cliente <span class="req">*</span></label>
-                <textarea id="detalle" name="Detalle de la reclamación o queja" required></textarea>
+                <textarea id="detalle" name="detalle" maxlength="5000" required></textarea>
               </div>
               <div class="campo ancho">
                 <label for="pedido-cliente">Pedido del cliente <span class="req">*</span></label>
-                <textarea id="pedido-cliente" name="Pedido del cliente" required></textarea>
+                <textarea id="pedido-cliente" name="pedido_cliente" maxlength="3000" required></textarea>
               </div>
             </div>
           </fieldset>
@@ -251,12 +261,12 @@
           </div>
 
           <label class="aceptacion">
-            <input type="checkbox" name="Declaración jurada" required>
+            <input type="checkbox" name="declaracion" required>
             <span>Declaro que soy el dueño del servicio y acepto el contenido de este formulario, declarando bajo Declaración Jurada la veracidad de los hechos descritos.</span>
           </label>
 
           <label class="aceptacion">
-            <input type="checkbox" name="Acepta políticas" required>
+            <input type="checkbox" name="acepta_politicas" required>
             <span>He leído y acepto la
               <a href="politicas-de-privacidad.html">Política de privacidad</a> y la
               <a href="proteccion-de-datos-personales.html">Protección de datos personales</a>.
@@ -264,7 +274,9 @@
           </label>
 
           <div class="envio">
+            <p class="envio-nota">Al enviar, recibirás en tu correo electrónico una copia de tu reclamo con su número de registro.</p>
             <button type="submit" class="boton verde">Enviar reclamo</button>
+            <p class="estado-formulario" role="status" aria-live="polite"></p>
           </div>
         </form>
       </div>

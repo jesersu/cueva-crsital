@@ -864,6 +864,34 @@ form.contacto .aceptacion a { color: var(--azul-enlace); }
 .banda-oscura .estado-formulario { color: var(--perla); font-size: 14px; }
 .estado-formulario a { color: var(--azul-enlace); }
 .estado-formulario:empty { display: none; }
+.estado-formulario.es-error { color: var(--seda); }
+
+/* Resultado del envío sin JS: enviar.php redirige a #enviado o #error y el
+   aviso solo se muestra como :target. Tono humo, sin color ni sombra. */
+.aviso-envio {
+  display: none;
+  max-width: 880px;
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  border-radius: var(--radio);
+  background: var(--humo);
+  font-size: 17px;
+  color: var(--perla);
+}
+.aviso-envio:target { display: block; }
+.aviso-envio:focus { outline: none; }
+.aviso-envio p { color: inherit; }
+.aviso-envio strong { color: var(--seda); font-weight: 600; }
+.aviso-envio a { color: var(--azul-enlace); }
+
+/* Campo trampa antispam: fuera de la vista pero presente para los bots */
+.campo-trampa {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 @media (max-width: 860px) {
   .contacto-portada { padding-bottom: 40px; }
@@ -924,6 +952,9 @@ form.contacto .aceptacion a { color: var(--azul-enlace); }
 .aceptacion { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; letter-spacing: -0.016em; color: var(--perla); margin-bottom: 14px; }
 .aceptacion input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--seda); }
 .envio { text-align: center; padding-top: 16px; }
+.envio-nota { font-size: 14px; letter-spacing: -0.016em; color: var(--perla); margin-bottom: 20px; }
+.envio .estado-formulario { margin-top: 16px; font-size: 14px; color: var(--perla); }
+.envio .estado-formulario.es-error { color: var(--seda); }
 
 /* ---------- Libro de reclamaciones ---------- */
 
@@ -960,6 +991,7 @@ form.contacto .aceptacion a { color: var(--azul-enlace); }
 .hoja-cabecera .proveedor strong { color: var(--seda); }
 
 form.reclamo { padding: 40px; }
+.hoja .aviso-envio { margin: 32px 40px 0; }
 form.reclamo fieldset {
   border: var(--linea-fina);
   border-radius: var(--radio);
@@ -1116,6 +1148,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .bloque { margin-bottom: 16px; }
   .hoja-cabecera { padding: 28px 20px; }
   form.reclamo { padding: 24px 16px; }
+  .hoja .aviso-envio { margin: 24px 16px 0; }
   form.reclamo fieldset { padding: 20px 16px 8px; }
   .pie { padding-top: 48px; }
 }

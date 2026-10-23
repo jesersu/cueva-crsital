@@ -84,22 +84,37 @@
       <div class="contenedor">
         <div class="contacto-formulario-intro">
           <h2 id="titulo-formulario">Envíanos tu consulta.</h2>
-          <p>Completa el formulario y prepararemos un mensaje de WhatsApp con tus datos. Si tu navegador no ejecuta JavaScript, se abrirá tu aplicación de correo.</p>
+          <p>Completa el formulario y tu consulta nos llegará por correo electrónico. Te responderemos al teléfono o correo que indiques.</p>
         </div>
 
-        <form class="contacto" id="form-contacto" action="mailto:info@turismoloscristales.com?subject=Consulta%20web%20-%20Los%20Cristales" method="post" enctype="text/plain">
+        <!-- Resultado del envío sin JavaScript: enviar.php redirige a #enviado o #error -->
+        <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
+          <p><strong>Consulta enviada.</strong> Gracias por escribirnos; te contactaremos al teléfono o correo que indicaste.</p>
+        </div>
+        <div class="aviso-envio" id="error" role="alert" tabindex="-1">
+          <p><strong>No pudimos enviar tu consulta.</strong> Revisa los campos obligatorios e inténtalo de nuevo, o escríbenos por WhatsApp.</p>
+        </div>
+
+        <form class="contacto" id="form-contacto" action="enviar.php" method="post">
+          <input type="hidden" name="formulario" value="contacto">
+          <input type="hidden" name="tiempo" value="">
+          <!-- Campo trampa antispam: oculto a la vista; las personas lo dejan vacío -->
+          <div class="campo-trampa">
+            <label for="c-control">No completes este campo si eres una persona</label>
+            <input type="text" id="c-control" name="campo_control" tabindex="-1" autocomplete="off">
+          </div>
           <div class="campos">
             <div class="campo">
               <label for="c-nombre">Nombre <span class="req">*</span></label>
-              <input type="text" id="c-nombre" name="Nombre" autocomplete="name" required>
+              <input type="text" id="c-nombre" name="nombre" maxlength="120" autocomplete="name" required>
             </div>
             <div class="campo">
               <label for="c-contacto">Teléfono o correo <span class="req">*</span></label>
-              <input type="text" id="c-contacto" name="Teléfono o correo" autocomplete="tel" required>
+              <input type="text" id="c-contacto" name="contacto" maxlength="160" autocomplete="tel" required>
             </div>
             <div class="campo">
               <label for="c-tour">Tour de interés</label>
-              <select id="c-tour" name="Tour de interés">
+              <select id="c-tour" name="tour">
                 <option value="">Selecciona una opción</option>
                 <option>Parque Nacional de Tingo María</option>
                 <option>Laguna de los Milagros</option>
@@ -109,20 +124,20 @@
             </div>
             <div class="campo">
               <label for="c-fecha">Fecha tentativa</label>
-              <input type="date" id="c-fecha" name="Fecha tentativa">
+              <input type="date" id="c-fecha" name="fecha">
             </div>
             <div class="campo">
               <label for="c-personas">Número de personas</label>
-              <input type="number" id="c-personas" name="Número de personas" min="1" step="1" inputmode="numeric">
+              <input type="number" id="c-personas" name="personas" min="1" max="9999" step="1" inputmode="numeric">
             </div>
             <div class="campo ancho">
               <label for="c-mensaje">Mensaje <span class="req">*</span></label>
-              <textarea id="c-mensaje" name="Mensaje" required></textarea>
+              <textarea id="c-mensaje" name="mensaje" maxlength="5000" required></textarea>
             </div>
           </div>
 
           <div class="aceptacion">
-            <input type="checkbox" id="c-acepto" name="Acepta la política de privacidad" value="Sí" required>
+            <input type="checkbox" id="c-acepto" name="acepto" value="Sí" required>
             <label for="c-acepto">He leído y acepto la <a href="politicas-de-privacidad.html">Política de privacidad</a> y autorizo el tratamiento de mis datos personales conforme a la <a href="proteccion-de-datos-personales.html">Ley N.º 29733 de Protección de Datos Personales</a>. <span class="req">*</span></label>
           </div>
 

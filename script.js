@@ -341,52 +341,69 @@
     });
   }
 
-  /* ---------- Contact form: compose a WhatsApp message ---------- */
-  // Without JS the form falls back to its mailto: action.
-  const contactForm = document.querySelector('form.contacto');
-  if (contactForm) {
-    const status = contactForm.querySelector('.estado-formulario');
-    const value = (id) => (contactForm.querySelector(`#${id}`)?.value || '').trim();
-    const formatDate = (iso) => {
-      const [y, m, d] = iso.split('-');
-      return y && m && d ? `${d}/${m}/${y}` : iso;
+  /* ---------- Forms: send to enviar.php without leaving the page ---------- */
+  // Without JS the forms post normally and enviar.php redirects back to
+  // #enviado / #error (shown by CSS :target). With JS the same endpoint is
+  // called with fetch and answers JSON; a network failure falls back to the
+  // normal submit. The hidden "tiempo" field carries the time spent on the
+  // page, which enviar.php uses to reject instant (bot) submissions.
+  const pageLoadedAt = Date.now();
+  document.querySelectorAll('form.contacto, form.reclamo').forEach((form) => {
+    const status = form.querySelector('.estado-formulario');
+    const button = form.querySelector('button[type="submit"]');
+    const elapsed = form.querySelector('input[name="tiempo"]');
+    const buttonText = button ? button.textContent : '';
+    let sending = false;
+
+    const report = (message, isError) => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle('es-error', Boolean(isError));
+    };
+    const setSending = (on) => {
+      sending = on;
+      form.setAttribute('aria-busy', String(on));
+      if (!button) return;
+      button.disabled = on;
+      button.textContent = on ? 'Enviando…' : buttonText;
     };
 
-    contactForm.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e) => {
+      if (elapsed) elapsed.value = String(Date.now() - pageLoadedAt);
+      if (!window.fetch || !window.FormData) return; // let the browser post it
       e.preventDefault();
-      if (!contactForm.reportValidity()) return;
+      if (sending || !form.reportValidity()) return;
 
-      const lines = [
-        'Hola, Los Cristales. Les escribo desde el formulario de contacto de la web.',
-        '',
-        `Nombre: ${value('c-nombre')}`,
-        `Teléfono o correo: ${value('c-contacto')}`,
-      ];
-      const optional = [
-        ['Tour de interés', value('c-tour')],
-        ['Fecha tentativa', value('c-fecha') && formatDate(value('c-fecha'))],
-        ['Número de personas', value('c-personas')],
-      ];
-      optional.forEach(([label, v]) => { if (v) lines.push(`${label}: ${v}`); });
-      lines.push('', 'Mensaje:', value('c-mensaje'));
-
-      const url = `https://wa.me/51978571323?text=${encodeURIComponent(lines.join('\n'))}`;
-      window.open(url, '_blank', 'noopener');
-      if (status) {
-        // Fallback link in case the browser blocked the new tab.
-        const link = document.createElement('a');
-        link.href = url;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.textContent = 'abre WhatsApp aquí';
-        status.replaceChildren(
-          'Listo: preparamos tu consulta en WhatsApp. Solo tienes que enviar el mensaje. Si no se abrió, ',
-          link,
-          '.'
-        );
+      // A previous no-JS result (#enviado / #error) must not linger.
+      if ((location.hash === '#enviado' || location.hash === '#error') && history.replaceState) {
+        history.replaceState(null, '', location.pathname + location.search);
       }
+      report('');
+      setSending(true);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      })
+        .then((res) => res.json()
+          .catch(() => null)
+          .then((data) => {
+            setSending(false);
+            const ok = Boolean(res.ok && data && data.ok);
+            const message = data && typeof data.message === 'string' && data.message
+              ? data.message
+              : 'No pudimos enviar el formulario. Inténtalo más tarde.';
+            report(message, !ok);
+            if (ok) form.reset();
+          }))
+        .catch(() => {
+          // Network failure: submit normally; enviar.php will redirect back.
+          setSending(false);
+          HTMLFormElement.prototype.submit.call(form);
+        });
     });
-  }
+  });
 
   /* ---------- Gallery lightbox ---------- */
   const links = Array.from(document.querySelectorAll('.galeria a'));
