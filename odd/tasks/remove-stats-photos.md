@@ -38,6 +38,8 @@ The user asked to drop the stats block and to use good-looking internet photos. 
 
 - T2 (delegated writer; trigger: 13 modified + 7 new files). Images `pntm-10` (cave interior, PN cover + home card), `pntm-11` (cave entrance), `pntm-12` (río Monzón), `tingo-01` (Huallaga sunset, new home `.banda-foto`), `tingo-02` (Mirador de la Cruz), `tingo-03` (Unsplash Bella Durmiente); 322–368 KB each, EXIF/GPS stripped. PN gallery +4. Honolulo cover → honol-08; honol-01/09 no longer referenced (files kept). New `creditos.html` (author, linked license deed, linked source per photo) + "Créditos de fotos" footer link on all 12 pages; CLAUDE.md updated; styles.css +43. Deviations: three phone photos are below the requested long edge to stay ≤ ~400 KB; the band has no scroll zoom (script.js was out of scope). Evidence: `node --check` OK, footer link on all 12, no honol-01/09 refs (writer + parent); 1366px and 390px screenshots inspected (parent spot-checked the PN page).
 
+- Slice review 78ab246..439c602 (296 lines): consent GRANTED; 1-lens reliability review approved and acknowledged. Advisories: R3-001 (`.lista-creditos` padding) = false positive (global `* { padding: 0 }` reset, and its `margin` overrides `.legal ul`'s 24px left margin); R3-002 (no repeatable credits check script) acknowledged, no runner in this static site.
+
 ## Status
 All tasks done on `feat/remove-stats-photos` (local). The user decides push/merge (push to `main` = production deploy).
 
