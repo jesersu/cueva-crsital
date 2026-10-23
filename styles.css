@@ -412,11 +412,60 @@ p { text-wrap: pretty; }
   -webkit-mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
   mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
 }
-.hero-foto img {
+/* Hero slider: slides are stacked and only .activa is visible (the first one
+   carries it in the HTML, so no-JS shows it). The container takes the
+   scroll zoom/dim; each slide only changes its own opacity, so they never fight. */
+.hero-medio { position: relative; }
+.hero-diapositivas { position: relative; height: 100%; }
+.hero-diapositiva {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 52% 40%;   /* keeps the main waterfall centred */
+  /* Default keeps the main waterfall centred; other slides set --encuadre inline */
+  object-position: var(--encuadre, 52% 40%);
+  opacity: 0;
+}
+/* The incoming slide fades in on top; the outgoing one stays opaque beneath
+   it until script.js drops .saliente, so the crossfade never dips to black. */
+.hero-diapositiva.activa {
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.hero-diapositiva.saliente { z-index: 1; opacity: 1; }
+
+/* Slider pause/play (WCAG 2.2.2): round glass button, no blue fill.
+   Stays [hidden] until script.js starts auto-rotation. */
+.hero-pausa {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: var(--desenfoque);
+  backdrop-filter: var(--desenfoque);
+  color: var(--seda);
+  cursor: pointer;
+  transition: background-color 0.2s ease, scale 0.16s var(--salida);
+  animation: aparecer 0.8s var(--curva) 1.2s both;
+}
+.hero-pausa[hidden] { display: none; }
+.hero-pausa svg { width: 14px; height: 14px; fill: currentColor; }
+.hero-pausa .icono-reanudar,
+.hero-pausa.pausado .icono-pausa { display: none; }
+.hero-pausa.pausado .icono-reanudar { display: block; }
+.hero-pausa:active { scale: 0.95; }
+@media (hover: hover) and (pointer: fine) {
+  .hero-pausa:hover { background: rgba(66, 66, 69, 0.9); }
 }
 
 /* Barra de vidrio flotante, anclada abajo a la derecha de la portada */
@@ -1040,7 +1089,11 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
     padding: 48px 0 48px;
   }
   .hero-foto { height: auto; margin: 24px -16px 0; }
-  .hero-foto img { height: auto; aspect-ratio: 1 / 1; }
+  .hero-diapositivas { height: auto; aspect-ratio: 1 / 1; }
+  /* The square crop can need its own framing (--encuadre-movil, inline) */
+  .hero-diapositiva { object-position: var(--encuadre-movil, var(--encuadre, 52% 40%)); }
+  /* Pause button: top-right corner of the square photo, away from the glass bar */
+  .hero-pausa { top: 36px; }
   /* La barra de vidrio pasa a todo el ancho, sobre el pie de la foto */
   .barra-vidrio {
     position: relative;
@@ -1078,7 +1131,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 /* Impresión: texto oscuro sobre blanco, sin superficies oscuras */
 @media print {
-  .barra-superior, .cabecera, .pie, .envio, .barra-vidrio { display: none; }
+  .barra-superior, .cabecera, .pie, .envio, .barra-vidrio, .hero-pausa { display: none; }
   body, .hero, .banda-clara, .banda-oscura, .bloque, .hoja, .tarjeta-dato, .tarjeta-tour,
   .dato-contacto, .tarjeta-whatsapp, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
   .alerta-esnna, .nota-legal { background: #fff !important; color: #000 !important; }
@@ -1436,7 +1489,7 @@ main { animation: fundido 0.4s ease-out backwards; }
 .hero-subtitulo { animation: aparecer 0.9s var(--curva) 0.65s both; }
 .hero-texto .enlace { animation: aparecer 0.9s var(--curva) 0.78s both; }
 .hero-foto { animation: encender 1.6s var(--curva) 0.3s both; }
-.hero-foto img { animation: asentar 2.2s var(--curva) 0.3s both; }
+.hero-diapositivas { animation: asentar 2.2s var(--curva) 0.3s both; }
 .barra-vidrio { animation: subir-vidrio 1s var(--curva) 1.1s both; }
 
 /* Portada ligada al scroll: script.js escribe --progreso (0–1). La foto se
@@ -1448,7 +1501,7 @@ main { animation: fundido 0.4s ease-out backwards; }
   opacity: calc(1 - var(--progreso, 0) * 1.4);
 }
 .hero-foto { translate: 0 calc(var(--progreso, 0) * 56px); }
-.hero-foto img {
+.hero-diapositivas {
   transform: scale(calc(1 + var(--progreso, 0) * 0.12));
   opacity: calc(1 - var(--progreso, 0) * 0.6);
 }
@@ -1504,13 +1557,13 @@ main { animation: fundido 0.4s ease-out backwards; }
   .lightbox figure, .submenu { transform: none; }
   /* Efectos ligados al scroll: neutralizados aunque queden variables escritas */
   .hero-texto, .hero-foto, .portada-tour::after { translate: none !important; }
-  .hero-texto, .hero-foto img, .palabra { opacity: 1 !important; }
-  .hero-foto img, .portada-tour::after { transform: none !important; }
+  .hero-texto, .hero-diapositivas, .palabra { opacity: 1 !important; }
+  .hero-diapositivas, .portada-tour::after { transform: none !important; }
   .tarjeta-tour .marco img, .galeria img { scale: none !important; }
   .cabecera.oculta { translate: none; }
   /* Microinteracciones */
   .boton:active, .boton-menu:active, .tarjeta-tour:active,
-  .wa-flotante:active, .lightbox button:active { scale: none; }
+  .wa-flotante:active, .lightbox button:active, .hero-pausa:active { scale: none; }
   .tarjeta-tour:hover, .tarjeta-tour:focus-visible,
   .enlace:hover > span[aria-hidden], .enlace:focus-visible > span[aria-hidden] { translate: none; }
 }
@@ -1518,5 +1571,5 @@ main { animation: fundido 0.4s ease-out backwards; }
 /* Less transparency: the frosted glass turns solid (same tones, no blur) */
 @media (prefers-reduced-transparency: reduce) {
   .cabecera, .menu { background: var(--negro); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .barra-vidrio, .wa-flotante, .lightbox button { background: var(--grafito); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .barra-vidrio, .wa-flotante, .lightbox button, .hero-pausa { background: var(--grafito); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

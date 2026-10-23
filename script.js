@@ -4,14 +4,18 @@
   /* ---------- Motion preference ---------- */
   // Every motion effect below is gated on this flag. If the visitor switches
   // to reduced motion mid-session, CSS neutralises the visual state and
-  // `stopMotion` settles anything JS still owns (counters, header).
+  // `stopMotion` settles anything JS still owns (counters, header, slider);
+  // `onMotionStart` lets timed effects (the hero slider) resume when it is
+  // switched back off.
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionQuery.matches;
   const onMotionStop = [];
+  const onMotionStart = [];
   const stopMotion = () => onMotionStop.forEach((fn) => fn());
   const onMotionChange = (e) => {
     reducedMotion = e.matches;
     if (reducedMotion) stopMotion();
+    else onMotionStart.forEach((fn) => fn());
   };
   if (motionQuery.addEventListener) motionQuery.addEventListener('change', onMotionChange);
   else if (motionQuery.addListener) motionQuery.addListener(onMotionChange); // Safari < 14
@@ -147,6 +151,105 @@
       lastProgress = progress;
       hero.style.setProperty('--progreso', progress.toFixed(3));
     });
+  }
+
+  /* ---------- Hero slider (crossfade) ---------- */
+  // Slides are stacked; the new .activa fades in on top while the previous
+  // one stays opaque beneath it as .saliente until the fade ends, so the photo
+  // never dips to black. Auto-rotation waits while the visitor paused it, the
+  // tab is hidden, the hero is off-screen, the pointer or keyboard focus is on
+  // the pause button, or reduced motion is on (the button then stays hidden,
+  // as without JS). Inactive slides are aria-hidden and there is no aria-live,
+  // so automatic changes are never announced.
+  const sliderRoot = document.querySelector('.hero-medio');
+  const pauseButton = sliderRoot && sliderRoot.querySelector('.hero-pausa');
+  let slides = sliderRoot ? Array.from(sliderRoot.querySelectorAll('.hero-diapositiva')) : [];
+  if (slides.length > 1 && pauseButton) {
+    const INTERVAL = 5500;
+    const FADE = 1000; // matches the .hero-diapositiva.activa transition
+    let current = Math.max(0, slides.findIndex((s) => s.classList.contains('activa')));
+    let timer = null;
+    let fadeTimer = null;
+    let userPaused = false;
+    let hovering = false;
+    let keyboardFocus = false;
+    let onScreen = true;
+
+    const canRotate = () => !reducedMotion && !userPaused && !document.hidden
+      && onScreen && !hovering && !keyboardFocus && slides.length > 1;
+
+    const goTo = (next) => {
+      const outgoing = slides[current];
+      const incoming = slides[next];
+      window.clearTimeout(fadeTimer);
+      slides.forEach((s) => s.classList.remove('saliente'));
+      outgoing.classList.replace('activa', 'saliente');
+      outgoing.setAttribute('aria-hidden', 'true');
+      incoming.classList.add('activa');
+      incoming.removeAttribute('aria-hidden');
+      current = next;
+      fadeTimer = window.setTimeout(() => outgoing.classList.remove('saliente'), FADE);
+    };
+
+    const schedule = () => {
+      window.clearTimeout(timer);
+      timer = canRotate() ? window.setTimeout(advance, INTERVAL) : null;
+    };
+
+    // Never fade to a photo that hasn't loaded yet (they are lazy): load it
+    // first and try again on the next interval; a broken image is dropped.
+    function advance() {
+      const next = (current + 1) % slides.length;
+      const img = slides[next];
+      if (img.complete && img.naturalWidth) {
+        goTo(next);
+        schedule();
+        return;
+      }
+      img.loading = 'eager';
+      img.addEventListener('load', schedule, { once: true });
+      img.addEventListener('error', () => {
+        img.remove();
+        slides = slides.filter((s) => s !== img);
+        current = slides.findIndex((s) => s.classList.contains('activa'));
+        schedule();
+      }, { once: true });
+    }
+
+    const syncButton = () => {
+      pauseButton.hidden = reducedMotion;
+      pauseButton.classList.toggle('pausado', userPaused);
+      pauseButton.setAttribute('aria-label', userPaused ? 'Reanudar fotos' : 'Pausar fotos');
+    };
+
+    pauseButton.addEventListener('click', () => {
+      userPaused = !userPaused;
+      syncButton();
+      // Resuming shows the next photo right away as feedback.
+      if (!userPaused && !reducedMotion) advance();
+      else schedule();
+    });
+    pauseButton.addEventListener('pointerenter', () => { hovering = true; schedule(); });
+    pauseButton.addEventListener('pointerleave', () => { hovering = false; schedule(); });
+    // Only keyboard focus holds the slider: a mouse click also focuses the
+    // button in some browsers, and that alone shouldn't freeze it.
+    pauseButton.addEventListener('focus', () => {
+      try { keyboardFocus = pauseButton.matches(':focus-visible'); } catch (err) { keyboardFocus = true; }
+      schedule();
+    });
+    pauseButton.addEventListener('blur', () => { keyboardFocus = false; schedule(); });
+    document.addEventListener('visibilitychange', schedule);
+    if (hasIO) {
+      new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        schedule();
+      }).observe(sliderRoot);
+    }
+
+    const refresh = () => { syncButton(); schedule(); };
+    onMotionStop.push(refresh);
+    onMotionStart.push(refresh);
+    refresh();
   }
 
   /* ---------- Word-by-word highlight ---------- */

@@ -58,9 +58,23 @@
           <p class="hero-subtitulo">Tours de día completo al Parque Nacional de Tingo María, la Laguna de los Milagros y la Catarata Honolulo.</p>
           <a class="enlace" href="#tours">Ver los tours <span aria-hidden="true">›</span></a>
         </div>
-        <figure class="hero-foto">
-          <img src="img/honol-08.jpg" alt="Catarata Honolulo cayendo entre la vegetación de la selva">
-        </figure>
+        <!-- Hero slider: real photos only (one per tour plus Tingo María).
+             Without JS only the first (.activa) shows; script.js crossfades
+             them and reveals the pause button. Adding a slide: see CLAUDE.md. -->
+        <div class="hero-medio" role="region" aria-roledescription="carrusel" aria-label="Fotos de Tingo María y sus tours">
+          <figure class="hero-foto">
+            <div class="hero-diapositivas">
+              <img class="hero-diapositiva activa" src="img/honol-08.jpg" alt="Catarata Honolulo cayendo entre la vegetación de la selva">
+              <img class="hero-diapositiva" src="img/pntm-10.jpg" alt="Interior de la Cueva de las Lechuzas, Parque Nacional de Tingo María" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 50% 45%">
+              <img class="hero-diapositiva" src="img/lagu-11.jpg" alt="La mano gigante y el corazón gigante, mirador del tour a la Laguna de los Milagros, con vista al valle" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 66% 50%; --encuadre-movil: 74% 50%">
+              <img class="hero-diapositiva" src="img/tingo-01.jpg" alt="Tingo María y el río Huallaga al atardecer, rodeados de cerros de selva" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 40% 60%; --encuadre-movil: 22% 50%">
+            </div>
+          </figure>
+          <button class="hero-pausa" type="button" aria-label="Pausar fotos" hidden>
+            <svg class="icono-pausa" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
+            <svg class="icono-reanudar" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 3.4v9.2a.8.8 0 0 0 1.2.7l7.4-4.6a.8.8 0 0 0 0-1.4L6.2 2.7A.8.8 0 0 0 5 3.4z"/></svg>
+          </button>
+        </div>
         <!-- Datos reales tomados de las páginas de cada tour -->
         <div class="barra-vidrio">
           <p>Tours de día completo · Recojo en tu hospedaje</p>
