@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000000">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#2D3436">
+  <meta name="color-scheme" content="dark light">
+  <!-- Theme before first paint: saved choice (localStorage "tema") or dark -->
+  <script>(function(){var d=document.documentElement,t="dark";try{if(localStorage.getItem("tema")==="light")t="light"}catch(e){}d.setAttribute("data-theme",t);if(t==="light"){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#FFFFFF")}})();</script>
   <title>Los Cristales | Agencia de viajes y turismo</title>
   <meta name="description" content="Los Cristales: agencia de viajes y turismo. Tours al Parque Nacional de Tingo María, Laguna de los Milagros y Catarata Honolulo.">
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@600&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="inicio">
 
   <!-- ========== 1. PARTE SUPERIOR ========== -->
   <div class="barra-superior">
@@ -44,13 +49,22 @@
           <li><a href="contacto.html">CONTACTO</a></li>
         </ul>
       </nav>
+
+      <!-- Theme switch (revealed by script.js) and the header booking CTA -->
+      <div class="cabecera-acciones">
+        <button class="tema-toggle" type="button" aria-pressed="false" aria-label="Tema claro">
+          <svg class="icono-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+          <svg class="icono-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.6 6.6 0 0 0 10.7 10.7z"/></svg>
+        </button>
+        <a class="boton-reservar" href="contacto.html">Reservar</a>
+      </div>
     </div>
   </header>
 
   <!-- ========== 2. PARTE MEDIA ========== -->
   <main>
-    <!-- Portada: teatro negro con la foto viñeteada y una barra de vidrio
-         flotante que lleva la única acción azul de la página -->
+    <!-- Portada: fondo pizarra con la foto viñeteada y una barra de vidrio
+         flotante que lleva la única acción teal de la página -->
     <section class="hero" id="inicio">
       <div class="contenedor hero-grid">
         <div class="hero-texto">
@@ -107,6 +121,50 @@
             <p>Paseo en bote por el río Monzón, canopy, sky bike o rapel en la catarata, según el tour.</p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- Próximamente: a new destination whose name is not known yet. Only
+         describe what the photos show (no name, dates, prices or location).
+         The track is a native scroll-snap scroller (touch, trackpad and arrow
+         keys work without JS); script.js only reveals the prev/next buttons. -->
+    <section class="seccion proximamente" aria-labelledby="titulo-proximamente">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <!-- TODO: once the place's name is known, put it in the heading
+               (e.g. "Nombre del lugar." instead of "Un nuevo destino."),
+               keep the "Próximamente" eyebrow and update the track's aria-label. -->
+          <h2 id="titulo-proximamente"><span class="eyebrow">Próximamente</span> Un nuevo destino.</h2>
+          <a class="enlace" href="contacto.html">Quiero más información <span aria-hidden="true">›</span></a>
+          <p>Formaciones de cristal en el interior de una cueva. Muy pronto podrás visitarlas con nosotros.</p>
+        </div>
+      </div>
+      <div class="carrusel">
+        <div class="carrusel-pista" id="pista-proximamente" role="region" aria-label="Fotos del nuevo destino" tabindex="0">
+          <ul class="carrusel-lista">
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-01.jpg" alt="Formación de cristal iluminada con una linterna en el interior de una cueva" width="960" height="1280" loading="lazy" decoding="async">
+              <span class="carrusel-insignia" aria-hidden="true">Próximamente</span>
+            </li>
+            <li class="carrusel-tarjeta horizontal">
+              <img src="img/prox-02.jpg" alt="Campo de cristales puntiagudos sobre el suelo de una cueva" width="1280" height="960" loading="lazy" decoding="async">
+            </li>
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-03.jpg" alt="Formación de cristal iluminada con luz amarilla dentro de una cueva" width="960" height="1280" loading="lazy" decoding="async">
+            </li>
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-04.jpg" alt="Finos hilos de cristal blanco sobre una estalactita" width="960" height="1280" loading="lazy" decoding="async">
+            </li>
+          </ul>
+        </div>
+        <div class="contenedor carrusel-controles" hidden>
+          <button class="carrusel-boton carrusel-anterior" type="button" aria-label="Foto anterior" aria-controls="pista-proximamente">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10 3 5 8l5 5"/></svg>
+          </button>
+          <button class="carrusel-boton carrusel-siguiente" type="button" aria-label="Foto siguiente" aria-controls="pista-proximamente">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 3 5 5-5 5"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -179,7 +237,6 @@
   <!-- ========== 3. PARTE FINAL ========== -->
   <footer class="pie">
     <div class="contenedor pie-grid">
-
       <div>
         <h4>Datos de la empresa</h4>
         <ul>
@@ -188,7 +245,6 @@
           <li class="dato"><strong>RUC:</strong> 20616494750</li>
         </ul>
       </div>
-
       <div>
         <h4>Contacto</h4>
         <ul>
@@ -198,20 +254,22 @@
           <li><a href="contacto.html">Formulario de contacto →</a></li>
         </ul>
       </div>
-
       <div>
         <h4>Políticas</h4>
         <ul>
-          <li><a href="terminos-y-condiciones.html">Términos y condiciones</a></li>
-          <li><a href="politicas-de-pago.html">Políticas de pago</a></li>
-          <li><a href="politicas-de-privacidad.html">Políticas de privacidad</a></li>
-          <li><a href="proteccion-de-datos-personales.html">Protección de datos personales</a></li>
+          <li><a href="terminos-y-condiciones.html">Términos y condiciones de uso y contratación</a></li>
+          <li><a href="politicas-de-privacidad.html">Política de privacidad y protección de datos personales</a></li>
+          <li><a href="politicas-de-pago.html">Políticas de cobro, cancelación y reembolso</a></li>
           <li><a href="prevencion-esnna.html">Políticas de prevención ESNNA</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Atención al cliente</h4>
+        <ul>
           <li><a href="libro-de-reclamaciones.html">📖 Libro de reclamaciones</a></li>
           <li><a href="creditos.html">Créditos de fotos</a></li>
         </ul>
       </div>
-
     </div>
     <div class="pie-copy">© 2026 Los Cristales – CORPORACIÓN TULUMAYO MYSTIC S.A.C. Todos los derechos reservados.</div>
   </footer>
