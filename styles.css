@@ -61,6 +61,7 @@
 
   /* Movimiento: curva suave, sin rebotes */
   --suave: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --curva: cubic-bezier(0.28, 0.11, 0.32, 1);   /* entradas cinematográficas */
   --paso: 80ms;            /* escalonado entre elementos */
 }
 
@@ -119,6 +120,10 @@ h1, h2, h3, h4 {
   line-height: 1.47;
   letter-spacing: -0.022em;
 }
+/* La flecha › se desliza a la derecha al pasar o enfocar */
+.enlace > span[aria-hidden] { display: inline-block; transition: translate 0.4s var(--curva); }
+.enlace:hover > span[aria-hidden],
+.enlace:focus-visible > span[aria-hidden] { translate: 3px 0; }
 
 /* Panel carbón contenido en el ancho de página (distinto del pie) */
 .banda-oscura {
@@ -174,7 +179,7 @@ h1, h2, h3, h4 {
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
   backdrop-filter: blur(20px) saturate(1.8);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.5s var(--suave);
+  transition: border-color 0.5s var(--suave), translate 0.45s var(--curva);
 }
 .cabecera .contenedor {
   position: relative;
@@ -303,9 +308,10 @@ h1, h2, h3, h4 {
   background: var(--azul-accion);
   cursor: pointer;
   text-decoration: none;
-  transition: filter 0.3s var(--suave), background-color 0.3s var(--suave), border-color 0.3s var(--suave), color 0.3s var(--suave);
+  transition: filter 0.3s var(--suave), background-color 0.3s var(--suave), border-color 0.3s var(--suave), color 0.3s var(--suave), scale 0.2s var(--suave);
 }
 .boton:hover { filter: brightness(1.1); text-decoration: none; }
+.boton:active { scale: 0.98; }
 
 /* WhatsApp de cada tour y envío del libro: la misma acción principal */
 .boton.verde { background: var(--azul-accion); color: var(--blanco); }
@@ -316,9 +322,9 @@ h1, h2, h3, h4 {
   color: rgba(255, 255, 255, 0.8);
   border-color: rgba(134, 134, 139, 0.5);
 }
-.boton.fantasma:hover { filter: none; color: var(--blanco); border-color: var(--seda); }
+.boton.fantasma:hover { filter: none; color: var(--blanco); border-color: var(--seda); background: rgba(255, 255, 255, 0.08); }
 .banda-clara .boton.fantasma { color: var(--carbon); border-color: var(--ceniza); }
-.banda-clara .boton.fantasma:hover { border-color: var(--carbon); }
+.banda-clara .boton.fantasma:hover { border-color: var(--carbon); background: rgba(0, 0, 0, 0.05); }
 
 /* Acción secundaria sobre tarjetas oscuras: píldora seda */
 .boton.claro { background: var(--seda); color: var(--carbon); }
@@ -503,7 +509,9 @@ h1, h2, h3, h4 {
   background: var(--blanco);
   border-radius: var(--radio);
   text-decoration: none;
+  transition: translate 0.5s var(--curva);
 }
+.tarjeta-tour:hover, .tarjeta-tour:focus-visible { translate: 0 -4px; }
 .banda-clara .tarjeta-tour { color: var(--carbon); }
 .tarjeta-tour:hover { text-decoration: none; }
 .tarjeta-tour:focus-visible { outline-offset: 4px; }
@@ -1206,11 +1214,28 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
    índice --i por lote para escalonar; sin JS todo queda visible. */
 .revelar {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.8s var(--suave), transform 0.8s var(--suave);
+  transform: translateY(32px) scale(0.96);
+  transition: opacity 0.9s var(--curva), transform 0.9s var(--curva);
   transition-delay: calc(var(--i, 0) * var(--paso));
 }
 .revelar.visible { opacity: 1; transform: none; }
+
+/* Abridores de sección: el titular sube a través de su propia máscara */
+.revelar-mascara {
+  clip-path: inset(0 0 100% 0);
+  translate: 0 0.5em;
+  transition: clip-path 1s var(--curva), translate 1s var(--curva);
+  transition-delay: calc(var(--i, 0) * var(--paso));
+}
+.revelar-mascara.visible { clip-path: inset(-25% -5% -25% -5%); translate: none; }
+
+/* Marca del pie: aparición lenta al entrar en pantalla */
+.pie-copy.revelar-marca::before {
+  opacity: 0;
+  translate: 0 48px;
+  transition: opacity 1.4s var(--curva), translate 1.4s var(--curva);
+}
+.pie-copy.revelar-marca.visible::before { opacity: 1; translate: none; }
 
 /* Itinerario: la línea se dibuja de arriba abajo y los puntos aparecen en orden */
 .itinerario.revelar-grupo::before {
@@ -1234,7 +1259,8 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 .itinerario.revelar-grupo.visible li::before { opacity: 1; transform: none; }
 
 @media print {
-  .revelar, .itinerario.revelar-grupo li { opacity: 1; transform: none; }
+  .revelar, .itinerario.revelar-grupo li, .palabra, .pie-copy.revelar-marca::before { opacity: 1; transform: none; translate: none; }
+  .revelar-mascara { clip-path: none; translate: none; }
   .itinerario.revelar-grupo::before, .itinerario.revelar-grupo li::before { transform: none; }
 }
 
@@ -1274,13 +1300,26 @@ body.lb-abierto { overflow: hidden; }
 
 /* ---------- Animaciones ---------- */
 
-/* Entrada de la portada de inicio (solo CSS: funciona sin JS).
-   fill-mode "both" deja todo visible al terminar. */
-/* Solo "from": el final es el valor propio de cada elemento. */
+/* Todo el movimiento usa transform, translate, scale, opacity, clip-path,
+   mask o filter. Las entradas solo CSS terminan visibles (fill-mode both)
+   y lo que oculta JS lo añade el propio script.js. */
+
+/* Solo "from" cuando el final es el valor propio de cada elemento. */
+@keyframes fundido { from { opacity: 0; } }
 @keyframes subir-mascara { from { transform: translateY(110%); } }
 @keyframes aparecer { from { opacity: 0; transform: translateY(18px); } }
-@keyframes encender { from { opacity: 0; } }
+@keyframes subir-vidrio { from { opacity: 0; transform: translateY(32px); } }
+/* La foto se enciende desde el negro: opacidad y brillo */
+@keyframes encender { from { opacity: 0; filter: brightness(0.4); } }
 @keyframes asentar { from { scale: 1.08; } to { scale: 1; } }
+/* Titular que sube a través de su máscara (clip-path con holgura final) */
+@keyframes desvelar {
+  from { clip-path: inset(0 0 100% 0); translate: 0 0.5em; }
+  to { clip-path: inset(-25% -5% -25% -5%); translate: 0 0; }
+}
+
+/* Carga de página: fundido breve; "backwards" no deja nada retenido */
+main { animation: fundido 0.4s ease-out backwards; }
 
 /* Línea enmascarada: el texto sube desde debajo de su propio borde.
    El relleno vertical (compensado con margen negativo) evita cortar
@@ -1295,17 +1334,42 @@ body.lb-abierto { overflow: hidden; }
 /* Adjacent negative margins collapse into one: double it so the line gap stays exact */
 .mascara + .mascara { margin-top: -0.24em; }
 
-.hero-titular .eyebrow { animation: aparecer 0.8s var(--suave) 0.1s both; }
-.hero-titular .mascara > span { animation: subir-mascara 0.9s var(--suave) 0.2s both; }
-.hero-titular .mascara + .mascara > span { animation-delay: 0.3s; }
-.hero-subtitulo { animation: aparecer 0.8s var(--suave) 0.5s both; }
-.hero-texto .enlace { animation: aparecer 0.8s var(--suave) 0.6s both; }
-.hero-foto { animation: encender 1.6s var(--suave) 0.3s both; }
-.hero-foto img { animation: asentar 2.2s var(--suave) 0.3s both; }
-.barra-vidrio { animation: aparecer 0.8s var(--suave) 1s both; }
+/* Entrada de la portada de inicio (solo CSS: funciona sin JS) */
+.hero-titular .eyebrow { animation: aparecer 0.8s var(--curva) 0.15s both; }
+.hero-titular .mascara > span { animation: subir-mascara 1s var(--curva) 0.3s both; }
+.hero-titular .mascara + .mascara > span { animation-delay: 0.42s; }
+.hero-subtitulo { animation: aparecer 0.9s var(--curva) 0.65s both; }
+.hero-texto .enlace { animation: aparecer 0.9s var(--curva) 0.78s both; }
+.hero-foto { animation: encender 1.6s var(--curva) 0.3s both; }
+.hero-foto img { animation: asentar 2.2s var(--curva) 0.3s both; }
+.barra-vidrio { animation: subir-vidrio 1s var(--curva) 1.1s both; }
+
+/* Portada ligada al scroll: script.js escribe --progreso (0–1). La foto se
+   acerca y se oscurece, el texto sube y se desvanece; la barra de vidrio
+   no se mueve. Cada efecto usa una propiedad distinta de la animación de
+   entrada (transform frente a scale), así que nunca compiten. */
+.hero-texto {
+  translate: 0 calc(var(--progreso, 0) * -72px);
+  opacity: calc(1 - var(--progreso, 0) * 1.4);
+}
+.hero-foto { translate: 0 calc(var(--progreso, 0) * 56px); }
+.hero-foto img {
+  transform: scale(calc(1 + var(--progreso, 0) * 0.12));
+  opacity: calc(1 - var(--progreso, 0) * 0.6);
+}
+
+/* Resaltado palabra a palabra: script.js escribe --luz (0–1) por palabra;
+   sin JS --luz vale 1 y el texto queda encendido. */
+.palabra { opacity: calc(0.2 + 0.8 * var(--luz, 1)); }
+
+/* Zoom ligado al scroll en fotos de tarjetas y galería (--zoom de script.js);
+   la propiedad scale se suma al transform del hover. */
+.tarjeta-tour .marco img,
+.galeria img { scale: var(--zoom, 1); }
 
 /* Portada de cada tour: la foto (heredada del estilo en línea) se asienta
-   lentamente y se desplaza con el scroll vía --desplazar (script.js). */
+   lentamente, se desplaza con el scroll vía --desplazar y se acerca un poco
+   vía --zoom-portada (script.js). */
 .portada-tour::after {
   content: "";
   position: absolute;
@@ -1315,10 +1379,17 @@ body.lb-abierto { overflow: hidden; }
   background-size: cover;
   background-position: center;
   translate: 0 var(--desplazar, 0px);
-  animation: asentar 2.4s var(--suave) both;
+  transform: scale(var(--zoom-portada, 1));
+  animation: asentar 2.4s var(--curva) both;
 }
+.portada-tour small { animation: aparecer 0.8s var(--curva) 0.2s both; }
+.portada-tour h1 { animation: desvelar 1.1s var(--curva) 0.35s both; }
 
-/* Sin movimiento: todo visible al instante, sin transformaciones */
+/* Cabecera de vidrio: se oculta al bajar y vuelve al subir (script.js) */
+.cabecera.oculta { translate: 0 -100%; }
+.cabecera:focus-within { translate: none; }
+
+/* Sin movimiento: todo visible al instante y en su estado final */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -1330,9 +1401,20 @@ body.lb-abierto { overflow: hidden; }
   .itinerario.revelar-grupo li { opacity: 1; transform: none; }
   .itinerario.revelar-grupo::before,
   .itinerario.revelar-grupo li::before { transform: none; }
+  .revelar-mascara { clip-path: none; translate: none; }
+  .pie-copy.revelar-marca::before { opacity: 1; translate: none; }
   .tarjeta-tour:hover img, .tarjeta-tour:focus-visible img,
   .galeria a:hover img, .galeria a:focus-visible img,
   .tarjeta-tour:hover .nombre .flecha, .tarjeta-tour:focus-visible .nombre .flecha,
   .lightbox figure { transform: none; }
-  .hero-foto, .portada-tour::after { translate: none; }
+  /* Efectos ligados al scroll: neutralizados aunque queden variables escritas */
+  .hero-texto, .hero-foto, .portada-tour::after { translate: none !important; }
+  .hero-texto, .hero-foto img, .palabra { opacity: 1 !important; }
+  .hero-foto img, .portada-tour::after { transform: none !important; }
+  .tarjeta-tour .marco img, .galeria img { scale: none !important; }
+  .cabecera.oculta { translate: none; }
+  /* Microinteracciones */
+  .boton:active { scale: none; }
+  .tarjeta-tour:hover, .tarjeta-tour:focus-visible,
+  .enlace:hover > span[aria-hidden], .enlace:focus-visible > span[aria-hidden] { translate: none; }
 }
