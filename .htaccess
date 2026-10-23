@@ -17,3 +17,6 @@ RedirectMatch 404 ^/(wp-admin|wp-content|wp-includes|wp-json)(/|$)
 RedirectMatch 404 ^/(index|xmlrpc|wp-[a-z-]+)\.php$
 RedirectMatch 404 ^/(readme\.html|license\.txt|wp-config-sample\.php|error_log|.*\.zip|index\.html_)$
 RedirectMatch 404 ^/\.ftp-deploy-sync-state\.json$
+
+# The data-protection page was merged into the combined privacy policy.
+RedirectMatch 301 ^/proteccion-de-datos-personales\.html$ /politicas-de-privacidad.html
