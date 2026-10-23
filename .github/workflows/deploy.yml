@@ -34,4 +34,6 @@ jobs:
             **/.atl/**
             **/odd/**
             **/.DS_Store
+            **/.claude/**
+            skills-lock.json
             CLAUDE.md

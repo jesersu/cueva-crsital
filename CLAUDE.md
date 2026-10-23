@@ -11,7 +11,7 @@ Static marketing site (Spanish, `lang="es"`) for "Los Cristales", a travel agenc
 - Preview: `python3 -m http.server` from the repo root (port 8000; if "Address already in use", a server is already running — reuse it or pick another port).
 - Syntax check JS: `node --check script.js`.
 - Visual checks: headless Chrome screenshots (`--headless=new --screenshot`). It enforces a ~500px minimum window width, so check mobile by screenshotting a temporary wrapper page with 390px iframes (delete it afterwards). `--dump-dom` renders no frames, so CSS transitions never progress there.
-- Deploy: **every push to `main` deploys to production** (cPanel over FTPS, `.github/workflows/deploy.yml`; credentials live in GitHub secrets `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`). The workflow excludes `.git*`, `.github/`, `.atl/`, `odd/`, `.DS_Store` and `CLAUDE.md`. Work on feature branches; merge to `main` or push only when a production release is intended.
+- Deploy: **every push to `main` deploys to production** (cPanel over FTPS, `.github/workflows/deploy.yml`; credentials live in GitHub secrets `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`). The workflow excludes `.git*`, `.github/`, `.atl/`, `odd/`, `.claude/`, `.DS_Store`, `skills-lock.json` and `CLAUDE.md`. Work on feature branches; merge to `main` or push only when a production release is intended.
 
 ## Workflow
 
