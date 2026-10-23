@@ -40,6 +40,11 @@
     requestFrame();
   }, { passive: true });
 
+  /* ---------- Press feedback on touch ---------- */
+  // iOS Safari only applies :active styles (the scale-on-press feedback in
+  // styles.css) once the page listens for touchstart; a passive no-op is enough.
+  document.addEventListener('touchstart', () => {}, { passive: true });
+
   /* ---------- Mobile menu: close on link click, Esc, or outside click ---------- */
   const toggle = document.getElementById('menu-toggle');
   const toggleLabel = document.querySelector('.boton-menu');
@@ -337,7 +342,7 @@
     let index = 0;
     let lastFocus = null;
     let hideTimer = null;
-    const fadeMs = () => (reducedMotion ? 0 : 400); // matches the .lightbox opacity transition
+    const fadeMs = () => (reducedMotion ? 0 : 200); // matches the .lightbox exit (fade-out) transition
 
     const box = document.createElement('div');
     box.className = 'lightbox';
