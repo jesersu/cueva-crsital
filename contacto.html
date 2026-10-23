@@ -84,12 +84,12 @@
       <div class="contenedor">
         <div class="contacto-formulario-intro">
           <h2 id="titulo-formulario">Envíanos tu consulta.</h2>
-          <p>Completa el formulario y tu consulta nos llegará por correo electrónico. Te responderemos al teléfono o correo que indiques.</p>
+          <p>Completa el formulario y tu consulta nos llegará por correo electrónico. Te responderemos a tu correo electrónico o, si lo indicas, a tu teléfono.</p>
         </div>
 
         <!-- Resultado del envío sin JavaScript: enviar.php redirige a #enviado o #error -->
         <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
-          <p><strong>Consulta enviada.</strong> Gracias por escribirnos; te contactaremos al teléfono o correo que indicaste.</p>
+          <p><strong>Consulta enviada.</strong> Gracias por escribirnos; te responderemos a tu correo electrónico o a tu teléfono.</p>
         </div>
         <div class="aviso-envio" id="error" role="alert" tabindex="-1">
           <p><strong>No pudimos enviar tu consulta.</strong> Revisa los campos obligatorios e inténtalo de nuevo, o escríbenos por WhatsApp.</p>
@@ -109,8 +109,12 @@
               <input type="text" id="c-nombre" name="nombre" maxlength="120" autocomplete="name" required>
             </div>
             <div class="campo">
-              <label for="c-contacto">Teléfono o correo <span class="req">*</span></label>
-              <input type="text" id="c-contacto" name="contacto" maxlength="160" autocomplete="tel" required>
+              <label for="c-correo">Correo electrónico <span class="req">*</span></label>
+              <input type="email" id="c-correo" name="correo" maxlength="254" autocomplete="email" required>
+            </div>
+            <div class="campo">
+              <label for="c-telefono">Teléfono</label>
+              <input type="tel" id="c-telefono" name="telefono" maxlength="30" autocomplete="tel">
             </div>
             <div class="campo">
               <label for="c-tour">Tour de interés</label>

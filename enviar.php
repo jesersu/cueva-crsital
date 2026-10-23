@@ -47,7 +47,8 @@ function definicion_campos($formulario)
     if ($formulario === 'contacto') {
         return [
             'nombre'   => ['label' => 'Nombre', 'type' => 'text', 'max' => 120, 'required' => true],
-            'contacto' => ['label' => 'Teléfono o correo', 'type' => 'text', 'max' => 160, 'required' => true],
+            'correo'   => ['label' => 'Correo electrónico', 'type' => 'email', 'max' => 254, 'required' => true],
+            'telefono' => ['label' => 'Teléfono', 'type' => 'text', 'max' => 30, 'required' => false],
             'tour'     => ['label' => 'Tour de interés', 'type' => 'choice', 'max' => 80, 'required' => false,
                            'options' => ['Parque Nacional de Tingo María', 'Laguna de los Milagros', 'Catarata Honolulo', 'Otro / aún no lo sé']],
             'fecha'    => ['label' => 'Fecha tentativa', 'type' => 'date', 'max' => 10, 'required' => false],
@@ -447,8 +448,8 @@ if ($formulario === 'contacto') {
         . 'Fecha y hora: ' . $fechaHora . "\n\n"
         . listado($campos, $valores) . "\n";
 
-    // "Teléfono o correo": Reply-To only when it is a valid email address.
-    $responderA = filter_var($valores['contacto'], FILTER_VALIDATE_EMAIL) !== false ? $valores['contacto'] : '';
+    // The required email is already validated, so replies go straight to the visitor.
+    $responderA = $valores['correo'];
 
     if (!enviar_correo(DESTINO, 'Consulta web - Los Cristales', $cuerpo, $responderA)) {
         error_log('enviar.php: mail() failed (formulario=contacto)');
