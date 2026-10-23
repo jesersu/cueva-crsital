@@ -1,0 +1,9 @@
+# Deployed by .github/workflows/deploy.yml; this file replaces the server's copy.
+# Serve the static site at / (a legacy WordPress install still lives in public_html).
+DirectoryIndex index.html
+
+# Hide the legacy WordPress install and the FTP deploy state file.
+RedirectMatch 404 ^/(wp-admin|wp-content|wp-includes|wp-json)(/|$)
+RedirectMatch 404 ^/(index|xmlrpc|wp-[a-z-]+)\.php$
+RedirectMatch 404 ^/(readme\.html|license\.txt|wp-config-sample\.php|error_log|.*\.zip|index\.html_)$
+RedirectMatch 404 ^/\.ftp-deploy-sync-state\.json$

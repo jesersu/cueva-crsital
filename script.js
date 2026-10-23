@@ -33,7 +33,7 @@
   const revealTargets = document.querySelectorAll([
     '.titulo-seccion', '.tarjeta-tour', '.banda-cta .contenedor > *',
     '.portada-tour .contenedor > *', '.bloque:not(.legal)', '.galeria a', '.bloque.legal > *',
-    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-arcilla',
+    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-niebla',
     '.contacto-formulario-intro', 'form.contacto',
   ].join(', '));
   const timelines = document.querySelectorAll('.itinerario');
