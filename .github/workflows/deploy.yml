@@ -1,0 +1,37 @@
+# Deploys the static site to the cPanel hosting over FTPS on every push to main.
+# Required repository secrets: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD.
+# The FTP account is expected to be rooted at the site's document root (public_html).
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.atl/**
+            **/odd/**
+            **/.DS_Store
+            CLAUDE.md
