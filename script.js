@@ -44,6 +44,46 @@
     requestFrame();
   }, { passive: true });
 
+  /* ---------- Theme (dark default / light) ---------- */
+  // The inline <head> script already set data-theme (saved choice or dark)
+  // before the first paint. Here the header button switches it, persists the
+  // choice in localStorage ("tema") and keeps the browser's theme-color in
+  // sync. Without JS the site stays dark and the button stays invisible
+  // (styles.css only shows it once .tema-listo is on <html>).
+  const root = document.documentElement;
+  const themeButtons = document.querySelectorAll('.tema-toggle');
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  const THEME_COLOR = { dark: '#2D3436', light: '#FFFFFF' };
+  const currentTheme = () => (root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  const syncTheme = () => {
+    const theme = currentTheme();
+    if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
+    themeButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(theme === 'light'));
+      button.setAttribute('aria-label', theme === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
+    });
+  };
+  const applyTheme = (theme) => {
+    // Every colour switches in the same frame: transitions are suspended
+    // until the new styles have been computed, so links and buttons don't
+    // fade on their own while the rest of the page snaps.
+    root.classList.add('cambiando-tema');
+    root.setAttribute('data-theme', theme);
+    syncTheme();
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => root.classList.remove('cambiando-tema')));
+  };
+  themeButtons.forEach((button) => button.addEventListener('click', () => {
+    const next = currentTheme() === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem('tema', next); } catch (err) { /* storage blocked: this page view only */ }
+  }));
+  // Another tab changed the theme: follow it.
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'tema') applyTheme(e.newValue === 'light' ? 'light' : 'dark');
+  });
+  syncTheme();
+  root.classList.add('tema-listo');
+
   /* ---------- Press feedback on touch ---------- */
   // iOS Safari only applies :active styles (the scale-on-press feedback in
   // styles.css) once the page listens for touchstart; a passive no-op is enough.
@@ -60,24 +100,32 @@
     document.querySelectorAll('.menu a').forEach((a) => a.addEventListener('click', close));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     document.addEventListener('click', (e) => {
-      if (toggle.checked && !e.target.closest('nav') && !e.target.closest('.boton-menu')) close();
+      // A click on the label also dispatches a synthetic click on the
+      // checkbox itself (already checked by then): that one isn't "outside".
+      if (toggle.checked && e.target !== toggle && !e.target.closest('nav') && !e.target.closest('.boton-menu')) close();
     });
   }
 
-  /* ---------- Header: hairline on scroll, hide on scroll down ---------- */
-  // The hairline is state, not motion, so it always runs. Hiding waits until
-  // the visitor is past the top area and never happens while the mobile menu
-  // is open or focus is inside the header.
+  /* ---------- Header: solid on scroll, hide on scroll down ---------- */
+  // .solida (solid background + hairline) is state, not motion, so it always
+  // runs: on the home page the header is transparent over the hero only
+  // while it sits at the top with the mobile menu closed (.dinamica opts in,
+  // so without JS the header simply stays solid). Hiding waits until the
+  // visitor is past the top area and never happens while the mobile menu is
+  // open or focus is inside the header.
   const header = document.querySelector('.cabecera');
   if (header) {
     const HIDE_AFTER = 320;
     const DELTA = 8;
     let lastY = Math.max(0, window.scrollY);
     const show = () => header.classList.remove('oculta');
+    const syncSolid = (y) => header.classList.toggle('solida', y > 10 || Boolean(toggle && toggle.checked));
+    syncSolid(lastY);
+    header.classList.add('dinamica');
 
     frameTasks.push(() => {
       const y = Math.max(0, window.scrollY);
-      header.classList.toggle('con-sombra', y > 10);
+      syncSolid(y);
       if (reducedMotion) { show(); lastY = y; return; }
 
       const pinned = y < HIDE_AFTER
