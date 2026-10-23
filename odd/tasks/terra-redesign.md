@@ -25,8 +25,8 @@ The user asked to switch the current Apple-style design to this specification. T
 
 ## Tasks
 - [x] T1 — Design system, theme toggle, header/footer, global animations. Route: delegated (13+ files).
-- [ ] T2 — Home and contact page patterns. Route: delegated (4 files).
-- [ ] T3 — CLAUDE.md update. Route: inline.
+- [x] T2 — Home and contact page patterns. Route: delegated (4 files).
+- [x] T3 — CLAUDE.md update. Route: inline.
 
 ## Acceptance criteria
 - Dark theme by default, light theme via the toggle on every page, persisted, no flash of the wrong theme; WCAG AA text contrast in both.
@@ -38,6 +38,11 @@ The user asked to switch the current Apple-style design to this specification. T
 
 ## Progress / Evidence
 - T1 (delegated writer; trigger: 13 files). styles.css rewritten on new tokens (dark `:root`, light `:root[data-theme="light"]`; teal #008080 fills, `--enlace` #5FC9C9 dark / #006B6B light for small text, gold `--oro`/`--oro-texto`; hero, covers, footer, top bar and lightbox stay dark in both themes; legacy aliases kept); Playfair Display + Lato via `<link>` with swap; header identical on 11 pages: logo, centred nav, gold sun/moon `.tema-toggle` (aria-pressed, localStorage `tema`, inline head script sets `data-theme` + theme-color before paint, hidden without JS) and gold-glow "Reservar" CTA; home header transparent over the hero (`body.inicio` + `.dinamica`/`.solida` from the scroll loop); 300ms page fade, button darken + 1.02, image zoom 1.05, reveal fade + 20px; reduced motion off. Pre-existing bug fixed: the mobile menu closed immediately because the outside-click handler saw the checkbox's synthetic click. +864/−534. Evidence (writer, Playwright with cache disabled): toggle/persistence/no flash; header transparent→solid; mobile menu at 390; hero slider, Próximamente arrows, lightbox, contact validation OK; contrast table (all ≥4.5 incl. white on teal 4.77); reduced motion 0 animations; no horizontal scroll at 1366/390/360. Parent: `node --check` OK, toggle on all 11 pages, light-theme home screenshot checked. For T2: WhatsApp float overlaps the hero "Reservar" at 390px; consider a fixed toggle label with aria-pressed.
+- T2 (delegated writer; trigger: 13 files). Hero bottom scrim; JS typewriter H1 (opacity-only letters, sr-only full copy, gold caret, no-JS keeps the line-rise, reduced motion static); `.grid-tours` as 1:1 photo cards with a reserved gold underline on hover (fine pointers) and focus-visible (3/2/1 columns); contacto two columns (gold-icon details, form card, full-width teal submit; WhatsApp card folded into the list); JS live validation on contacto and libro (`noValidate`, red/green borders, `aria-invalid` + `aria-describedby` hints, focus first invalid); contact fetch success replaces the form with a focused `role="status"` panel + "Enviar otro mensaje"; ≤560px glass bar stacks so the WhatsApp float can't cover "Reservar"; toggle name fixed to "Tema claro" with `aria-pressed`. +437/−105. Evidence (writer, Playwright new contexts incl. no-JS and reduced motion, mocked enviar.php success/500): H1 read once, same height in all modes; squares 387/343/313; validation colors + aria in both themes; success/failure flows; `#enviado` no-JS notice; no WhatsApp overlap at 390/360; toggle label on all 11; no horizontal scroll. Not re-tested: Próximamente carousel and lightbox (code untouched). Parent: `node --check` OK; contacto dark 1366 screenshot checked; form contract (action, correo, honeypot) intact.
+- T3 (inline). CLAUDE.md: styles bullet rewritten for the Terra system (tokens, themes, fonts, toggle, header), home and contacto page descriptions updated; no Apple/blue references left.
+
+## Status
+All tasks done on `feat/terra-redesign` (local; it also carries the unmerged `feat/legal-docs-proximamente` commits). Open: EN/ES bilingual decision; out-of-scope spec items need real content.
 
 ## Next step
-T2 delegated writer.
+Review, then the user's delivery decision.
