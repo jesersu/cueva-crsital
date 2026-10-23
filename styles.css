@@ -1004,6 +1004,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .barra-superior, .cabecera, .pie, .envio { display: none; }
   .hero-grid { background: none; color: var(--tinta); }
   .hero-marca, .hero-titular { color: var(--iris-profundo); }
+  .hero .eyebrow, .hero-texto p { color: var(--grafito); }
   .hoja { border: 0; }
 }
 
