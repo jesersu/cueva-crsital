@@ -514,6 +514,20 @@ p { text-wrap: pretty; }
   color: var(--seda);
 }
 
+/* Banda de foto a todo el ancho entre secciones negras (home) */
+.banda-foto { margin: 0 0 120px; }
+.banda-foto img {
+  width: 100%;
+  height: clamp(320px, 52vw, 720px);
+  object-fit: cover;
+}
+.banda-foto figcaption {
+  padding-top: 14px;
+  font-size: 14px;
+  letter-spacing: -0.016em;
+  color: var(--ceniza);
+}
+
 .grid-tours {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1043,6 +1057,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .tarjeta-dato { min-height: 0; }
 
   .seccion { padding: 80px 0; }
+  .banda-foto { margin-bottom: 80px; }
   .titulo-seccion { margin-bottom: 36px; }
   .portada-tour { height: 420px; }
   .bloque { margin-bottom: 16px; }
@@ -1129,6 +1144,34 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   border-radius: var(--radio);
   padding: 24px 28px;
 }
+/* Créditos de fotos: miniatura + datos de atribución en tarjetas carbón */
+.legal.creditos { margin-bottom: 120px; }
+.legal .lista-creditos { list-style: none; margin: 0 0 24px; display: grid; gap: 16px; }
+.legal .credito {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 20px 24px;
+  align-items: start;
+  margin: 0;
+  padding: 20px;
+  background: var(--carbon);
+  border-radius: var(--radio);
+}
+.credito img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radio-medio);
+  background: var(--humo);
+}
+.legal .credito h2 { margin: 0 0 10px; font-size: 21px; line-height: 1.19; letter-spacing: 0.011em; }
+.credito dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; line-height: 1.43; }
+.credito dt { color: var(--ceniza); }
+.credito dd { margin: 0; color: var(--perla); overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .legal .credito { grid-template-columns: 1fr; }
+}
+
 .datos-legal {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
