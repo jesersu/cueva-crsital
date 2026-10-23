@@ -498,6 +498,95 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
   margin: 0 0 120px;
 }
 
+/* ---------- Página de contacto ---------- */
+
+/* Página actual en el menú (aria-current="page") */
+.menu > li > a[aria-current="page"] { font-weight: 700; }
+
+/* Píldora blanca para fondos oscuros o arcilla */
+.boton.claro { background: var(--blanco); border-color: var(--blanco); color: var(--tinta); }
+.boton.claro:hover { background: var(--humo); border-color: var(--humo); }
+.boton.claro:focus-visible { outline-color: var(--blanco); }
+
+.contacto-portada { padding: 0 0 88px; }
+.contacto-portada .migas { padding-bottom: 56px; }
+.contacto-portada h1 {
+  font-size: clamp(3.25rem, 10vw, 131px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: 20px 0 0 -0.04em;
+}
+.contacto-intro { max-width: 560px; margin-top: 36px; color: var(--ceniza); }
+
+.contacto-datos { padding: 0 0 120px; }
+/* Bloques tipo "feature": línea fina arriba, título 23px, cuerpo en ceniza */
+.contacto-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px 48px;
+  align-items: start;
+}
+.dato-contacto { border-top: var(--linea); padding-top: 20px; }
+.dato-contacto h3 { font-size: 23px; letter-spacing: -0.01em; line-height: 1.15; }
+.dato-contacto p { margin-top: 12px; font-size: 18px; line-height: 1.61; color: var(--ceniza); overflow-wrap: anywhere; }
+.dato-contacto a { color: var(--ceniza); }
+.dato-contacto a:hover { color: var(--tinta); }
+
+/* Tarjeta destacada: el único acento arcilla de la página de contacto */
+.tarjeta-arcilla {
+  background: var(--arcilla);
+  color: var(--blanco);
+  border-radius: 0;
+  padding: 53px 59px;
+}
+.tarjeta-arcilla h3 { color: var(--blanco); font-size: clamp(1.75rem, 2.6vw, 37px); line-height: 1; letter-spacing: -0.02em; }
+.tarjeta-arcilla p { margin: 16px 0 28px; }
+
+/* Formulario dentro de la banda oscura */
+.contacto-formulario { padding: 120px 0; }
+.contacto-formulario-intro { max-width: 640px; margin-bottom: 56px; }
+.contacto-formulario-intro h2 { font-size: clamp(2.2rem, 4vw, 52px); letter-spacing: -0.02em; }
+.contacto-formulario-intro p { margin-top: 20px; }
+
+form.contacto { max-width: 880px; }
+form.contacto .campos { gap: 24px 20px; margin: 0 0 28px; }
+form.contacto .campo label { color: var(--blanco); }
+form.contacto .campo label .req,
+form.contacto .aceptacion .req { color: var(--ceniza); }
+form.contacto .campo input,
+form.contacto .campo select,
+form.contacto .campo textarea {
+  color: var(--blanco);
+  background: var(--cubierta);
+  border-color: rgba(255, 255, 255, 0.28);
+  color-scheme: dark;
+}
+form.contacto .campo input:focus,
+form.contacto .campo select:focus,
+form.contacto .campo textarea:focus { outline-color: var(--blanco); border-color: var(--blanco); }
+form.contacto .aceptacion { color: var(--guijarro); }
+form.contacto .aceptacion input { width: 18px; height: 18px; flex: none; margin-top: 4px; accent-color: var(--blanco); }
+form.contacto .aceptacion a { color: var(--blanco); text-decoration-color: rgba(255, 255, 255, 0.5); }
+.contacto-envio { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
+.banda-oscura .estado-formulario { color: var(--guijarro); font-size: 15px; }
+.estado-formulario a { color: var(--blanco); }
+.estado-formulario:empty { display: none; }
+
+/* Banda de llamada a la acción (inicio) */
+.banda-cta { padding: 120px 0; }
+.banda-cta h2 { font-size: clamp(2.4rem, 5vw, 63px); letter-spacing: -0.02em; }
+.banda-cta p { max-width: 560px; margin: 24px 0 36px; }
+
+@media (max-width: 860px) {
+  .contacto-portada { padding-bottom: 56px; }
+  .contacto-portada .migas { padding-bottom: 32px; }
+  .contacto-datos { padding-bottom: 80px; }
+  .contacto-grid { grid-template-columns: 1fr; gap: 40px; }
+  .tarjeta-arcilla { padding: 40px 28px; }
+  .contacto-formulario, .banda-cta { padding: 80px 0; }
+  .contacto-formulario-intro { margin-bottom: 40px; }
+}
+
 /* ---------- Libro de reclamaciones ---------- */
 
 .hoja {

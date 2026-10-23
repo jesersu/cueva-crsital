@@ -40,6 +40,53 @@
     revealTargets.forEach((el) => { el.classList.add('revelar'); io.observe(el); });
   }
 
+  /* ---------- Contact form: compose a WhatsApp message ---------- */
+  // Without JS the form falls back to its mailto: action.
+  const contactForm = document.querySelector('form.contacto');
+  if (contactForm) {
+    const status = contactForm.querySelector('.estado-formulario');
+    const value = (id) => (contactForm.querySelector(`#${id}`)?.value || '').trim();
+    const formatDate = (iso) => {
+      const [y, m, d] = iso.split('-');
+      return y && m && d ? `${d}/${m}/${y}` : iso;
+    };
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.reportValidity()) return;
+
+      const lines = [
+        'Hola, Los Cristales. Les escribo desde el formulario de contacto de la web.',
+        '',
+        `Nombre: ${value('c-nombre')}`,
+        `Teléfono o correo: ${value('c-contacto')}`,
+      ];
+      const optional = [
+        ['Tour de interés', value('c-tour')],
+        ['Fecha tentativa', value('c-fecha') && formatDate(value('c-fecha'))],
+        ['Número de personas', value('c-personas')],
+      ];
+      optional.forEach(([label, v]) => { if (v) lines.push(`${label}: ${v}`); });
+      lines.push('', 'Mensaje:', value('c-mensaje'));
+
+      const url = `https://wa.me/51978571323?text=${encodeURIComponent(lines.join('\n'))}`;
+      window.open(url, '_blank', 'noopener');
+      if (status) {
+        // Fallback link in case the browser blocked the new tab.
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'abre WhatsApp aquí';
+        status.replaceChildren(
+          'Listo: preparamos tu consulta en WhatsApp. Solo tienes que enviar el mensaje. Si no se abrió, ',
+          link,
+          '.'
+        );
+      }
+    });
+  }
+
   /* ---------- Gallery lightbox ---------- */
   const links = Array.from(document.querySelectorAll('.galeria a'));
   if (links.length) {
