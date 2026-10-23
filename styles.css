@@ -514,26 +514,6 @@ p { text-wrap: pretty; }
   color: var(--seda);
 }
 
-/* Cifras: números grandes (gancho data-contar para contadores) */
-.grid-cifras {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 40px 24px;
-}
-.cifra { display: flex; flex-direction: column; gap: 8px; }
-.cifra-numero {
-  font-family: var(--fuente-display);
-  font-size: clamp(56px, 6vw, 80px);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  color: var(--seda);
-  font-variant-numeric: tabular-nums;
-}
-.cifra-numero small { font-size: 0.35em; letter-spacing: 0.007em; }
-.cifra-texto { max-width: 22ch; color: var(--ceniza); font-size: 17px; }
-
 .grid-tours {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1061,7 +1041,6 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
   .grid-datos { grid-template-columns: 1fr; gap: 16px; }
   .tarjeta-dato { min-height: 0; }
-  .grid-cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   .seccion { padding: 80px 0; }
   .titulo-seccion { margin-bottom: 36px; }
@@ -1080,7 +1059,6 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 @media (max-width: 420px) {
   .barra-vidrio p { font-size: 12px; }
-  .cifra-texto { font-size: 14px; }
 }
 
 /* Impresión: texto oscuro sobre blanco, sin superficies oscuras */
@@ -1089,7 +1067,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   body, .hero, .banda-clara, .banda-oscura, .bloque, .hoja, .tarjeta-dato, .tarjeta-tour,
   .dato-contacto, .tarjeta-whatsapp, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
   .alerta-esnna, .nota-legal { background: #fff !important; color: #000 !important; }
-  h1, h2, h3, h4, p, li, strong, small, span, a, .cifra-numero, .declaracion { color: #000 !important; }
+  h1, h2, h3, h4, p, li, strong, small, span, a, .declaracion { color: #000 !important; }
   .portada-tour { height: auto; }
   .portada-tour::before, .portada-tour::after { display: none; }
   .hero-foto { -webkit-mask-image: none; mask-image: none; }

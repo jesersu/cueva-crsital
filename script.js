@@ -95,7 +95,7 @@
   // so content stays visible if JS fails. Elements entering the viewport in
   // the same batch get an increasing --i, which styles.css turns into a delay.
   const revealTargets = document.querySelectorAll([
-    '.titulo-seccion > :not(h2)', '.tarjeta-dato', '.cifra', '.tarjeta-tour',
+    '.titulo-seccion > :not(h2)', '.tarjeta-dato', '.tarjeta-tour',
     '.seccion > .banda-oscura', '.banda-cta .contenedor > *',
     '.bloque:not(.legal)', '.galeria a', '.bloque.legal > *',
     '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-whatsapp',
@@ -232,60 +232,6 @@
       tourCover.style.setProperty('--desplazar', `${Math.min(y * 0.12, coverHeight * 0.1).toFixed(1)}px`);
       tourCover.style.setProperty('--zoom-portada', (1 + 0.08 * clamp01(y / (coverHeight || 1))).toFixed(3));
     });
-  }
-
-  /* ---------- Counters ---------- */
-  // Numbers with data-contar count up once when first visible. The final
-  // value is in the HTML and is only reset to 0 when a number nears the
-  // viewport, so anything that runs JS without rendering frames keeps the
-  // real values. Screen readers get a hidden static copy and the animated
-  // node is aria-hidden, so intermediate numbers are never read.
-  const counters = Array.from(document.querySelectorAll('[data-contar]'))
-    .filter((el) => Number.isFinite(parseInt(el.dataset.contar, 10)));
-  if (counters.length && !reducedMotion && hasIO) {
-    const DURATION = 1200;
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-    const finish = (el) => { el.textContent = el.dataset.contar; };
-
-    counters.forEach((el) => {
-      const copy = document.createElement('span');
-      copy.className = 'sr-only';
-      copy.textContent = el.textContent;
-      el.before(copy);
-      el.setAttribute('aria-hidden', 'true');
-    });
-
-    const count = (el) => {
-      const target = parseInt(el.dataset.contar, 10);
-      const start = performance.now();
-      const step = (now) => {
-        if (reducedMotion) { finish(el); return; }
-        const t = clamp01((now - start) / DURATION);
-        el.textContent = String(Math.round(target * easeOutCubic(t)));
-        if (t < 1) window.requestAnimationFrame(step);
-      };
-      window.requestAnimationFrame(step);
-    };
-
-    // Stage 1: reset to 0 just before the number scrolls into view.
-    const prepareIo = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        prepareIo.unobserve(entry.target);
-        entry.target.textContent = '0';
-        counterIo.observe(entry.target);
-      });
-    }, { rootMargin: '0px 0px 25% 0px' });
-    // Stage 2: count once the number is mostly visible.
-    const counterIo = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        counterIo.unobserve(entry.target);
-        count(entry.target);
-      });
-    }, { threshold: 0.6 });
-    counters.forEach((el) => prepareIo.observe(el));
-    onMotionStop.push(() => { prepareIo.disconnect(); counterIo.disconnect(); counters.forEach(finish); });
   }
 
   /* ---------- Contact form: compose a WhatsApp message ---------- */
