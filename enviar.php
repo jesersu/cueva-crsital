@@ -21,7 +21,7 @@
 // Recipient of every submission (both forms).
 // Previous inboxes: contacto -> info@turismoloscristales.com,
 //                   reclamo  -> mistyctulum@gmail.com
-const DESTINO = 'jesersu@gmail.com'; // TODO: restore the business inboxes after testing
+const DESTINO = 'chapialdo@gmail.com'; // TODO: restore the business inboxes after testing
 
 const REMITENTE = 'no-reply@turismoloscristales.com'; // fixed From and envelope sender
 const REMITENTE_NOMBRE = 'Los Cristales';
