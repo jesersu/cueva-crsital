@@ -28,7 +28,7 @@ The user wants a new visual direction: premium travel-portal language — cool o
 
 ## Tasks
 - [x] T1 — Reskin `styles.css` to Navan + home hero/floating card in `index.html` (+ minimal `contacto.html` tweaks if needed); gitignore `.playwright-mcp/`. Route: delegated (2+ non-trivial files).
-- [ ] T2 — Update `CLAUDE.md` design + delivery notes (auto-deploy on main). Route: inline (one mechanical file).
+- [x] T2 — Update `CLAUDE.md` design + delivery notes (auto-deploy on main). Route: inline (one mechanical file).
 
 ## Acceptance criteria
 - All page types render in Navan style at 1366px and 360/390px; no horizontal scroll.
@@ -39,7 +39,11 @@ The user wants a new visual direction: premium travel-portal language — cool o
 - Test-first exception: static site, no test runner. Structural (`node --check`, grep token usage) and visual (headless Chrome screenshots; 390px via iframe wrapper; no-JS via sandboxed iframe; reduced motion via `--force-prefers-reduced-motion`).
 
 ## Progress / Evidence
-- T1 (delegated writer; trigger: 2+ non-trivial files). styles.css full rewrite with Navan tokens (`--iris-profundo`, `--violeta-vivo`, `--niebla-iris`, `--lienzo`, ...; legacy aliases kept); index.html hero reordered + floating white card (`figcaption.tarjeta-flotante`, facts from catarata-honolulo.html only); contacto.html `.tarjeta-arcilla` → `.tarjeta-niebla`, submit is now vivid `.boton`; script.js reveal selector renamed; `.playwright-mcp/` gitignored. Diff +554/−373. Evidence: `node --check` OK (writer + parent); desktop (home, tour, contacto, ESNNA, libro), 360/390px mobile and no-JS screenshots inspected by the writer; parent spot-checked the home hero. Vivid `--violeta-vivo` used only as a fill on the nav CONTACTO pill, `.boton` and `.boton.verde` (one content CTA per page type). No clay or Hyer gradient left. Known: libro-de-reclamaciones.html keeps a pre-existing inline red asterisk (out of scope). Visual note: hero subtext sits low in its column, leaving a gap under the headline (cosmetic, not fixed).
+- T1 (delegated writer; trigger: 2+ non-trivial files). styles.css full rewrite with Navan tokens (`--iris-profundo`, `--violeta-vivo`, `--niebla-iris`, `--lienzo`, ...; legacy aliases kept); index.html hero reordered + floating white card (`figcaption.tarjeta-flotante`, facts from catarata-honolulo.html only); contacto.html `.tarjeta-arcilla` → `.tarjeta-niebla`, submit is now vivid `.boton`; script.js reveal selector renamed; `.playwright-mcp/` gitignored. Diff +554/−373. Evidence: `node --check` OK (writer + parent); desktop (home, tour, contacto, ESNNA, libro), 360/390px mobile and no-JS screenshots inspected by the writer; parent spot-checked the home hero. Vivid `--violeta-vivo` used only as a fill on the nav CONTACTO pill, `.boton` and `.boton.verde` (one content CTA per page type). No clay or Hyer gradient left. Known: libro-de-reclamaciones.html keeps a pre-existing inline red asterisk (out of scope). Visual note: hero subtext sits low in its column, leaving a gap under the headline (cosmetic, not fixed). Commit 5d866b7. RDD: assessed medium (slice_budget_reached, 972 lines), consent granted, 1-lens reliability review approved and acknowledged (lineage review-4e858076861eaf7f); boundary → 5d866b7. Advisory R3-001 (print: hero eyebrow/intro near-white on paper) accepted and fixed inline in a follow-up commit (one CSS rule; verified with a headless print-to-PDF). Advisory R3-002 (viewport-formula wordmark size) checked at 870/1000/1200px: fits, so no change.
+- T2 (inline; one mechanical file). CLAUDE.md updated for Navan tokens/rules, `.tarjeta-niebla`, hero floating card, and the production auto-deploy on push to `main`. Check: structural readback, no stale Hyer/clay references.
+
+## Status
+All tasks done on `feat/navan-redesign` (local). Pending: hero subtext gap (cosmetic); hero photo is absent from print output (not investigated); the user decides merge/push, and a push to `main` deploys to production.
 
 ## Next step
-T2.
+User decision on delivery.
