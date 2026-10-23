@@ -59,8 +59,8 @@
     const theme = currentTheme();
     if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
     themeButtons.forEach((button) => {
+      // Fixed accessible name ("Tema claro" in the HTML); aria-pressed carries the state.
       button.setAttribute('aria-pressed', String(theme === 'light'));
-      button.setAttribute('aria-label', theme === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
     });
   };
   const applyTheme = (theme) => {
@@ -150,8 +150,7 @@
     '.titulo-seccion > :not(h2)', '.tarjeta-dato', '.tarjeta-tour',
     '.seccion > .banda-oscura', '.banda-cta .contenedor > *',
     '.bloque:not(.legal)', '.galeria a', '.bloque.legal > *',
-    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-whatsapp',
-    '.contacto-formulario-intro', 'form.contacto',
+    '.contacto-portada .contenedor > *', '.contacto-canales', '.contacto-mensaje',
   ].join(', '));
   const maskTargets = document.querySelectorAll('.titulo-seccion h2');
   const brandTargets = document.querySelectorAll('.pie-copy');
@@ -182,6 +181,44 @@
       list.classList.add('revelar-grupo');
       io.observe(list);
     });
+  }
+
+  /* ---------- Hero headline: typewriter entrance ---------- */
+  // Each visual line of the H1 is split into letters that appear one after
+  // another (styles.css staggers them from --n) with a gold caret following
+  // the last typed letter. Letters hold their place from the start (only
+  // opacity changes), so the layout never shifts. Screen readers get one
+  // hidden copy of each line; the letters are aria-hidden. Without JS the
+  // CSS line rise shows the full text; under reduced motion nothing animates.
+  // It runs once: CSS animations don't replay.
+  const headline = document.querySelector('.hero-titular');
+  if (headline && !reducedMotion) {
+    const LINE_PAUSE = 3; // extra letter slots between lines
+    let slot = 0;
+    let lastLetter = null;
+    headline.querySelectorAll('.mascara > span').forEach((line, i) => {
+      const text = line.textContent;
+      const copy = document.createElement('span');
+      copy.className = 'sr-only';
+      copy.textContent = text;
+      const visual = document.createElement('span');
+      visual.setAttribute('aria-hidden', 'true');
+      if (i > 0) slot += LINE_PAUSE;
+      Array.from(text).forEach((char) => {
+        const letter = document.createElement('span');
+        letter.className = 'letra';
+        letter.textContent = char;
+        letter.style.setProperty('--n', String(slot));
+        slot += 1;
+        visual.append(letter);
+        lastLetter = letter;
+      });
+      line.replaceChildren(copy, visual);
+    });
+    if (lastLetter) {
+      lastLetter.classList.add('ultima');
+      headline.classList.add('tecleando');
+    }
   }
 
   /* ---------- Scroll-linked hero ---------- */
@@ -456,19 +493,119 @@
     });
   }
 
+  /* ---------- Forms: live validation ---------- */
+  // With JS the forms take over validation (noValidate) so every problem is
+  // shown the same way: a red border, aria-invalid and a short text hint
+  // linked with aria-describedby (never colour alone); a valid filled field
+  // turns green. A field is judged once it has been left (blur), and on every
+  // keystroke after the first submit attempt. Without JS the browser's own
+  // validation runs as before.
+  const fieldMessage = (field) => {
+    const v = field.validity;
+    if (v.valueMissing) {
+      if (field.type === 'checkbox') return 'Marca esta casilla para continuar.';
+      if (field.tagName === 'SELECT') return 'Selecciona una opción.';
+      return 'Este campo es obligatorio.';
+    }
+    if (v.typeMismatch && field.type === 'email') return 'Escribe un correo válido, por ejemplo nombre@correo.com.';
+    if (v.rangeUnderflow || v.rangeOverflow || v.stepMismatch || v.badInput) {
+      if (field.type === 'number') return `Escribe un número entre ${field.min || 1} y ${field.max || 9999}.`;
+    }
+    return field.validationMessage || 'Revisa este campo.';
+  };
+
+  let hintCount = 0;
+  const setUpValidation = (form) => {
+    const fields = Array.from(form.querySelectorAll('input, select, textarea')).filter((field) => (
+      !['hidden', 'radio', 'submit', 'button'].includes(field.type)
+      && !field.closest('.campo-trampa')
+      && field.willValidate
+    ));
+    const touched = new WeakSet();
+    let attempted = false;
+    const hints = new Map();
+
+    const hintFor = (field) => {
+      if (hints.has(field)) return hints.get(field);
+      const hint = document.createElement('p');
+      hintCount += 1;
+      hint.id = `${field.id || 'campo'}-pista-${hintCount}`;
+      hint.className = 'pista-error';
+      hint.hidden = true;
+      // Checkboxes sit inside (or next to) their .aceptacion label: the hint goes after it.
+      const anchor = field.type === 'checkbox' ? (field.closest('.aceptacion') || field) : field;
+      anchor.insertAdjacentElement('afterend', hint);
+      const described = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      field.setAttribute('aria-describedby', described.concat(hint.id).join(' '));
+      hints.set(field, hint);
+      return hint;
+    };
+
+    const judge = (field) => {
+      const invalid = !field.checkValidity();
+      const filled = field.type === 'checkbox' ? field.checked : field.value.trim() !== '';
+      field.classList.toggle('es-invalido', invalid);
+      field.classList.toggle('es-valido', !invalid && filled);
+      if (invalid) field.setAttribute('aria-invalid', 'true');
+      else field.removeAttribute('aria-invalid');
+      const hint = invalid ? hintFor(field) : hints.get(field);
+      if (hint) {
+        hint.textContent = invalid ? fieldMessage(field) : '';
+        hint.hidden = !invalid;
+      }
+      return !invalid;
+    };
+
+    const clear = () => {
+      attempted = false;
+      fields.forEach((field) => {
+        touched.delete(field);
+        field.classList.remove('es-invalido', 'es-valido');
+        field.removeAttribute('aria-invalid');
+        const hint = hints.get(field);
+        if (hint) { hint.hidden = true; hint.textContent = ''; }
+      });
+    };
+
+    fields.forEach((field) => {
+      field.addEventListener('blur', () => { touched.add(field); judge(field); });
+      const onEdit = () => { if (attempted || touched.has(field)) judge(field); };
+      field.addEventListener('input', onEdit);
+      field.addEventListener('change', onEdit);
+    });
+
+    form.noValidate = true;
+    form.classList.add('validacion-viva');
+
+    // Returns true when the whole form is valid; otherwise focuses the first
+    // invalid field (its hint is read through aria-describedby).
+    const validateAll = () => {
+      attempted = true;
+      const invalid = fields.filter((field) => !judge(field));
+      if (invalid.length) invalid[0].focus();
+      return invalid.length === 0;
+    };
+    return { validateAll, clear };
+  };
+
   /* ---------- Forms: send to enviar.php without leaving the page ---------- */
   // Without JS the forms post normally and enviar.php redirects back to
   // #enviado / #error (shown by CSS :target). With JS the same endpoint is
   // called with fetch and answers JSON; a network failure falls back to the
   // normal submit. The hidden "tiempo" field carries the time spent on the
-  // page, which enviar.php uses to reject instant (bot) submissions.
+  // page, which enviar.php uses to reject instant (bot) submissions. On the
+  // contact page a successful send replaces the form with a success panel
+  // (focused, so it is announced) that offers to send another message.
   const pageLoadedAt = Date.now();
   document.querySelectorAll('form.contacto, form.reclamo').forEach((form) => {
     const status = form.querySelector('.estado-formulario');
     const button = form.querySelector('button[type="submit"]');
     const elapsed = form.querySelector('input[name="tiempo"]');
     const buttonText = button ? button.textContent : '';
+    const validation = setUpValidation(form);
+    const replaceOnSuccess = form.classList.contains('contacto');
     let sending = false;
+    let successPanel = null;
 
     const report = (message, isError) => {
       if (!status) return;
@@ -483,11 +620,39 @@
       button.textContent = on ? 'Enviando…' : buttonText;
     };
 
+    const showSuccess = (message) => {
+      successPanel = document.createElement('div');
+      successPanel.className = 'exito-formulario';
+      successPanel.setAttribute('role', 'status');
+      successPanel.tabIndex = -1;
+      const title = document.createElement('p');
+      title.className = 'exito-titulo';
+      title.textContent = 'Consulta enviada.';
+      const text = document.createElement('p');
+      text.textContent = message;
+      const again = document.createElement('button');
+      again.type = 'button';
+      again.className = 'boton fantasma';
+      again.textContent = 'Enviar otro mensaje';
+      again.addEventListener('click', () => {
+        successPanel.remove();
+        successPanel = null;
+        form.hidden = false;
+        const first = form.querySelector('.campos input, .campos select, .campos textarea');
+        if (first) first.focus();
+      });
+      successPanel.append(title, text, again);
+      form.hidden = true;
+      form.insertAdjacentElement('afterend', successPanel);
+      successPanel.focus();
+    };
+
     form.addEventListener('submit', (e) => {
       if (elapsed) elapsed.value = String(Date.now() - pageLoadedAt);
-      if (!window.fetch || !window.FormData) return; // let the browser post it
+      if (sending) { e.preventDefault(); return; }
+      if (!validation.validateAll()) { e.preventDefault(); return; }
+      if (!window.fetch || !window.FormData) return; // valid: let the browser post it
       e.preventDefault();
-      if (sending || !form.reportValidity()) return;
 
       // A previous no-JS result (#enviado / #error) must not linger: removing
       // the hash alone doesn't re-evaluate :target, so hide the notices.
@@ -511,8 +676,11 @@
             const message = data && typeof data.message === 'string' && data.message
               ? data.message
               : 'No pudimos enviar el formulario. Inténtalo más tarde.';
-            report(message, !ok);
-            if (ok) form.reset();
+            if (!ok) { report(message, true); return; }
+            form.reset();
+            validation.clear();
+            if (replaceOnSuccess) showSuccess(message);
+            else report(message, false);
           }))
         .catch(() => {
           // Don't resubmit natively: the request may already have reached

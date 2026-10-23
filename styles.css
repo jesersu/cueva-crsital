@@ -86,6 +86,7 @@
   --foco: #5FC9C9;             /* focus ring */
   --oro-texto: #C4A77D;        /* gold as text/icon on dark (5.5:1) */
   --error: #FF9A8F;
+  --exito: #6FCF97;            /* valid field border (≥ 3:1 on page and cards) */
   --cabecera-fondo: #2D3436;
   --marca-fondo: #F5F6FA;      /* light chip behind the full-colour logo */
   --vidrio: rgba(65, 74, 77, 0.72);
@@ -110,6 +111,7 @@
   --foco: #006B6B;
   --oro-texto: #7D5F34;        /* darker gold for text/icons on white (5.9:1) */
   --error: #B3261E;
+  --exito: #1E7B4A;
   --cabecera-fondo: #FFFFFF;
   --marca-fondo: transparent;  /* the logo's greens read on white */
   --vidrio: rgba(255, 255, 255, 0.82);
@@ -524,6 +526,16 @@ p { text-wrap: pretty; }
   -webkit-mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
   mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
 }
+/* Scrim: the photo darkens towards its lower edge, where the glass bar
+   floats, so the bar's text keeps its contrast over bright photos. */
+.hero-foto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 55%);
+}
 /* Hero slider: slides are stacked and only .activa is visible (the first one
    carries it in the HTML, so no-JS shows it). The container takes the
    scroll zoom/dim; each slide only changes its own opacity, so they never fight. */
@@ -773,47 +785,67 @@ p { text-wrap: pretty; }
 
 .grid-tours {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
-/* Tour card */
+/* Tour card: a large square photo with the name over a dark scrim at the
+   bottom. Dark tokens in both themes (text sits on the photo). */
 .tarjeta-tour {
+  color-scheme: dark;
+  --texto: #F5F6FA;
+  --enlace: #5FC9C9;
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   color: var(--texto);
-  background: var(--superficie);
+  background: var(--pizarra);
   border-radius: var(--radio);
   text-decoration: none;
   transition: translate 0.3s var(--salida), scale 0.16s var(--salida);
 }
 .tarjeta-tour:focus-visible { translate: 0 -4px; outline-offset: 4px; }
 .tarjeta-tour:active { scale: 0.98; }
-/* Frame: the photo zooms inside without spilling */
-.tarjeta-tour .marco { display: block; overflow: hidden; }
+/* Frame: the photo fills the card and zooms inside without spilling */
+.tarjeta-tour .marco { position: absolute; inset: 0; display: block; overflow: hidden; }
 .tarjeta-tour img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.6s var(--salida);
 }
 .tarjeta-tour:focus-visible img { transform: scale(1.05); }
 .tarjeta-tour .nombre {
-  flex: 1;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
-  padding: 24px 28px 28px;
+  padding: 72px 28px 28px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0));
 }
 .tarjeta-tour .nombre h3 {
   font-size: 28px;
   line-height: 1.18;
   color: var(--texto);
 }
+/* Gold underline that grows beneath the destination name (space reserved) */
+.tarjeta-tour .nombre h3::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--oro);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s var(--salida);
+}
+.tarjeta-tour:focus-visible .nombre h3::after { transform: scaleX(1); }
 .tarjeta-tour .nombre > span {
-  margin-top: auto;
   color: var(--enlace);
   font-size: 16px;
   font-weight: 700;
@@ -826,7 +858,16 @@ p { text-wrap: pretty; }
 @media (hover: hover) and (pointer: fine) {
   .tarjeta-tour:hover { translate: 0 -4px; text-decoration: none; }
   .tarjeta-tour:hover img { transform: scale(1.05); }
+  .tarjeta-tour:hover .nombre h3::after { transform: scaleX(1); }
   .tarjeta-tour:hover .nombre .flecha { transform: translateX(4px); }
+}
+@media (max-width: 1024px) {
+  .grid-tours { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .grid-tours { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .tarjeta-tour .nombre { padding: 64px 24px 24px; }
+  .tarjeta-tour .nombre h3 { font-size: 24px; }
 }
 
 /* Numbered badge: gold */
@@ -994,75 +1035,110 @@ p { text-wrap: pretty; }
   color: var(--texto-2);
 }
 
-.contacto-datos { padding: 0 0 64px; }
-.contacto-grid {
+/* Two columns: channels (left) and the form panel (right) */
+.contacto-columnas {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 56px;
+  align-items: start;
+  padding-bottom: 120px;
 }
-.dato-contacto {
-  background: var(--superficie);
-  border-radius: var(--radio);
-  padding: 32px;
+.contacto-canales h2,
+.contacto-formulario-intro h2 {
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.12;
 }
-.dato-contacto h3 {
+.lista-canales { list-style: none; margin-top: 32px; border-bottom: 1px solid var(--linea); }
+.canal {
+  display: flex;
+  gap: 16px;
+  padding: 22px 0;
+  border-top: 1px solid var(--linea);
+}
+/* Small Aged Gold line icons */
+.canal-icono {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--oro-texto);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.canal > div { min-width: 0; }
+.canal h3 {
   font-family: var(--fuente);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--oro-texto);
+  color: var(--texto-3);
 }
-.dato-contacto p {
-  margin-top: 12px;
+.canal p {
+  margin-top: 6px;
+  font-family: var(--fuente-titulo);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+.canal .canal-nota {
+  font-family: var(--fuente);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+
+/* Form panel: card tone; fields take the page tone so they read as inset */
+.contacto-mensaje {
+  background: var(--superficie);
+  border-radius: var(--radio);
+  padding: 40px;
+}
+.contacto-formulario-intro { margin-bottom: 32px; }
+.contacto-formulario-intro p { margin-top: 14px; color: var(--texto-2); }
+
+form.contacto[hidden] { display: none; }
+form.contacto .campos { gap: 24px 20px; margin: 0 0 28px; }
+form.contacto .aceptacion a { color: var(--enlace); }
+.contacto-envio { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+/* Full-width teal submit */
+.contacto-envio .boton { width: 100%; }
+.contacto-envio .estado-formulario { color: var(--texto-2); font-size: 14px; }
+.estado-formulario a { color: var(--enlace); }
+.estado-formulario:empty { display: none; }
+.estado-formulario.es-error,
+.contacto-envio .estado-formulario.es-error { color: var(--error); }
+
+/* Success panel that replaces the contact form (script.js); fades in and
+   takes focus so it is announced */
+.exito-formulario {
+  padding: 28px;
+  border-radius: var(--radio-medio);
+  border-left: 3px solid var(--oro);
+  background: var(--superficie-2);
+  animation: aparecer 0.5s var(--salida) both;
+}
+.exito-formulario:focus { outline: none; }
+.exito-formulario:focus-visible { outline: 2px solid var(--foco); outline-offset: 3px; }
+.exito-titulo {
   font-family: var(--fuente-titulo);
   font-size: 28px;
   font-weight: 600;
   line-height: 1.2;
   color: var(--texto);
-  overflow-wrap: anywhere;
 }
-
-/* WhatsApp card (the teal action on this page is the form submit) */
-.tarjeta-whatsapp {
-  background: var(--superficie);
-  color: var(--texto);
-  border-radius: var(--radio);
-  padding: 32px;
-}
-.tarjeta-whatsapp h3 { font-size: 28px; line-height: 1.18; }
-.tarjeta-whatsapp p { margin: 12px 0 24px; color: var(--texto-2); }
-
-/* Form panel: page tone with a hairline; fields take the card tone */
-.contacto-formulario {
-  padding: 96px 0;
-  background: var(--lienzo);
-  border: 1px solid var(--linea);
-  --relleno-campo: var(--superficie);
-}
-.contacto-formulario-intro { max-width: 640px; margin-bottom: 48px; }
-.contacto-formulario-intro h2 {
-  font-size: clamp(30px, 3.6vw, 44px);
-  line-height: 1.12;
-}
-.contacto-formulario-intro p { margin-top: 18px; }
-
-form.contacto { max-width: 880px; }
-form.contacto .campos { gap: 24px 20px; margin: 0 0 28px; }
-form.contacto .aceptacion a { color: var(--enlace); }
-.contacto-envio { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
-.banda-oscura .estado-formulario { color: var(--texto-2); font-size: 14px; }
-.estado-formulario a { color: var(--enlace); }
-.estado-formulario:empty { display: none; }
-.estado-formulario.es-error,
-.banda-oscura .estado-formulario.es-error { color: var(--error); }
+.exito-formulario p + p { margin: 8px 0 24px; color: var(--texto-2); }
 
 /* No-JS result: enviar.php redirects to #enviado or #error and the
    notice only shows as :target. */
 .aviso-envio {
   display: none;
-  max-width: 880px;
   margin-bottom: 32px;
   padding: 20px 24px;
   border-radius: var(--radio);
@@ -1090,11 +1166,9 @@ form.contacto .aceptacion a { color: var(--enlace); }
 @media (max-width: 860px) {
   .contacto-portada { padding-bottom: 40px; }
   .contacto-portada .migas { padding-bottom: 32px; }
-  .contacto-datos { padding-bottom: 48px; }
-  .contacto-grid { grid-template-columns: 1fr; gap: 16px; }
-  .dato-contacto, .tarjeta-whatsapp { padding: 24px; }
-  .contacto-formulario, .banda-cta { padding: 64px 0; }
-  .contacto-formulario-intro { margin-bottom: 36px; }
+  .contacto-columnas { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-bottom: 80px; }
+  .contacto-mensaje { padding: 28px 20px; }
+  .banda-cta { padding: 64px 0; }
   .banda-oscura { margin-bottom: 80px; }
   .banda-oscura > .contenedor { width: calc(100% - 40px); }
 }
@@ -1138,6 +1212,48 @@ form.contacto .aceptacion a { color: var(--enlace); }
   outline-offset: 0;
   border-color: transparent;
 }
+
+/* Live validation: script.js adds .validacion-viva, the state classes,
+   aria-invalid and a linked text hint (colour is never the only cue).
+   Red when invalid, green when valid and filled; the focus ring follows. */
+.validacion-viva .campo .es-invalido { border-color: var(--error); }
+.validacion-viva .campo .es-valido { border-color: var(--exito); }
+.validacion-viva .campo .es-invalido:focus { outline-color: var(--error); }
+.validacion-viva .campo .es-valido:focus { outline-color: var(--exito); }
+.validacion-viva .aceptacion .es-invalido { outline: 2px solid var(--error); outline-offset: 2px; }
+/* Without JS, browsers that support :user-invalid still flag a field once
+   the visitor has interacted with it (native messages explain why). Kept in
+   their own rules so older browsers don't drop the ones above. */
+form:not(.validacion-viva) .campo input:user-invalid { border-color: var(--error); }
+form:not(.validacion-viva) .campo textarea:user-invalid { border-color: var(--error); }
+form:not(.validacion-viva) .campo select:user-invalid { border-color: var(--error); }
+.pista-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--error);
+}
+.pista-error[hidden] { display: none; }
+/* Small "!" badge before the hint text */
+.pista-error::before {
+  content: "!";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border-radius: var(--pill);
+  background: var(--error);
+  color: var(--lienzo);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.aceptacion + .pista-error { margin: -4px 0 14px 28px; }
 
 .opciones { display: flex; flex-wrap: wrap; gap: 22px; padding: 6px 4px; }
 .opciones label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 17px; color: var(--texto); }
@@ -1354,11 +1470,22 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 @media (max-width: 560px) {
   /* Long email address: step down so it rarely breaks */
-  .dato-contacto p { font-size: 20px; line-height: 1.25; }
+  .canal p { font-size: 20px; }
+}
+
+/* Phones: the glass bar stacks its text over the button and keeps its
+   content clear of the column where the fixed WhatsApp button sits
+   (right 14px, ~50px wide), so "Reservar" never ends up beneath it. */
+@media (max-width: 560px) {
+  .barra-vidrio {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 64px 16px 20px;
+  }
 }
 
 @media (max-width: 420px) {
-  .barra-vidrio p { font-size: 12px; }
   .boton-reservar { padding: 8px 14px; letter-spacing: 0.08em; }
   .cabecera-acciones { gap: 6px; }
 }
@@ -1367,7 +1494,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 @media print {
   .barra-superior, .cabecera, .pie, .envio, .barra-vidrio, .hero-pausa, .carrusel-controles { display: none; }
   body, .hero, .banda-clara, .banda-oscura, .bloque, .hoja, .tarjeta-dato, .tarjeta-tour,
-  .dato-contacto, .tarjeta-whatsapp, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
+  .contacto-mensaje, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
   .alerta-esnna, .nota-legal { background: #fff !important; color: #000 !important; }
   h1, h2, h3, h4, p, li, strong, small, span, a, .declaracion { color: #000 !important; }
   .portada-tour { height: auto; }
@@ -1732,6 +1859,33 @@ main { animation: fundido 0.3s ease-out backwards; }
 .hero-foto { animation: encender 1.6s var(--curva) 0.3s both; }
 .hero-diapositivas { animation: asentar 2.2s var(--curva) 0.3s both; }
 .barra-vidrio { animation: subir-vidrio 1s var(--curva) 1.1s both; }
+
+/* Typewriter: script.js splits each H1 line into .letra spans (an
+   aria-hidden copy; screen readers read a hidden full copy) and replaces
+   the line rise. Letters keep their place and only turn visible, one per
+   65ms; a gold caret follows the last typed letter and blinks three times
+   at the end. Reduced motion removes the animations: full text at once. */
+.hero-titular.tecleando .mascara > span { animation: none; }
+.letra {
+  position: relative;
+  animation: teclear 1ms linear calc(0.35s + var(--n, 0) * 65ms) backwards;
+}
+.letra::after {
+  content: "";
+  position: absolute;
+  top: 0.12em;
+  bottom: 0.06em;
+  right: -0.05em;
+  width: max(2px, 0.05em);
+  background: var(--oro);
+  opacity: 0;
+  animation: cursor 65ms linear calc(0.35s + var(--n, 0) * 65ms);
+}
+.letra.ultima::after { animation: parpadeo 1s step-end calc(0.35s + var(--n, 0) * 65ms) 3; }
+@keyframes teclear { from { opacity: 0; } }
+/* No fill mode: the caret is only visible while its animation runs */
+@keyframes cursor { from, to { opacity: 1; } }
+@keyframes parpadeo { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
 /* Scroll-linked hero: script.js writes --progreso (0–1). The photo zooms
    and dims, the text rises and fades; the glass bar stays. Each effect uses
