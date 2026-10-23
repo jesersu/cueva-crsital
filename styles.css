@@ -879,6 +879,7 @@ form.contacto .aceptacion a { color: var(--azul-enlace); }
   color: var(--perla);
 }
 .aviso-envio:target { display: block; }
+.aviso-envio[hidden] { display: none; } /* script.js hides a stale notice */
 .aviso-envio:focus { outline: none; }
 .aviso-envio p { color: inherit; }
 .aviso-envio strong { color: var(--seda); font-weight: 600; }

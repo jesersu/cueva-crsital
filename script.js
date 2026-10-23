@@ -374,7 +374,9 @@
       e.preventDefault();
       if (sending || !form.reportValidity()) return;
 
-      // A previous no-JS result (#enviado / #error) must not linger.
+      // A previous no-JS result (#enviado / #error) must not linger: removing
+      // the hash alone doesn't re-evaluate :target, so hide the notices.
+      document.querySelectorAll('.aviso-envio').forEach((el) => { el.hidden = true; });
       if ((location.hash === '#enviado' || location.hash === '#error') && history.replaceState) {
         history.replaceState(null, '', location.pathname + location.search);
       }
@@ -398,9 +400,11 @@
             if (ok) form.reset();
           }))
         .catch(() => {
-          // Network failure: submit normally; enviar.php will redirect back.
+          // Don't resubmit natively: the request may already have reached
+          // enviar.php (a retry would send a duplicate message or claim), and
+          // an offline native post would lose everything typed in the form.
           setSending(false);
-          HTMLFormElement.prototype.submit.call(form);
+          report('No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.', true);
         });
     });
   });
