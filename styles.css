@@ -1278,7 +1278,11 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
     opacity 0.9s var(--curva) calc(var(--i, 0) * var(--paso)),
     transform 0.9s var(--curva) calc(var(--i, 0) * var(--paso)),
     translate 0.3s var(--salida),
-    scale 0.16s var(--salida);
+    scale 0.16s var(--salida),
+    filter 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 .revelar.visible { opacity: 1; transform: none; }
 
