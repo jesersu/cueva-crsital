@@ -256,6 +256,64 @@
     refresh();
   }
 
+  /* ---------- Horizontal photo slider (Próximamente) ---------- */
+  // The track is a native scroll-snap scroller, so touch, trackpad and arrow
+  // keys (once the track has focus) work without JS. Here we only reveal the
+  // prev/next buttons: each one moves to the neighbouring card's snap point
+  // (cards differ in width) and is disabled at its end of the track. State is
+  // refreshed on the track's own passive scroll listener, once per frame.
+  document.querySelectorAll('.carrusel').forEach((root) => {
+    const track = root.querySelector('.carrusel-pista');
+    const controls = root.querySelector('.carrusel-controles');
+    const prev = root.querySelector('.carrusel-anterior');
+    const next = root.querySelector('.carrusel-siguiente');
+    const cards = Array.from(root.querySelectorAll('.carrusel-tarjeta'));
+    if (!track || !controls || !prev || !next || cards.length < 2) return;
+
+    const EDGE = 2; // px tolerance for fractional scroll positions
+    let pending = false;
+
+    // Scroll position at which each card sits on the snap line. The first
+    // card's offset is the gutter (list padding = scroll-padding).
+    const snapPoints = () => {
+      const left = track.getBoundingClientRect().left - track.scrollLeft;
+      const offsets = cards.map((card) => card.getBoundingClientRect().left - left);
+      const max = track.scrollWidth - track.clientWidth;
+      return offsets.map((x) => Math.min(max, Math.max(0, x - offsets[0])));
+    };
+
+    const update = () => {
+      pending = false;
+      const max = track.scrollWidth - track.clientWidth;
+      controls.hidden = max <= EDGE; // nothing to scroll (very wide screens)
+      prev.disabled = track.scrollLeft <= EDGE;
+      next.disabled = track.scrollLeft >= max - EDGE;
+    };
+    const requestUpdate = () => {
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(update);
+    };
+
+    const go = (direction) => {
+      const x = track.scrollLeft;
+      const points = snapPoints();
+      const target = direction > 0
+        ? points.find((p) => p > x + EDGE)
+        : points.slice().reverse().find((p) => p < x - EDGE);
+      if (target === undefined) return;
+      // 'auto' is instant here: the track sets no CSS scroll-behavior.
+      track.scrollBy({ left: target - x, behavior: reducedMotion ? 'auto' : 'smooth' });
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+    track.addEventListener('scroll', requestUpdate, { passive: true });
+    measureTasks.push(requestUpdate);
+    controls.hidden = false;
+    update();
+  });
+
   /* ---------- Word-by-word highlight ---------- */
   // Each statement keeps a visually hidden copy for screen readers; the word
   // spans are aria-hidden. --luz (0–1 per word) defaults to 1 in CSS, so the

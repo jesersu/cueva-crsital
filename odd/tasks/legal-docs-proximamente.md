@@ -26,7 +26,7 @@ The business supplied final legal texts: "TÉRMINOS Y CONDICIONES DE USO Y CONTR
 
 ## Tasks
 - [x] T1 — Legal pages + footer restructure. Route: delegated (14+ files).
-- [ ] T2 — Home "Próximamente" slider. Route: delegated (3 files + images).
+- [x] T2 — Home "Próximamente" slider. Route: delegated (3 files + images).
 
 ## Acceptance criteria
 - Footer on all 12 pages: Políticas = 3 document titles + ESNNA; 4th column = Libro de reclamaciones + Créditos de fotos.
@@ -38,6 +38,10 @@ The business supplied final legal texts: "TÉRMINOS Y CONDICIONES DE USO Y CONTR
 
 ## Progress / Evidence
 - T1 (delegated writer; trigger: 15 files). Términos, Cobro and Privacidad pages rebuilt verbatim from the Word files (headings h2/h3, lists, `.datos-legal` company grid; only the stray leading ". " and doubled spaces fixed); `proteccion-de-datos-personales.html` deleted + `.htaccess` 301 to `politicas-de-privacidad.html`; consent links in contacto/libro updated; `.otras-politicas` pills renamed; footer identical on all 11 pages (one md5): Políticas = 3 document titles + ESNNA, new "Atención al cliente" column = Libro de reclamaciones + Créditos de fotos; `.pie-grid` 4/2/1 columns. +291/−395. Evidence (writer): word-by-word comparison doc vs page — only differences are the title (now h1) and two empty Términos table rows ("Libro de Reclamaciones Virtual", "Constancia DNPST") left out; all numbered headings present; no links to the deleted page; all internal hrefs resolve; `node --check` OK; no horizontal scroll at 390/360. Parent: `node --check` OK, link grep clean, redirect line present, footer screenshot at 1366 checked. Open for the business: the two empty table rows; Cobro section 12 keeps the blank fill-in template; the new deposit is 30% (old page said 50%).
+- T2 (delegated writer; trigger: 3 non-trivial files + images). "Próximamente" section after "Lo principal.": eyebrow + "Un nuevo destino." + a line describing only the photos + `.enlace` "Quiero más información ›" to contacto (TODO comment for the place name); full-bleed CSS scroll-snap track with 4 cards (`img/prox-01..04.jpg`, business photos from WhatsApp, 170–238 KB, EXIF/IPTC stripped), "Próximamente" glass badge, keyboard-focusable region, frosted prev/next buttons (hidden without JS, disabled at ends, instant under reduced motion), lazy images with dimensions. +199/−6. Evidence (writer, Playwright): next/prev move exactly one card and disable at ends; ArrowRight scrolls the focused track; reduced motion instant; no-JS buttons hidden and track scrolls; scrollWidth == clientWidth at 1366/390/360. Note: the zip filenames didn't match the brief's descriptions; alts were written from visual checks. Parent: `node --check` OK; screenshot at 1366 checked; moved the controls to the left so the fixed WhatsApp float can't cover them.
+
+## Status
+Done on `feat/legal-docs-proximamente` (local). The user decides push/merge (push to `main` = production deploy). Open: place name (TODO), the two empty Términos rows, 30% vs 50% deposit confirmation.
 
 ## Next step
-T2 delegated writer.
+User decision on delivery.

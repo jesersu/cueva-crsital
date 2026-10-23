@@ -552,6 +552,93 @@ p { text-wrap: pretty; }
 }
 .tarjeta-dato p { margin-top: auto; color: var(--perla); }
 
+/* ---------- Próximamente: horizontal photo slider ----------
+   Native scroll-snap track that bleeds to the viewport edges while the first
+   card lines up with .contenedor. The gutter uses container units (the
+   section is the container), so it matches .contenedor without the 100vw
+   scrollbar error; the 100vw line is the fallback for older browsers. Cards
+   share one height; widths follow each photo's orientation (object-fit). */
+.proximamente { container-type: inline-size; }
+.proximamente .titulo-seccion h2 .eyebrow { margin-bottom: 6px; color: var(--ceniza); }
+.carrusel { --alto-tarjeta: clamp(400px, 46vw, 560px); }
+.carrusel-pista {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(16px, calc((100vw - 1200px) / 2));
+  scroll-padding-inline: max(16px, calc((100cqw - 1200px) / 2));
+  scrollbar-width: none;
+}
+.carrusel-pista::-webkit-scrollbar { display: none; }
+.carrusel-pista:focus-visible { outline-offset: -2px; }
+/* width: max-content makes the list's own padding part of the scroll range,
+   so the last card can snap to the same gutter on every browser */
+.carrusel-lista {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding-inline: max(16px, calc((100vw - 1200px) / 2));
+  padding-inline: max(16px, calc((100cqw - 1200px) / 2));
+}
+.carrusel-tarjeta {
+  position: relative;
+  flex: none;
+  width: calc(var(--alto-tarjeta) * 0.75);
+  height: var(--alto-tarjeta);
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--carbon);
+  scroll-snap-align: start;
+}
+.carrusel-tarjeta.horizontal { width: min(calc(var(--alto-tarjeta) * 4 / 3), 84vw); width: min(calc(var(--alto-tarjeta) * 4 / 3), 84cqw); }
+.carrusel-tarjeta img { width: 100%; height: 100%; object-fit: cover; }
+.carrusel-insignia {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  border-radius: var(--pill);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: var(--desenfoque);
+  backdrop-filter: var(--desenfoque);
+  color: var(--seda);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: -0.01em;
+}
+/* Prev/next: round glass buttons under the track, revealed by script.js */
+.carrusel-controles {
+  display: flex;
+  justify-content: flex-start; /* clear of the fixed WhatsApp float (bottom-right) */
+  gap: 12px;
+  margin-top: 24px;
+}
+.carrusel-controles[hidden] { display: none; }
+.carrusel-boton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: var(--desenfoque);
+  backdrop-filter: var(--desenfoque);
+  color: var(--seda);
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, scale 0.16s var(--salida);
+}
+.carrusel-boton svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.carrusel-boton:disabled { opacity: 0.36; cursor: default; }
+.carrusel-boton:active:not(:disabled) { scale: 0.95; }
+@media (hover: hover) and (pointer: fine) {
+  .carrusel-boton:hover:not(:disabled) { background: rgba(66, 66, 69, 0.9); }
+}
+
 /* Declaración: frases cortas (gancho para el resaltado palabra a palabra) */
 .declaracion {
   max-width: 24ch;
@@ -1147,6 +1234,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   }
 
   .grid-datos { grid-template-columns: 1fr; gap: 16px; }
+  .carrusel-lista { gap: 12px; }
   .tarjeta-dato { min-height: 0; }
 
   .seccion { padding: 80px 0; }
@@ -1172,7 +1260,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 /* Impresión: texto oscuro sobre blanco, sin superficies oscuras */
 @media print {
-  .barra-superior, .cabecera, .pie, .envio, .barra-vidrio, .hero-pausa { display: none; }
+  .barra-superior, .cabecera, .pie, .envio, .barra-vidrio, .hero-pausa, .carrusel-controles { display: none; }
   body, .hero, .banda-clara, .banda-oscura, .bloque, .hoja, .tarjeta-dato, .tarjeta-tour,
   .dato-contacto, .tarjeta-whatsapp, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
   .alerta-esnna, .nota-legal { background: #fff !important; color: #000 !important; }
@@ -1607,7 +1695,8 @@ main { animation: fundido 0.4s ease-out backwards; }
   .cabecera.oculta { translate: none; }
   /* Microinteracciones */
   .boton:active, .boton-menu:active, .tarjeta-tour:active,
-  .wa-flotante:active, .lightbox button:active, .hero-pausa:active { scale: none; }
+  .wa-flotante:active, .lightbox button:active, .hero-pausa:active,
+  .carrusel-boton:active:not(:disabled) { scale: none; }
   .tarjeta-tour:hover, .tarjeta-tour:focus-visible,
   .enlace:hover > span[aria-hidden], .enlace:focus-visible > span[aria-hidden] { translate: none; }
 }
@@ -1615,5 +1704,6 @@ main { animation: fundido 0.4s ease-out backwards; }
 /* Less transparency: the frosted glass turns solid (same tones, no blur) */
 @media (prefers-reduced-transparency: reduce) {
   .cabecera, .menu { background: var(--negro); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .barra-vidrio, .wa-flotante, .lightbox button, .hero-pausa { background: var(--grafito); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .barra-vidrio, .wa-flotante, .lightbox button, .hero-pausa,
+  .carrusel-insignia, .carrusel-boton { background: var(--grafito); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

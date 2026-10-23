@@ -110,6 +110,50 @@
       </div>
     </section>
 
+    <!-- Próximamente: a new destination whose name is not known yet. Only
+         describe what the photos show (no name, dates, prices or location).
+         The track is a native scroll-snap scroller (touch, trackpad and arrow
+         keys work without JS); script.js only reveals the prev/next buttons. -->
+    <section class="seccion proximamente" aria-labelledby="titulo-proximamente">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <!-- TODO: once the place's name is known, put it in the heading
+               (e.g. "Nombre del lugar." instead of "Un nuevo destino."),
+               keep the "Próximamente" eyebrow and update the track's aria-label. -->
+          <h2 id="titulo-proximamente"><span class="eyebrow">Próximamente</span> Un nuevo destino.</h2>
+          <a class="enlace" href="contacto.html">Quiero más información <span aria-hidden="true">›</span></a>
+          <p>Formaciones de cristal en el interior de una cueva. Muy pronto podrás visitarlas con nosotros.</p>
+        </div>
+      </div>
+      <div class="carrusel">
+        <div class="carrusel-pista" id="pista-proximamente" role="region" aria-label="Fotos del nuevo destino" tabindex="0">
+          <ul class="carrusel-lista">
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-01.jpg" alt="Formación de cristal iluminada con una linterna en el interior de una cueva" width="960" height="1280" loading="lazy" decoding="async">
+              <span class="carrusel-insignia" aria-hidden="true">Próximamente</span>
+            </li>
+            <li class="carrusel-tarjeta horizontal">
+              <img src="img/prox-02.jpg" alt="Campo de cristales puntiagudos sobre el suelo de una cueva" width="1280" height="960" loading="lazy" decoding="async">
+            </li>
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-03.jpg" alt="Formación de cristal iluminada con luz amarilla dentro de una cueva" width="960" height="1280" loading="lazy" decoding="async">
+            </li>
+            <li class="carrusel-tarjeta">
+              <img src="img/prox-04.jpg" alt="Finos hilos de cristal blanco sobre una estalactita" width="960" height="1280" loading="lazy" decoding="async">
+            </li>
+          </ul>
+        </div>
+        <div class="contenedor carrusel-controles" hidden>
+          <button class="carrusel-boton carrusel-anterior" type="button" aria-label="Foto anterior" aria-controls="pista-proximamente">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10 3 5 8l5 5"/></svg>
+          </button>
+          <button class="carrusel-boton carrusel-siguiente" type="button" aria-label="Foto siguiente" aria-controls="pista-proximamente">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 3 5 5-5 5"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- Declaración: frases cortas (gancho para el resaltado al desplazarse) -->
     <section class="seccion" aria-label="Lo que vivirás">
       <div class="contenedor">
