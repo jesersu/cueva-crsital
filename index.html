@@ -47,35 +47,92 @@
 
   <!-- ========== 2. PARTE MEDIA ========== -->
   <main>
+    <!-- Portada: teatro negro con la foto viñeteada y una barra de vidrio
+         flotante que lleva la única acción azul de la página -->
     <section class="hero" id="inicio">
       <div class="contenedor hero-grid">
-        <span class="eyebrow">Agencia de viajes y turismo · Tingo María</span>
-        <h1 class="hero-marca"><span class="mascara"><span>Los Cristales</span></span><span class="sr-only"> – Agencia de viajes y turismo en Tingo María</span></h1>
-        <p class="hero-titular"><span class="mascara"><span>Más allá</span></span><span class="mascara"><span>de la selva.</span></span></p>
         <div class="hero-texto">
-          <p>Tours de día completo al Parque Nacional de Tingo María, la Laguna de los Milagros y la Catarata Honolulo.</p>
-          <a class="boton" href="#tours">Ver nuestros tours</a>
+          <h1 class="hero-titular"><span class="eyebrow">Los Cristales</span><span class="mascara"><span>Más allá</span></span><span class="mascara"><span>de la selva.</span></span><span class="sr-only"> – Agencia de viajes y turismo en Tingo María</span></h1>
+          <p class="hero-subtitulo">Tours de día completo al Parque Nacional de Tingo María, la Laguna de los Milagros y la Catarata Honolulo.</p>
+          <a class="enlace" href="#tours">Ver los tours <span aria-hidden="true">›</span></a>
         </div>
         <figure class="hero-foto">
-          <img src="img/honol-04.jpg" alt="Poza natural de aguas cristalinas en la Catarata Honolulo">
-          <!-- Tarjeta flotante: datos tomados de catarata-honolulo.html -->
-          <figcaption class="tarjeta-flotante">
-            <span class="etiqueta">Tour 03 · Día completo</span>
-            <a class="tarjeta-flotante-titulo" href="catarata-honolulo.html">Catarata Honolulo</a>
-            <dl>
-              <dt>Recojo</dt><dd>10:00 – 10:30 am</dd>
-              <dt>Recorrido</dt><dd>Circuito de 5 caídas de agua</dd>
-              <dt>Retorno</dt><dd>4:00 pm aprox.</dd>
-            </dl>
-          </figcaption>
+          <img src="img/honol-08.jpg" alt="Catarata Honolulo cayendo entre la vegetación de la selva">
         </figure>
+        <!-- Datos reales tomados de las páginas de cada tour -->
+        <div class="barra-vidrio">
+          <p>Tours de día completo · Recojo en tu hospedaje</p>
+          <a class="boton" href="contacto.html">Reservar</a>
+        </div>
       </div>
     </section>
 
-    <section class="seccion" id="tours">
+    <!-- Lo principal: datos tomados solo de las páginas de cada tour -->
+    <section class="seccion" aria-labelledby="titulo-principal">
       <div class="contenedor">
         <div class="titulo-seccion">
-          <h2>Nuestros tours</h2>
+          <h2 id="titulo-principal">Lo principal.</h2>
+          <a class="enlace" href="contacto.html">Contáctanos <span aria-hidden="true">›</span></a>
+        </div>
+        <ul class="grid-datos">
+          <li class="tarjeta-dato">
+            <span class="etiqueta-dato">Recojo</span>
+            <h3>Pasamos por tu hospedaje.</h3>
+            <p>Entre las 10:00 y las 10:30 am, en los tres tours.</p>
+          </li>
+          <li class="tarjeta-dato">
+            <span class="etiqueta-dato">Día completo</span>
+            <h3>Un día entero en la selva.</h3>
+            <p>Retorno aprox. a las 4:00 pm desde Honolulo y a las 5:30 pm desde el Parque Nacional y la Laguna.</p>
+          </li>
+          <li class="tarjeta-dato">
+            <span class="etiqueta-dato">Opcional</span>
+            <h3>Aventura a tu medida.</h3>
+            <p>Paseo en bote por el río Monzón, canopy, sky bike o rapel en la catarata, según el tour.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Declaración: frases cortas (gancho para el resaltado al desplazarse) -->
+    <section class="seccion" aria-label="Lo que vivirás">
+      <div class="contenedor">
+        <p class="declaracion">Una cueva. Una laguna. Cinco caídas de agua. Todo en un día, desde tu hospedaje.</p>
+      </div>
+    </section>
+
+    <!-- Cifras reales de las páginas de cada tour; data-contar es el gancho
+         para los contadores, y el número final ya está en el HTML -->
+    <section class="seccion" aria-labelledby="titulo-cifras">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <h2 id="titulo-cifras">En cifras.</h2>
+        </div>
+        <ul class="grid-cifras">
+          <li class="cifra">
+            <span class="cifra-numero"><span data-contar="3">3</span></span>
+            <span class="cifra-texto">tours de día completo</span>
+          </li>
+          <li class="cifra">
+            <span class="cifra-numero"><span data-contar="5">5</span></span>
+            <span class="cifra-texto">caídas de agua en el circuito de Honolulo</span>
+          </li>
+          <li class="cifra">
+            <span class="cifra-numero"><span data-contar="25">25</span> <small>min</small></span>
+            <span class="cifra-texto">aprox. de Tingo María a Honolulo</span>
+          </li>
+          <li class="cifra">
+            <span class="cifra-numero"><span data-contar="15">15</span> <small>min</small></span>
+            <span class="cifra-texto">de caminata, apta para toda la familia</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion banda-clara" id="tours">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <h2>Nuestros tours.</h2>
           <p>Elige tu aventura y descubre la selva de Tingo María.</p>
         </div>
 
@@ -86,7 +143,7 @@
             <span class="marco"><img src="img/pntm-01.jpg" alt="Parque Nacional de Tingo María"></span>
             <div class="nombre">
               <h3>Parque Nacional de Tingo María</h3>
-              <span>VER TOUR <span class="flecha" aria-hidden="true">→</span></span>
+              <span>Ver el tour <span class="flecha" aria-hidden="true">›</span></span>
             </div>
           </a>
 
@@ -95,16 +152,16 @@
             <span class="marco"><img src="img/lagu-03.jpg" alt="Laguna de los Milagros"></span>
             <div class="nombre">
               <h3>Laguna de los Milagros</h3>
-              <span>VER TOUR <span class="flecha" aria-hidden="true">→</span></span>
+              <span>Ver el tour <span class="flecha" aria-hidden="true">›</span></span>
             </div>
           </a>
 
           <a class="tarjeta-tour" href="catarata-honolulo.html">
             <span class="numero">03</span>
-            <span class="marco"><img src="img/honol-01.jpg" alt="Catarata Honolulo"></span>
+            <span class="marco"><img src="img/honol-04.jpg" alt="Catarata Honolulo"></span>
             <div class="nombre">
               <h3>Catarata Honolulo</h3>
-              <span>VER TOUR <span class="flecha" aria-hidden="true">→</span></span>
+              <span>Ver el tour <span class="flecha" aria-hidden="true">›</span></span>
             </div>
           </a>
 
@@ -114,11 +171,13 @@
       </div>
     </section>
 
-    <section class="banda-oscura banda-cta">
-      <div class="contenedor">
-        <h2>Planifica tu viaje.</h2>
-        <p>Cuéntanos qué tour te interesa, la fecha y cuántas personas vienen, y te ayudamos a organizarlo.</p>
-        <a class="boton fantasma" href="contacto.html">Contáctanos</a>
+    <section class="seccion">
+      <div class="banda-oscura banda-cta">
+        <div class="contenedor">
+          <h2>Planifica tu viaje.</h2>
+          <p>Cuéntanos qué tour te interesa, la fecha y cuántas personas vienen, y te ayudamos a organizarlo.</p>
+          <a class="boton claro" href="contacto.html">Contáctanos</a>
+        </div>
       </div>
     </section>
   </main>

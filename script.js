@@ -31,9 +31,9 @@
   // Elements entering the viewport in the same batch get an increasing --i,
   // which styles.css turns into a transition delay.
   const revealTargets = document.querySelectorAll([
-    '.titulo-seccion', '.tarjeta-tour', '.banda-cta .contenedor > *',
+    '.titulo-seccion', '.tarjeta-dato', '.declaracion', '.cifra', '.tarjeta-tour', '.banda-cta .contenedor > *',
     '.portada-tour .contenedor > *', '.bloque:not(.legal)', '.galeria a', '.bloque.legal > *',
-    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-niebla',
+    '.contacto-portada .contenedor > *', '.dato-contacto', '.tarjeta-whatsapp',
     '.contacto-formulario-intro', 'form.contacto',
   ].join(', '));
   const timelines = document.querySelectorAll('.itinerario');
