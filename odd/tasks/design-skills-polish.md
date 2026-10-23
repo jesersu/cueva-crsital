@@ -25,8 +25,8 @@ The user asked to apply the newly installed design skills to improve the site. T
 
 ## Tasks
 - [x] T1 — Deploy excludes + skills commit. Route: inline (mechanical). Commits c1e9b16 (ci) + e58350a (skills).
-- [ ] T2 — Skills-guided polish pass. Route: delegated (2+ non-trivial files).
-- [ ] T3 — CLAUDE.md update. Route: inline.
+- [x] T2 — Skills-guided polish pass. Route: delegated (2+ non-trivial files). Commit 3a26ca6.
+- [x] T3 — CLAUDE.md update. Route: inline.
 
 ## Acceptance criteria
 - `.claude/**` and `skills-lock.json` excluded from the FTPS deploy.
@@ -39,5 +39,11 @@ The user asked to apply the newly installed design skills to improve the site. T
 ## Progress / Evidence
 - T1 (inline). deploy.yml exclude gains `**/.claude/**` and `skills-lock.json`; CLAUDE.md deploy line updated; 15 skills + lock committed. Check: diff readback. The first combined commit exceeded the reviewer context budget (`lens_context_budget_exceeded`), so it was split locally (unpushed) into c1e9b16 (ci) and e58350a (skills). RDD c1e9b16: high (shell_source in deploy.yml), consent GRANTED, 4-lens review approved and acknowledged (lineage review-8512951cfd79df84). Advisories: R3-001 bare `skills-lock.json` matches the root only (intended, the lock lives at the root); R4-stale-excluded-artifacts (no stale copies are possible: `.claude/` and `skills-lock.json` were never on `main`). RDD e58350a: medium (slice_budget_reached, 4934 lines of vendored third-party skill Markdown), consent GRANTED, START refused with `lens_context_budget_exceeded` (no authority created) → outcome unavailable; the skills were manually inspected at install time (Markdown only, no scripts). RDD stays on; next base = e58350a.
 
+- T2 (delegated writer; trigger: 13 files incl. 2 non-trivial). +150/−46. `--salida` ease-out token; `:active` press scales on pressables + passive `touchstart` for iOS; decorative hovers gated by `(hover: hover) and (pointer: fine)`; tap-highlight off, `touch-action: manipulation`, `user-select: none` on buttons; hero `svh` / lightbox `dvh` with `vh` fallback; `theme-color` + `color-scheme` meta on all 11 pages; faster header/submenu/lightbox/hover timings (lightbox close 200ms, JS `fadeMs` 200); origin-aware submenu; lightbox `touch-action: pinch-zoom`; `.revelar` per-property transitions (fixed clobbered hover transitions); `text-wrap: balance/pretty`; `prefers-reduced-transparency` solid fallbacks; reduced-motion covers new scales. Skipped with reasons: `viewport-fit=cover`/safe areas, submenu hover gate, `overscroll-behavior`, input size (already 17px), long marketing entrances. Evidence: `node --check` OK (writer + parent); theme-color/color-scheme count 1 on all 11 (writer + parent); no box-shadow/700/`transition: all` (writer + parent); 1366px and 390px screenshots inspected (parent spot-checked the home at 1366px). Not verified: real-device iOS behavior; interactive lightbox/menu/form re-test. RDD: medium, under_budget (196 lines) → pending in slice with T3.
+- T3 (inline; one mechanical file). CLAUDE.md gains the interaction-polish conventions. Check: structural readback.
+
+## Status
+All tasks done on `feat/design-skills-polish` (local, not pushed). Pending: real-phone check; user decides push/merge (push to `main` = production deploy).
+
 ## Next step
-T2 delegated writer.
+User decision on delivery.
