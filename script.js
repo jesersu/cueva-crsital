@@ -14,6 +14,7 @@
     if (reducedMotion) stopMotion();
   };
   if (motionQuery.addEventListener) motionQuery.addEventListener('change', onMotionChange);
+  else if (motionQuery.addListener) motionQuery.addListener(onMotionChange); // Safari < 14
 
   const hasIO = 'IntersectionObserver' in window;
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
@@ -193,14 +194,18 @@
     const ZOOM = 0.12;
     const vhNow = () => window.innerHeight;
     // Start images below the fold zoomed in, so they don't jump on entry.
-    zoomImages.forEach((img) => {
-      if (img.parentElement.getBoundingClientRect().top > vhNow()) img.style.setProperty('--zoom', String(1 + ZOOM));
+    // Read every rect before writing, so the writes don't force a layout per image.
+    const initialTops = zoomImages.map((img) => img.parentElement.getBoundingClientRect().top);
+    zoomImages.forEach((img, i) => {
+      if (initialTops[i] > vhNow()) img.style.setProperty('--zoom', String(1 + ZOOM));
     });
     frameTasks.push(() => {
       if (reducedMotion) return;
       const vh = vhNow();
-      zoomImages.forEach((img) => {
-        const rect = img.parentElement.getBoundingClientRect();
+      // Batch reads, then writes (avoids layout thrash on long galleries).
+      const rects = zoomImages.map((img) => img.parentElement.getBoundingClientRect());
+      zoomImages.forEach((img, i) => {
+        const rect = rects[i];
         if (rect.bottom < 0 || rect.top > vh) return;
         const progress = clamp01((vh - rect.top) / (vh * 0.7));
         img.style.setProperty('--zoom', (1 + ZOOM * (1 - progress)).toFixed(3));
