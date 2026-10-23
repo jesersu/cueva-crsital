@@ -286,8 +286,17 @@
       pending = false;
       const max = track.scrollWidth - track.clientWidth;
       controls.hidden = max <= EDGE; // nothing to scroll (very wide screens)
-      prev.disabled = track.scrollLeft <= EDGE;
-      next.disabled = track.scrollLeft >= max - EDGE;
+      const atStart = track.scrollLeft <= EDGE;
+      const atEnd = track.scrollLeft >= max - EDGE;
+      // A focused button that becomes disabled drops focus to <body>, so
+      // hand keyboard focus to the other button first.
+      const focused = document.activeElement;
+      if (!atStart) prev.disabled = false;
+      if (!atEnd) next.disabled = false;
+      if (atEnd && focused === next && !atStart) prev.focus();
+      if (atStart && focused === prev && !atEnd) next.focus();
+      prev.disabled = atStart;
+      next.disabled = atEnd;
     };
     const requestUpdate = () => {
       if (pending) return;
