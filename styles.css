@@ -1,40 +1,52 @@
 /* ==========================================================
    LOS CRISTALES - Agencia de viajes y turismo
    Hoja de estilos única para todo el sitio
-   Estilo: "Hyer" — editorial monocromo de viaje de lujo:
-   tinta casi negra sobre blanco, bandas oscuras alternas
-   y un único acento arcilla por página.
+   Estilo: "Navan" — cabina de clase ejecutiva al crepúsculo
+   violeta: lienzo frío casi blanco, tarjetas blancas de 14px,
+   iris profundo para títulos y superficies oscuras, un único
+   violeta vivo reservado a la acción principal y un solo
+   resplandor atmosférico en la portada.
    ========================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Source+Serif+4:wght@400;500;600&display=swap");
 
 :root {
-  /* Tintas y superficies */
-  --tinta: #000d10;        /* texto principal, botones llenos, iconos, pie */
-  --blanco: #ffffff;       /* lienzo y tarjetas */
-  --ceniza: #8e8e95;       /* texto secundario, etiquetas apagadas */
-  --guijarro: #d5d3d4;     /* solo líneas finas y divisores */
-  --humo: #f4f4f5;         /* paneles neutros (notas, intro) */
-  --medianoche: #0f0f1c;   /* bandas oscuras a sangre */
-  --cubierta: #151623;     /* bandas oscuras y hover de botones */
+  /* Iris: títulos, superficies oscuras y acción principal */
+  --iris-profundo: #15002c;       /* títulos, bandas oscuras, pie, botón fantasma */
+  --violeta-vivo: #6307f8;        /* SOLO relleno de la acción principal (CTA) */
+  --violeta-vivo-hover: #5205d1;  /* hover del relleno principal */
+  --niebla-iris: #e1e2fe;         /* tarjetas destacadas suaves y etiquetas */
 
-  /* Único acento: arcilla (un solo elemento por página) */
-  --arcilla: #bc7155;
+  /* Texto */
+  --tinta: #060000;        /* texto de cuerpo */
+  --grafito: #5a5a72;      /* cuerpo apagado */
+  --humo: #70708f;         /* secundario y metadatos */
+  --bruma: #8d8da5;        /* terciario y enlaces del pie */
 
-  /* Único degradado del sistema: azul pálido a crema (portada de inicio) */
-  --degradado-portada: linear-gradient(180deg, #dfe9f0 0%, #f5efe6 100%);
+  /* Superficies y líneas */
+  --perla: #c6c6d2;        /* líneas finas, bordes de tarjetas y campos */
+  --lienzo: #f1f1f9;       /* fondo de página y navegación */
+  --realce: #f8f8fd;       /* relleno de campos y hover suave */
+  --blanco: #ffffff;       /* tarjetas */
+
+  /* Degradados atmosféricos (nunca en botones, tarjetas ni texto) */
+  --degradado-crepusculo: radial-gradient(197.36% 161.87% at 4.08% 0%, rgba(65, 5, 102, 0.75) 6.19%, rgba(124, 81, 250, 0.75) 52.28%, rgba(255, 181, 206, 0.75) 91.18%);
+  --haz: linear-gradient(90deg, transparent 0%, rgba(124, 81, 250, 0.3) 35%, rgba(255, 181, 206, 0.3) 50%, rgba(124, 81, 250, 0.3) 65%, transparent 100%);
 
   /* Alias heredados (usados en estilos en línea de algunas páginas) */
-  --gris: var(--ceniza);
-  --divisor: var(--guijarro);
-  --verde-oscuro: var(--tinta);
+  --gris: var(--humo);
+  --divisor: var(--perla);
+  --verde-oscuro: var(--iris-profundo);
 
-  /* Tipografía: una sola familia (Inter sustituye a HelveticaNowDisplay) */
+  /* Tipografía: Inter (sustituye a Neue Haas Grotesk) y
+     Source Serif 4 (sustituye a Sanomat) para titulares editoriales */
   --fuente: "Inter", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --fuente-editorial: "Source Serif 4", Georgia, "Times New Roman", serif;
 
   /* Formas */
-  --pill: 1000px;
-  --linea: 1px solid var(--guijarro);
+  --radio: 14px;           /* tarjetas, botones, campos, etiquetas, imágenes */
+  --pill: 9999px;          /* solo píldoras de navegación */
+  --linea: 1px solid var(--perla);
 
   /* Medidas */
   --alto-cabecera: 77px;
@@ -50,47 +62,68 @@ html { scroll-behavior: smooth; scroll-padding-top: var(--alto-cabecera); }
 
 body {
   font-family: var(--fuente);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--tinta);
-  background: var(--blanco);
-  line-height: 1.61;
+  background: var(--lienzo);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
 
 img { max-width: 100%; display: block; }
-a { color: var(--tinta); text-decoration: underline; text-decoration-color: var(--guijarro); text-decoration-thickness: 1px; text-underline-offset: 4px; }
-a:hover { text-decoration-color: var(--tinta); }
+a { color: var(--iris-profundo); text-decoration: underline; text-decoration-color: var(--perla); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+a:hover { text-decoration-color: var(--iris-profundo); }
 
-h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tinta); line-height: 1; }
+/* Nunca negritas: el peso máximo del sistema es 500 */
+b, strong { font-weight: 500; }
+
+h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 500; color: var(--iris-profundo); line-height: 1.1; }
 
 .contenedor { width: min(1200px, 100% - 32px); margin-inline: auto; }
 
-/* Etiqueta pequeña tipo "eyebrow": mayúsculas en ceniza, sin fondo */
+/* Etiqueta pequeña tipo "eyebrow": mayúsculas en humo, sin fondo */
 .eyebrow {
   display: inline-block;
-  color: var(--ceniza);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  color: var(--humo);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-/* Banda oscura a sangre (reutilizable en cualquier página) */
+/* Panel oscuro de iris profundo, contenido en el ancho de página y con
+   un haz horizontal fino como único acento (distinto del pie a sangre) */
 .banda-oscura {
-  background: var(--medianoche);
+  position: relative;
+  overflow: hidden;
+  width: min(1200px, 100% - 32px);
+  margin: 0 auto 120px;
+  border-radius: var(--radio);
+  background: var(--iris-profundo);
   color: var(--blanco);
 }
+.banda-oscura::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--haz);
+}
+.banda-oscura > .contenedor { width: min(1040px, 100% - 48px); }
 .banda-oscura h1, .banda-oscura h2, .banda-oscura h3 { color: var(--blanco); }
-.banda-oscura p { color: var(--ceniza); }
+.banda-oscura p { color: var(--perla); }
 
 /* ---------- 1. PARTE SUPERIOR ---------- */
 
+/* Barra de contacto: franja tranquila sobre el lienzo */
 .barra-superior {
-  color: var(--ceniza);
+  color: var(--humo);
   font-size: 13px;
   line-height: 1.4;
+  background: var(--lienzo);
 }
 .barra-superior .contenedor {
   display: flex;
@@ -99,18 +132,18 @@ h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tint
   gap: 4px 28px;
   padding: 10px 0 8px;
 }
-.barra-superior a { color: var(--ceniza); text-decoration: none; }
-.barra-superior a:hover { color: var(--tinta); }
+.barra-superior a { color: var(--humo); text-decoration: none; }
+.barra-superior a:hover { color: var(--iris-profundo); }
 .barra-superior span { white-space: nowrap; }
 
-/* Navegación: fila transparente sobre la página */
+/* Navegación: fila fija sobre el lienzo */
 .cabecera {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: transparent;
+  background: var(--lienzo);
   border-bottom: 1px solid transparent;
-  transition: background-color 0.5s var(--suave), border-color 0.5s var(--suave);
+  transition: border-color 0.5s var(--suave);
 }
 .cabecera .contenedor {
   position: relative;
@@ -141,38 +174,51 @@ h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tint
   font-size: 1.2rem;
   line-height: 1;
   color: var(--blanco);
-  background: var(--tinta);
+  background: var(--iris-profundo);
   border-radius: 50%;
   user-select: none;
   transition: background-color 0.2s ease;
 }
-.boton-menu:hover { background: var(--cubierta); }
-#menu-toggle:focus-visible + .boton-menu { outline: 1px solid var(--tinta); outline-offset: 3px; }
+.boton-menu:hover { background: #2a1047; }
+#menu-toggle:focus-visible + .boton-menu { outline: 2px solid var(--iris-profundo); outline-offset: 3px; }
 
-.menu { list-style: none; display: flex; gap: 4px; }
+.menu { list-style: none; display: flex; align-items: center; gap: 4px; }
 .menu > li { position: relative; }
 .menu > li > a {
   display: block;
-  padding: 10px 18px;
+  padding: 10px 16px;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.2;
+  letter-spacing: 0.02em;
   color: var(--tinta);
   border-radius: var(--pill);
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
 .menu > li > a:hover,
-.menu > li:focus-within > a { background: rgba(0, 13, 16, 0.06); }
+.menu > li:focus-within > a { background: rgba(21, 0, 44, 0.05); }
 
-/* Escritorio: subrayado fino que crece desde la izquierda */
+/* Último elemento (CONTACTO): píldora de acción en violeta vivo, solo con CSS */
+.menu > li:last-child > a {
+  margin-left: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  color: var(--blanco);
+  background: var(--violeta-vivo);
+}
+.menu > li:last-child > a:hover,
+.menu > li:last-child:focus-within > a { background: var(--violeta-vivo-hover); }
+.menu > li:last-child > a:focus-visible { outline: 2px solid var(--iris-profundo); outline-offset: 3px; }
+
+/* Escritorio: subrayado fino que crece desde la izquierda (no en la píldora) */
 @media (min-width: 861px) {
   .menu > li > a { position: relative; }
-  .menu > li > a::after {
+  .menu > li:not(:last-child) > a::after {
     content: "";
     position: absolute;
-    left: 18px;
-    right: 18px;
+    left: 16px;
+    right: 16px;
     bottom: 6px;
     height: 1px;
     background: currentColor;
@@ -180,12 +226,12 @@ h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tint
     transform-origin: left center;
     transition: transform 0.5s var(--suave);
   }
-  .menu > li > a:hover,
-  .menu > li:focus-within > a { background: transparent; }
-  .menu > li > a:hover::after,
-  .menu > li > a:focus-visible::after,
-  .menu > li:focus-within > a::after,
-  .menu > li > a[aria-current="page"]::after { transform: scaleX(1); }
+  .menu > li:not(:last-child) > a:hover,
+  .menu > li:not(:last-child):focus-within > a { background: transparent; }
+  .menu > li:not(:last-child) > a:hover::after,
+  .menu > li:not(:last-child) > a:focus-visible::after,
+  .menu > li:not(:last-child):focus-within > a::after,
+  .menu > li:not(:last-child) > a[aria-current="page"]::after { transform: scaleX(1); }
 }
 
 .submenu {
@@ -194,10 +240,10 @@ h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tint
   top: calc(100% + 10px);
   right: 0;
   min-width: 300px;
-  padding: 8px 0;
+  padding: 8px;
   background: var(--blanco);
   border: var(--linea);
-  border-radius: 0;
+  border-radius: var(--radio);
   opacity: 0;
   visibility: hidden;
   transform: translateY(6px);
@@ -213,189 +259,245 @@ h1, h2, h3, h4 { font-family: var(--fuente); font-weight: 700; color: var(--tint
 }
 .submenu a {
   display: block;
-  padding: 10px 20px;
+  padding: 10px 14px;
   color: var(--tinta);
-  font-size: 16px;
+  font-size: 15px;
+  border-radius: 10px;
   text-decoration: none;
 }
-.submenu a:hover { background: var(--humo); }
+.submenu a:hover { background: var(--realce); color: var(--iris-profundo); }
 
 /* ---------- Botones ---------- */
 
-/* Acción principal: píldora llena de tinta */
+/* Acción principal: relleno violeta vivo (una sola por página) */
 .boton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font: 700 17px/1.2 var(--fuente);
+  font: 500 16px/1.2 var(--fuente);
   color: var(--blanco);
-  padding: 15px 22px 16px;
-  border: 1px solid var(--tinta);
-  border-radius: var(--pill);
-  background: var(--tinta);
+  padding: 12px 20px;
+  border: 1.5px solid transparent;    /* the fill shows through (border-box background) */
+  border-radius: var(--radio);
+  background: var(--violeta-vivo);
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.35s var(--suave), border-color 0.35s var(--suave), color 0.35s var(--suave);
 }
-.boton:hover { background: var(--cubierta); border-color: var(--cubierta); }
-.boton:focus-visible { outline: 1px solid var(--tinta); outline-offset: 3px; }
+.boton:hover { background: var(--violeta-vivo-hover); }
+.boton:focus-visible { outline: 2px solid var(--iris-profundo); outline-offset: 3px; }
 
 /* WhatsApp y envío de formularios: mismo aspecto principal */
-.boton.verde { background: var(--tinta); border-color: var(--tinta); color: var(--blanco); }
-.boton.verde:hover { background: var(--cubierta); border-color: var(--cubierta); }
+.boton.verde { background: var(--violeta-vivo); border-color: transparent; color: var(--blanco); }
+.boton.verde:hover { background: var(--violeta-vivo-hover); }
 
-/* Acción secundaria: transparente con borde de tinta */
+/* Acción secundaria: transparente con borde de iris profundo */
 .boton.fantasma {
   background: transparent;
-  color: var(--tinta);
-  border-color: var(--tinta);
+  color: var(--iris-profundo);
+  border-color: var(--iris-profundo);
 }
-.boton.fantasma:hover { background: var(--tinta); color: var(--blanco); }
+.boton.fantasma:hover { background: var(--iris-profundo); color: var(--blanco); }
 
-/* Variante sobre bandas oscuras */
+/* Variante sobre superficies oscuras o el degradado */
 .banda-oscura .boton.fantasma,
 .portada-tour .boton.fantasma,
+.hero .boton.fantasma,
 .pie .boton.fantasma { color: var(--blanco); border-color: var(--blanco); }
 .banda-oscura .boton.fantasma:hover,
 .portada-tour .boton.fantasma:hover,
-.pie .boton.fantasma:hover { background: var(--blanco); color: var(--tinta); }
+.hero .boton.fantasma:hover,
+.pie .boton.fantasma:hover { background: var(--blanco); color: var(--iris-profundo); }
+.banda-oscura .boton:focus-visible,
+.hero .boton:focus-visible { outline-color: var(--blanco); }
 
 /* ---------- 2. PARTE MEDIA: INICIO ---------- */
 
-/* En inicio, la barra superior continúa el tono del degradado */
-body:has(.hero) .barra-superior { background: #dfe9f0; }
-
-.hero {
+/* Portada: panel de 14px con el resplandor violeta sobre iris profundo */
+.hero { padding: 8px 0 0; }
+.hero-grid {
+  --relleno-hero: clamp(20px, 5vw, 64px);
   position: relative;
   overflow: hidden;
-  /* la portada sube bajo la cabecera transparente */
-  margin-top: calc(var(--alto-cabecera) * -1);
-  padding: calc(var(--alto-cabecera) + 56px) 0 96px;
-  background: var(--degradado-portada);
-}
-.hero-grid {
   display: grid;
-  grid-template-columns: 5fr 7fr;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   grid-template-areas:
     "eyebrow eyebrow"
     "marca   marca"
-    "texto   titular"
-    "foto    foto";
-  column-gap: 48px;
+    "titular foto"
+    "texto   foto";
+  grid-template-rows: auto auto auto 1fr;
+  column-gap: 56px;
+  padding: var(--relleno-hero);
+  border-radius: var(--radio);
+  background: var(--degradado-crepusculo), var(--iris-profundo);
+  color: var(--blanco);
 }
-.hero .eyebrow { grid-area: eyebrow; }
+.hero .eyebrow { grid-area: eyebrow; color: var(--niebla-iris); }
+/* Display de firma: Inter 300, interletrado positivo, en blanco */
 .hero-marca {
   grid-area: marca;
-  font-size: clamp(2.75rem, 14.5vw, 131px);
+  color: var(--blanco);
+  font-weight: 300;
+  /* cabe entera en una línea del ancho del panel, hasta 135px */
+  font-size: min(135px, calc((100vw - 32px - 2 * var(--relleno-hero)) / 6.7));
   line-height: 0.9;
-  letter-spacing: -0.02em;
-  margin: 20px 0 0 -0.04em;
+  letter-spacing: 0.04em;
+  margin: 24px 0 0 -0.05em;
   white-space: nowrap;
 }
-/* Holgura real en móviles: la marca cabe entera de 360 a 560px */
-@media (max-width: 560px) {
-  .hero-marca { font-size: 12.4vw; }
-}
+/* Titular editorial en serif (línea propia, nunca mezclado con el display) */
 .hero-titular {
   grid-area: titular;
-  justify-self: end;
   align-self: start;
-  text-align: right;
-  font-size: clamp(2.4rem, 4.6vw, 63px);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
   margin-top: 56px;
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2rem, 3.4vw, 45px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--blanco);
 }
 .hero-texto {
   grid-area: texto;
   align-self: end;
-  max-width: 380px;
-  margin-top: 56px;
+  max-width: 400px;
+  margin-top: 28px;
 }
-.hero-texto p { color: var(--tinta); opacity: 0.72; }
+.hero-texto p { color: var(--niebla-iris); font-size: 17px; }
 .hero-texto .boton { margin-top: 28px; }
 .hero-foto {
   grid-area: foto;
-  justify-self: center;
-  width: min(760px, 100%);
-  margin-top: 72px;
+  position: relative;
+  align-self: end;
+  margin-top: 56px;
+  overflow: hidden;
+  border-radius: var(--radio);
 }
 .hero-foto img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 5 / 4;
   object-fit: cover;
   object-position: center 62%;
-  border-radius: 0;
 }
+
+/* Tarjeta flotante de producto sobre la foto (única sombra del sistema) */
+.tarjeta-flotante {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: min(300px, calc(100% - 40px));
+  padding: 18px 20px;
+  color: var(--tinta);
+  background: var(--blanco);
+  border-radius: var(--radio);
+  box-shadow: 0 8px 32px rgba(21, 0, 44, 0.12);
+}
+.etiqueta {
+  display: inline-block;
+  padding: 5px 10px;
+  color: var(--iris-profundo);
+  background: var(--niebla-iris);
+  border-radius: var(--radio);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.tarjeta-flotante-titulo {
+  display: block;
+  margin-top: 10px;
+  color: var(--iris-profundo);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.tarjeta-flotante-titulo:hover { text-decoration: underline; text-decoration-color: var(--perla); }
+.tarjeta-flotante dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: var(--linea);
+  font-size: 14px;
+  line-height: 1.35;
+}
+.tarjeta-flotante dt { color: var(--humo); }
+.tarjeta-flotante dd { color: var(--tinta); }
 
 /* ---------- Secciones ---------- */
 
-.seccion { padding: 120px 0; background: var(--blanco); }
+.seccion { padding: 120px 0; }
 
-/* Encabezado de sección con gravedad hacia la derecha */
+/* Encabezado de sección editorial, centrado */
 .titulo-seccion {
-  text-align: right;
-  margin: 0 0 64px auto;
+  text-align: center;
+  margin: 0 auto 56px;
   max-width: 640px;
 }
 .titulo-seccion h2 {
-  font-size: clamp(2.2rem, 4vw, 52px);
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2rem, 3.6vw, 45px);
+  font-weight: 400;
+  line-height: 1.1;
 }
-.titulo-seccion p { color: var(--ceniza); margin-top: 16px; }
+.titulo-seccion p { color: var(--grafito); margin-top: 14px; }
 
 .grid-tours {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 56px 24px;
+  gap: 24px;
 }
 
-/* Tarjeta de tour: bordes duros, sin sombra */
+/* Tarjeta de tour: blanca sobre el lienzo, 14px y línea perla, sin sombra */
 .tarjeta-tour {
   position: relative;
   display: flex;
   flex-direction: column;
+  padding: 12px;
   color: var(--tinta);
+  background: var(--blanco);
+  border: var(--linea);
+  border-radius: var(--radio);
   text-decoration: none;
+  transition: border-color 0.35s var(--suave);
 }
-.tarjeta-tour:focus-visible { outline: 1px solid var(--tinta); outline-offset: 6px; }
-/* Marco de bordes duros: la foto se acerca dentro sin salirse */
-.tarjeta-tour .marco { display: block; overflow: hidden; border-radius: 0; }
+.tarjeta-tour:hover { border-color: var(--bruma); }
+.tarjeta-tour:focus-visible { outline: 2px solid var(--iris-profundo); outline-offset: 4px; }
+/* Marco redondeado: la foto se acerca dentro sin salirse */
+.tarjeta-tour .marco { display: block; overflow: hidden; border-radius: var(--radio); }
 .tarjeta-tour img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 0;
   transition: transform 0.9s var(--suave);
 }
 .tarjeta-tour:hover img,
 .tarjeta-tour:focus-visible img { transform: scale(1.05); }
 .tarjeta-tour .nombre {
   flex: 1;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: var(--linea);
+  padding: 20px 8px 8px;
 }
 .tarjeta-tour .nombre h3 {
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--iris-profundo);
 }
 .tarjeta-tour .nombre span {
   display: inline-block;
   margin-top: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: var(--ceniza);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--humo);
   transition: color 0.35s var(--suave);
 }
 .tarjeta-tour:hover .nombre span,
-.tarjeta-tour:focus-visible .nombre span { color: var(--tinta); }
+.tarjeta-tour:focus-visible .nombre span { color: var(--iris-profundo); }
 .tarjeta-tour .nombre .flecha {
   margin-top: 0;
   letter-spacing: 0;
@@ -405,44 +507,37 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
 .tarjeta-tour:hover .nombre .flecha,
 .tarjeta-tour:focus-visible .nombre .flecha { transform: translateX(6px); }
 
-/* Tarjeta destacada: el único acento arcilla de la página de inicio */
-.tarjeta-tour.destacada .nombre {
-  margin-top: 0;
-  padding: 20px 22px 24px;
-  border-top: 0;
-  background: var(--arcilla);
-  color: var(--blanco);
-}
-.tarjeta-tour.destacada .nombre h3 { color: var(--blanco); }
-.tarjeta-tour.destacada .nombre span,
-.tarjeta-tour.destacada:hover .nombre span { color: var(--blanco); }
+/* Tarjeta destacada: panel suave de niebla iris (sin relleno vivo) */
+.tarjeta-tour.destacada { background: var(--niebla-iris); border-color: var(--niebla-iris); }
+.tarjeta-tour.destacada:hover { border-color: var(--bruma); }
 
 .tarjeta-tour .numero {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 24px;
+  left: 24px;
   z-index: 2;
-  background: var(--tinta);
-  color: var(--blanco);
+  background: var(--niebla-iris);
+  color: var(--iris-profundo);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   line-height: 1;
-  padding: 7px 9px;
-  border-radius: 0;
+  padding: 7px 10px;
+  border-radius: var(--radio);
 }
 
 /* ---------- Página de cada tour ---------- */
 
+/* Portada: banda de imagen contenida, 14px, con velo de iris profundo */
 .portada-tour {
   position: relative;
   isolation: isolate;
-  width: 100%;
-  margin: 0;
-  height: clamp(380px, 46vw, 600px);
-  border-radius: 0;
+  width: min(1200px, 100% - 32px);
+  margin: 8px auto 0;
+  height: clamp(380px, 42vw, 560px);
+  border-radius: var(--radio);
   overflow: hidden;
-  background-color: var(--medianoche);
+  background-color: var(--iris-profundo);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -453,44 +548,59 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to top, rgba(0, 13, 16, 0.82), rgba(0, 13, 16, 0.15) 60%, rgba(0, 13, 16, 0.3));
+  background: linear-gradient(to top, rgba(21, 0, 44, 0.85), rgba(21, 0, 44, 0.15) 60%, rgba(21, 0, 44, 0.3));
 }
-.portada-tour .contenedor { position: relative; z-index: 2; padding: 0 0 56px; color: var(--blanco); }
+.portada-tour .contenedor {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 clamp(20px, 4vw, 56px) clamp(28px, 4vw, 56px);
+  color: var(--blanco);
+}
 .portada-tour small {
   display: inline-block;
-  color: var(--blanco);
-  opacity: 0.82;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  padding: 6px 12px;
+  color: var(--iris-profundo);
+  background: var(--niebla-iris);
+  border-radius: var(--radio);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 .portada-tour h1 {
   color: var(--blanco);
-  font-size: clamp(2.4rem, 5vw, 63px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin-top: 16px;
+  font-size: clamp(2.4rem, 5.6vw, 80px);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  margin-top: 18px;
   max-width: 16ch;
 }
 
-.migas { padding: 28px 0; font-size: 15px; color: var(--ceniza); }
-.migas a { color: var(--ceniza); }
-.migas a:hover { color: var(--tinta); }
+.migas { padding: 28px 0; font-size: 14px; color: var(--humo); }
+.migas a { color: var(--humo); }
+.migas a:hover { color: var(--iris-profundo); }
 
+/* Bloque: tarjeta blanca de 14px sobre el lienzo */
 .bloque {
   background: var(--blanco);
-  border-top: var(--linea);
-  padding: 64px 0;
+  border: var(--linea);
+  border-radius: var(--radio);
+  padding: clamp(28px, 5vw, 56px);
+  margin-bottom: 24px;
 }
 .bloque h2 {
-  font-size: clamp(2rem, 3.2vw, 37px);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  margin-bottom: 36px;
+  font-family: var(--fuente-editorial);
+  font-size: clamp(1.9rem, 3vw, 40px);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 32px;
 }
 
-.itinerario { list-style: none; position: relative; padding-left: 36px; max-width: 760px; }
+/* Itinerario: línea perla y puntos de iris profundo con anillo de niebla */
+.itinerario { list-style: none; position: relative; padding-left: 36px; max-width: 760px; color: var(--grafito); }
 .itinerario::before {
   content: "";
   position: absolute;
@@ -498,7 +608,7 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
   top: 14px;
   bottom: 14px;
   width: 1px;
-  background: var(--guijarro);
+  background: var(--perla);
 }
 .itinerario li { position: relative; padding: 10px 0; }
 .itinerario li::before {
@@ -509,9 +619,10 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: var(--tinta);
+  background: var(--iris-profundo);
+  box-shadow: 0 0 0 4px var(--niebla-iris);
 }
-.itinerario li strong { color: var(--tinta); font-weight: 700; }
+.itinerario li strong { color: var(--iris-profundo); font-weight: 500; }
 
 .galeria {
   display: grid;
@@ -521,9 +632,9 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
 .galeria a {
   display: block;
   aspect-ratio: 4 / 3;
-  border-radius: 0;
+  border-radius: var(--radio);
   overflow: hidden;
-  background: var(--humo);
+  background: var(--realce);
 }
 .galeria img {
   width: 100%;
@@ -533,105 +644,129 @@ body:has(.hero) .barra-superior { background: #dfe9f0; }
 }
 .galeria a:hover img,
 .galeria a:focus-visible img { transform: scale(1.04); }
-.galeria a:focus-visible { outline: 1px solid var(--tinta); outline-offset: 3px; }
+.galeria a:focus-visible { outline: 2px solid var(--iris-profundo); outline-offset: 3px; }
 
 .acciones {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  border-top: var(--linea);
-  padding-top: 48px;
+  padding-top: 24px;
   margin: 0 0 120px;
 }
 
 /* ---------- Página de contacto ---------- */
 
-/* Página actual en el menú (aria-current="page") */
-.menu > li > a[aria-current="page"] { font-weight: 700; }
+/* Página actual en el menú (aria-current="page"): sin negrita */
+.menu > li > a[aria-current="page"] { font-weight: 500; }
 
-/* Píldora blanca para fondos oscuros o arcilla */
-.boton.claro { background: var(--blanco); border-color: var(--blanco); color: var(--tinta); }
-.boton.claro:hover { background: var(--humo); border-color: var(--humo); }
-.boton.claro:focus-visible { outline-color: var(--blanco); }
+/* Botón blanco para fondos oscuros o de niebla iris */
+.boton.claro { background: var(--blanco); border-color: var(--blanco); color: var(--iris-profundo); }
+.boton.claro:hover { background: var(--realce); border-color: var(--realce); }
+.banda-oscura .boton.claro:focus-visible { outline-color: var(--blanco); }
 
-.contacto-portada { padding: 0 0 88px; }
-.contacto-portada .migas { padding-bottom: 56px; }
+.contacto-portada { padding: 0 0 64px; }
+.contacto-portada .migas { padding-bottom: 48px; }
+/* Display de firma en iris profundo: Inter 300 con interletrado positivo */
 .contacto-portada h1 {
-  font-size: clamp(3.25rem, 10vw, 131px);
+  font-size: clamp(3.25rem, 10vw, 135px);
+  font-weight: 300;
   line-height: 0.9;
-  letter-spacing: -0.03em;
-  margin: 20px 0 0 -0.04em;
+  letter-spacing: 0.04em;
+  margin: 20px 0 0 -0.05em;
 }
-.contacto-intro { max-width: 560px; margin-top: 36px; color: var(--ceniza); }
+.contacto-intro { max-width: 560px; margin-top: 32px; color: var(--grafito); font-size: 17px; }
 
-.contacto-datos { padding: 0 0 120px; }
-/* Bloques tipo "feature": línea fina arriba, título 23px, cuerpo en ceniza */
+.contacto-datos { padding: 0 0 64px; }
+/* Bloques tipo "feature": tarjetas blancas de 14px con línea perla */
 .contacto-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 56px 48px;
-  align-items: start;
+  gap: 24px;
 }
-.dato-contacto { border-top: var(--linea); padding-top: 20px; }
-.dato-contacto h3 { font-size: 23px; letter-spacing: -0.01em; line-height: 1.15; }
-.dato-contacto p { margin-top: 12px; font-size: 18px; line-height: 1.61; color: var(--ceniza); overflow-wrap: anywhere; }
-.dato-contacto a { color: var(--ceniza); }
-.dato-contacto a:hover { color: var(--tinta); }
-
-/* Tarjeta destacada: el único acento arcilla de la página de contacto */
-.tarjeta-arcilla {
-  background: var(--arcilla);
-  color: var(--blanco);
-  border-radius: 0;
-  padding: 53px 59px;
+.dato-contacto {
+  background: var(--blanco);
+  border: var(--linea);
+  border-radius: var(--radio);
+  padding: 32px;
 }
-.tarjeta-arcilla h3 { color: var(--blanco); font-size: clamp(1.75rem, 2.6vw, 37px); line-height: 1; letter-spacing: -0.02em; }
-.tarjeta-arcilla p { margin: 16px 0 28px; }
+.dato-contacto h3 { font-size: 20px; font-weight: 500; line-height: 1.2; }
+.dato-contacto p { margin-top: 12px; font-size: 16px; line-height: 1.5; color: var(--grafito); overflow-wrap: anywhere; }
+.dato-contacto a { color: var(--grafito); }
+.dato-contacto a:hover { color: var(--iris-profundo); }
 
-/* Formulario dentro de la banda oscura */
-.contacto-formulario { padding: 120px 0; }
-.contacto-formulario-intro { max-width: 640px; margin-bottom: 56px; }
-.contacto-formulario-intro h2 { font-size: clamp(2.2rem, 4vw, 52px); letter-spacing: -0.02em; }
-.contacto-formulario-intro p { margin-top: 20px; }
+/* Tarjeta destacada en niebla iris (la acción viva es el envío del formulario) */
+.tarjeta-niebla {
+  background: var(--niebla-iris);
+  color: var(--iris-profundo);
+  border-radius: var(--radio);
+  padding: 32px;
+}
+.tarjeta-niebla h3 {
+  font-family: var(--fuente-editorial);
+  font-size: clamp(1.75rem, 2.6vw, 34px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+.tarjeta-niebla p { margin: 12px 0 24px; color: var(--grafito); }
+
+/* Formulario dentro del panel oscuro */
+.contacto-formulario { padding: 96px 0; }
+.contacto-formulario-intro { max-width: 640px; margin-bottom: 48px; }
+.contacto-formulario-intro h2 {
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2rem, 3.6vw, 45px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+.contacto-formulario-intro p { margin-top: 18px; }
 
 form.contacto { max-width: 880px; }
 form.contacto .campos { gap: 24px 20px; margin: 0 0 28px; }
 form.contacto .campo label { color: var(--blanco); }
 form.contacto .campo label .req,
-form.contacto .aceptacion .req { color: var(--ceniza); }
+form.contacto .aceptacion .req { color: var(--niebla-iris); }
 form.contacto .campo input,
 form.contacto .campo select,
 form.contacto .campo textarea {
-  color: var(--blanco);
-  background: var(--cubierta);
-  border-color: rgba(255, 255, 255, 0.28);
-  color-scheme: dark;
+  color: var(--tinta);
+  background: var(--blanco);
+  border-color: var(--perla);
 }
 form.contacto .campo input:focus,
 form.contacto .campo select:focus,
-form.contacto .campo textarea:focus { outline-color: var(--blanco); border-color: var(--blanco); }
-form.contacto .aceptacion { color: var(--guijarro); }
-form.contacto .aceptacion input { width: 18px; height: 18px; flex: none; margin-top: 4px; accent-color: var(--blanco); }
+form.contacto .campo textarea:focus {
+  border-color: var(--niebla-iris);
+  box-shadow: 0 0 0 3px rgba(225, 226, 254, 0.55);
+}
+form.contacto .aceptacion { color: var(--perla); }
+form.contacto .aceptacion input { width: 18px; height: 18px; flex: none; margin-top: 3px; accent-color: var(--niebla-iris); }
 form.contacto .aceptacion a { color: var(--blanco); text-decoration-color: rgba(255, 255, 255, 0.5); }
 .contacto-envio { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
-.banda-oscura .estado-formulario { color: var(--guijarro); font-size: 15px; }
+.banda-oscura .estado-formulario { color: var(--perla); font-size: 15px; }
 .estado-formulario a { color: var(--blanco); }
 .estado-formulario:empty { display: none; }
 
-/* Banda de llamada a la acción (inicio) */
-.banda-cta { padding: 120px 0; }
-.banda-cta h2 { font-size: clamp(2.4rem, 5vw, 63px); letter-spacing: -0.02em; }
-.banda-cta p { max-width: 560px; margin: 24px 0 36px; }
+/* Panel de llamada a la acción (inicio) */
+.banda-cta { padding: 96px 0; }
+.banda-cta h2 {
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2.2rem, 4vw, 45px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+.banda-cta p { max-width: 560px; margin: 20px 0 32px; }
 
 @media (max-width: 860px) {
-  .contacto-portada { padding-bottom: 56px; }
+  .contacto-portada { padding-bottom: 40px; }
   .contacto-portada .migas { padding-bottom: 32px; }
-  .contacto-datos { padding-bottom: 80px; }
-  .contacto-grid { grid-template-columns: 1fr; gap: 40px; }
-  .tarjeta-arcilla { padding: 40px 28px; }
-  .contacto-formulario, .banda-cta { padding: 80px 0; }
-  .contacto-formulario-intro { margin-bottom: 40px; }
+  .contacto-datos { padding-bottom: 48px; }
+  .contacto-grid { grid-template-columns: 1fr; gap: 16px; }
+  .dato-contacto, .tarjeta-niebla { padding: 24px; }
+  .contacto-formulario, .banda-cta { padding: 64px 0; }
+  .contacto-formulario-intro { margin-bottom: 36px; }
+  .banda-oscura { margin-bottom: 80px; }
+  .banda-oscura > .contenedor { width: calc(100% - 40px); }
 }
 
 /* ---------- Libro de reclamaciones ---------- */
@@ -639,12 +774,12 @@ form.contacto .aceptacion a { color: var(--blanco); text-decoration-color: rgba(
 .hoja {
   background: var(--blanco);
   border: var(--linea);
-  border-radius: 0;
+  border-radius: var(--radio);
   overflow: hidden;
   margin-bottom: 120px;
 }
 .hoja-cabecera {
-  background: var(--cubierta);
+  background: var(--iris-profundo);
   color: var(--blanco);
   padding: 40px;
   display: flex;
@@ -655,15 +790,17 @@ form.contacto .aceptacion a { color: var(--blanco); text-decoration-color: rgba(
 }
 .hoja-cabecera h1 {
   color: var(--blanco);
-  font-size: clamp(2rem, 3.6vw, 44px);
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2rem, 3.4vw, 42px);
+  font-weight: 400;
+  line-height: 1.1;
 }
-.hoja-cabecera p { font-size: 15px; color: var(--ceniza); margin-top: 10px; }
+.hoja-cabecera p { font-size: 15px; color: var(--perla); margin-top: 10px; }
 .hoja-cabecera .proveedor {
   border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radio);
   padding: 14px 18px;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--blanco);
 }
@@ -671,16 +808,19 @@ form.contacto .aceptacion a { color: var(--blanco); text-decoration-color: rgba(
 form.reclamo { padding: 40px; }
 form.reclamo fieldset {
   border: var(--linea);
-  border-radius: 0;
+  border-radius: var(--radio);
   padding: 24px 24px 8px;
   margin-bottom: 32px;
 }
+/* Leyendas como etiquetas de niebla iris */
 form.reclamo legend {
-  padding: 0 10px;
-  color: var(--ceniza);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  padding: 6px 12px;
+  color: var(--iris-profundo);
+  background: var(--niebla-iris);
+  border-radius: var(--radio);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .campos {
@@ -691,101 +831,107 @@ form.reclamo legend {
 }
 .campo { display: flex; flex-direction: column; gap: 6px; }
 .campo.ancho { grid-column: 1 / -1; }
-.campo label { font-size: 15px; font-weight: 700; color: var(--tinta); }
-.campo label .req { color: var(--ceniza); }
+.campo label { font-size: 14px; font-weight: 500; color: var(--tinta); }
+.campo label .req { color: var(--humo); }
 
 .campo input,
 .campo select,
 .campo textarea {
   font: inherit;
-  font-size: 17px;
+  font-size: 16px;
   color: var(--tinta);
   padding: 12px 14px;
-  border: 1px solid var(--guijarro);
-  border-radius: 0;
-  background: var(--blanco);
+  border: 1px solid var(--perla);
+  border-radius: var(--radio);
+  background: var(--realce);
   width: 100%;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 .campo input::placeholder,
-.campo textarea::placeholder { color: var(--ceniza); }
-.campo input:not([type="radio"]):not([type="checkbox"]), .campo select { min-height: 54px; }
+.campo textarea::placeholder { color: var(--humo); }
+.campo input:not([type="radio"]):not([type="checkbox"]), .campo select { min-height: 52px; }
 .campo textarea { min-height: 140px; resize: vertical; }
+/* Foco visible: borde de iris profundo y anillo de niebla iris */
 .campo input:focus,
 .campo select:focus,
 .campo textarea:focus {
-  outline: 1px solid var(--tinta);
-  outline-offset: 0;
-  border-color: var(--tinta);
+  outline: none;
+  border-color: var(--iris-profundo);
+  box-shadow: 0 0 0 3px var(--niebla-iris);
 }
 
 .opciones { display: flex; flex-wrap: wrap; gap: 22px; padding: 6px 0; }
-.opciones label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-.opciones input { width: auto; accent-color: var(--tinta); }
+.opciones label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 400; }
+.opciones input { width: auto; accent-color: var(--iris-profundo); }
 
 /* El bloque del tutor solo se muestra si se marca "Sí soy menor" */
 .tutor { display: none; }
 form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 .nota-legal {
-  background: var(--humo);
+  background: var(--realce);
+  border: var(--linea);
+  border-radius: var(--radio);
   padding: 20px 24px;
-  font-size: 15px;
-  color: var(--tinta);
+  font-size: 14px;
+  color: var(--grafito);
   margin-bottom: 28px;
 }
+.nota-legal strong { color: var(--iris-profundo); }
 .nota-legal p + p { margin-top: 8px; }
 
-.aceptacion { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; margin-bottom: 14px; }
-.aceptacion input { margin-top: 6px; accent-color: var(--tinta); }
+.aceptacion { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--grafito); margin-bottom: 14px; }
+.aceptacion input { margin-top: 4px; accent-color: var(--iris-profundo); }
 .envio { text-align: center; padding-top: 16px; }
 
 /* ---------- 3. PARTE FINAL ---------- */
 
+/* Pie: banda de iris profundo a sangre */
 .pie {
-  background: var(--tinta);
-  color: var(--ceniza);
-  padding-top: 96px;
+  background: var(--iris-profundo);
+  color: var(--bruma);
+  padding-top: 88px;
   overflow: hidden;
 }
 .pie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 40px;
-  padding-bottom: 72px;
+  padding-bottom: 64px;
 }
 .pie h4 {
   color: var(--blanco);
-  font-size: 23px;
-  letter-spacing: -0.01em;
-  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
 }
-.pie p, .pie li { font-size: 18px; line-height: 1.5; }
+.pie p, .pie li { font-size: 14px; line-height: 1.5; }
 .pie ul { list-style: none; }
 .pie li { padding: 5px 0; }
-.pie a { color: var(--ceniza); text-decoration: none; transition: color 0.4s var(--suave); }
-.pie a:focus-visible { color: var(--blanco); outline: 1px solid var(--blanco); outline-offset: 3px; }
+.pie a { color: var(--bruma); text-decoration: none; transition: color 0.4s var(--suave); }
+.pie a:focus-visible { color: var(--blanco); outline: 2px solid var(--blanco); outline-offset: 3px; }
 .pie a:hover { color: var(--blanco); }
 .pie .dato strong { color: var(--blanco); font-weight: 400; }
 .pie-copy {
   width: min(1200px, 100% - 32px);
   margin-inline: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid rgba(198, 198, 210, 0.2);
   padding: 32px 0 40px;
-  font-size: 15px;
-  color: var(--ceniza);
+  font-size: 13px;
+  color: var(--bruma);
 }
 /* Gran marca en blanco al cierre del sitio (sin cambiar el HTML del pie) */
 .pie-copy::before {
   content: "Los Cristales";
   display: block;
   color: var(--blanco);
-  font-size: clamp(2.75rem, 14vw, 164px);
-  font-weight: 700;
+  font-size: min(164px, calc((100vw - 32px) / 7));
+  font-weight: 300;
   line-height: 0.9;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
   white-space: nowrap;
-  margin: 0 0 40px -0.04em;
+  margin: 0 0 40px -0.05em;
 }
 
 /* ---------- Responsive ---------- */
@@ -800,30 +946,33 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
     left: 0;
     right: 0;
     flex-direction: column;
-    gap: 0;
-    padding: 8px 0;
+    align-items: stretch;
+    gap: 2px;
+    padding: 8px;
     background: var(--blanco);
     border: var(--linea);
-    border-radius: 0;
+    border-radius: var(--radio);
   }
   #menu-toggle:checked ~ nav .menu { display: flex; }
-  .menu > li > a { border-radius: 0; padding: 12px 20px; }
+  .menu > li > a { border-radius: 10px; padding: 12px 14px; }
+  /* La píldora CONTACTO ocupa el ancho del panel */
+  .menu > li:last-child > a { margin: 8px 0 0; padding: 12px 20px; border-radius: var(--pill); text-align: center; }
   .submenu {
     position: static;
     opacity: 1;
     visibility: visible;
     transform: none;
     border: 0;
-    padding: 0 0 6px 16px;
+    padding: 0 0 6px 12px;
     min-width: 0;
   }
   .submenu::before { display: none; }
 
   .barra-superior .contenedor { justify-content: center; }
 
-  .hero { padding: calc(var(--alto-cabecera) + 32px) 0 64px; }
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
     grid-template-areas:
       "eyebrow"
       "marca"
@@ -831,24 +980,30 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
       "texto"
       "foto";
   }
-  .hero-titular { justify-self: start; text-align: left; margin-top: 32px; }
-  .hero-texto { margin-top: 24px; }
-  .hero-foto { margin-top: 48px; }
+  .hero-titular { margin-top: 32px; }
+  .hero-texto { margin-top: 20px; }
+  .hero-foto { margin-top: 40px; }
 
   .seccion { padding: 80px 0; }
   .titulo-seccion { margin-bottom: 40px; }
   .portada-tour { height: 340px; }
-  .portada-tour .contenedor { padding-bottom: 32px; }
-  .bloque { padding: 48px 0; }
+  .bloque { margin-bottom: 16px; }
   .hoja-cabecera { padding: 28px 20px; }
   form.reclamo { padding: 24px 16px; }
   form.reclamo fieldset { padding: 20px 16px 8px; }
-  .pie { padding-top: 72px; }
+  .pie { padding-top: 64px; }
+}
+
+/* Móvil: la foto gana altura para alojar la tarjeta flotante */
+@media (max-width: 560px) {
+  .hero-foto img { aspect-ratio: 4 / 5; }
+  .tarjeta-flotante { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 16px; }
 }
 
 @media print {
   .barra-superior, .cabecera, .pie, .envio { display: none; }
-  .hero { margin-top: 0; padding-top: 32px; background: none; }
+  .hero-grid { background: none; color: var(--tinta); }
+  .hero-marca, .hero-titular { color: var(--iris-profundo); }
   .hoja { border: 0; }
 }
 
@@ -867,24 +1022,28 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 /* ---------- Páginas de políticas ---------- */
 
-.legal { max-width: 880px; margin-inline: auto; }
+.legal { max-width: 880px; margin-inline: auto; color: var(--grafito); }
+.legal strong { color: var(--iris-profundo); }
 .legal h1 {
-  font-size: clamp(2.2rem, 4.6vw, 52px);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  margin-bottom: 40px;
+  font-family: var(--fuente-editorial);
+  font-size: clamp(2rem, 4vw, 45px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 36px;
 }
 .legal h2 {
-  font-size: 23px;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  color: var(--tinta);
+  font-family: var(--fuente-editorial);
+  font-size: clamp(1.5rem, 2.4vw, 30px);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--iris-profundo);
   margin: 48px 0 14px;
   padding: 0;
   border: none;
 }
 .legal h3 {
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 500;
   line-height: 1.3;
   margin: 28px 0 8px;
 }
@@ -893,46 +1052,54 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 .legal li { margin-bottom: 8px; }
 .legal li ul { margin-top: 8px; }
 .legal .intro {
-  background: var(--humo);
+  background: var(--niebla-iris);
+  color: var(--iris-profundo);
+  border-radius: var(--radio);
   padding: 20px 24px;
   margin-bottom: 8px;
 }
 .legal .intro p:last-child, .legal .nota p:last-child { margin-bottom: 0; }
 .legal .nota {
+  background: var(--realce);
   border: var(--linea);
+  border-radius: var(--radio);
   padding: 18px 22px;
 }
 .datos-legal {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 20px 24px;
-  border-top: var(--linea);
-  border-bottom: var(--linea);
-  padding: 24px 0;
+  background: var(--realce);
+  border: var(--linea);
+  border-radius: var(--radio);
+  padding: 24px;
   margin-bottom: 16px;
-  font-size: 17px;
+  font-size: 16px;
+  color: var(--tinta);
 }
-.datos-legal strong { display: block; color: var(--ceniza); font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.datos-legal strong { display: block; color: var(--humo); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
 
-/* Alerta ESNNA: el único acento arcilla de su página */
+/* Alerta ESNNA: tarjeta de iris profundo con texto blanco */
 .alerta-esnna {
   text-align: center;
-  background: var(--arcilla);
+  background: var(--iris-profundo);
   color: var(--blanco);
+  border-radius: var(--radio);
   padding: 40px 28px;
   margin: 32px 0 8px;
 }
-.alerta-esnna p { margin: 0 0 6px; }
-.alerta-esnna .lineas { display: flex; flex-wrap: wrap; gap: 20px 56px; justify-content: center; margin-top: 20px; }
+.alerta-esnna strong { color: var(--blanco); }
+.alerta-esnna p { margin: 0 0 6px; color: var(--perla); }
+.alerta-esnna .lineas { display: flex; flex-wrap: wrap; gap: 20px 56px; justify-content: center; margin-top: 24px; }
 .alerta-esnna .linea strong {
   display: block;
   font-size: 52px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  letter-spacing: 0.04em;
   line-height: 1;
 }
-.alerta-esnna .linea span { font-size: 15px; opacity: 0.9; }
-.en { font-style: italic; color: var(--ceniza); }
+.alerta-esnna .linea span { font-size: 14px; color: var(--niebla-iris); }
+.en { font-style: italic; color: var(--humo); }
 
 .carteles {
   display: grid;
@@ -940,38 +1107,40 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   gap: 24px;
   margin-top: 16px;
 }
-.carteles img { width: 100%; border: var(--linea); }
+.carteles img { width: 100%; border: var(--linea); border-radius: var(--radio); }
 
-.otras-politicas { margin: 0 0 120px; border-top: var(--linea); padding-top: 40px; }
+.otras-politicas { margin: 16px 0 120px; padding-top: 40px; }
 .otras-politicas h2 {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ceniza);
+  color: var(--humo);
   margin-bottom: 18px;
   text-align: center;
 }
 .otras-politicas ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+/* Etiquetas de 14px con línea perla; la actual en iris profundo */
 .otras-politicas a {
   display: block;
   background: var(--blanco);
-  border: 1px solid var(--guijarro);
-  border-radius: var(--pill);
-  padding: 9px 18px;
-  font-size: 15px;
+  border: var(--linea);
+  border-radius: var(--radio);
+  padding: 9px 16px;
+  font-size: 14px;
+  color: var(--iris-profundo);
   text-decoration: none;
   transition: border-color 0.2s ease;
 }
-.otras-politicas a:hover { border-color: var(--tinta); }
-.otras-politicas a.actual { background: var(--tinta); border-color: var(--tinta); color: var(--blanco); }
+.otras-politicas a:hover { border-color: var(--iris-profundo); }
+.otras-politicas a.actual { background: var(--iris-profundo); border-color: var(--iris-profundo); color: var(--blanco); }
 
 @media (max-width: 860px) {
   .alerta-esnna .linea strong { font-size: 40px; }
   .legal h2 { margin-top: 40px; }
 }
 
-/* WhatsApp flotante */
+/* WhatsApp flotante: píldora de iris profundo (el violeta vivo queda para la CTA) */
 .wa-flotante {
   position: fixed;
   right: 18px;
@@ -980,20 +1149,21 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--tinta);
+  background: var(--iris-profundo);
   color: var(--blanco);
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 15px;
   padding: 12px;
-  border: 1px solid var(--blanco);
+  border: 0;
   border-radius: var(--pill);
   text-decoration: none;
+  box-shadow: 0 8px 24px rgba(21, 0, 44, 0.22);
   transition: background-color 0.2s ease;
 }
 .wa-flotante span { padding-right: 6px; }
 .wa-flotante svg { width: 28px; height: 28px; }
-.wa-flotante:hover { background: var(--cubierta); }
-.wa-flotante:focus-visible { outline: 1px solid var(--tinta); outline-offset: 3px; }
+.wa-flotante:hover { background: #2a1047; }
+.wa-flotante:focus-visible { outline: 2px solid var(--iris-profundo); outline-offset: 3px; }
 @media (max-width: 560px) {
   .wa-flotante { right: 14px; bottom: 14px; }
   .wa-flotante span { display: none; }
@@ -1002,8 +1172,8 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 /* ---------- Mejoras con JS (script.js) ---------- */
 
-/* Al desplazarse, la cabecera pasa a blanco con una línea fina (sin sombra) */
-.cabecera.con-sombra { background: var(--blanco); border-bottom-color: var(--guijarro); }
+/* Al desplazarse, la cabecera gana una línea perla inferior (sin sombra) */
+.cabecera.con-sombra { border-bottom-color: var(--perla); }
 
 /* Revelado al desplazarse: script.js añade .revelar (nunca el HTML) y un
    índice --i por lote para escalonar; sin JS todo queda visible. */
@@ -1044,7 +1214,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 .lightbox {
   position: fixed; inset: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0, 13, 16, 0.94); padding: 20px;
+  background: rgba(21, 0, 44, 0.94); padding: 20px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s var(--suave);
@@ -1057,13 +1227,13 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   transition: transform 0.5s var(--suave);
 }
 .lightbox.abierto figure { transform: none; }
-.lightbox img { max-height: 80vh; margin-inline: auto; border-radius: 0; }
-.lightbox figcaption { margin-top: 14px; font-size: 15px; color: var(--ceniza); }
+.lightbox img { max-height: 80vh; margin-inline: auto; border-radius: var(--radio); }
+.lightbox figcaption { margin-top: 14px; font-size: 14px; color: var(--perla); }
 .lightbox button {
-  position: absolute; background: var(--blanco); color: var(--tinta);
+  position: absolute; background: var(--blanco); color: var(--iris-profundo);
   border: 0; border-radius: 50%; width: 48px; height: 48px; font-size: 1.6rem; line-height: 1; cursor: pointer;
 }
-.lightbox button:hover, .lightbox button:focus-visible { background: var(--guijarro); outline: none; }
+.lightbox button:hover, .lightbox button:focus-visible { background: var(--niebla-iris); outline: none; }
 .lb-cerrar { top: 16px; right: 16px; }
 .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
 .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
@@ -1073,11 +1243,10 @@ body.lb-abierto { overflow: hidden; }
 
 /* Entrada de la portada de inicio (solo CSS: funciona sin JS).
    fill-mode "both" deja todo visible al terminar. */
-/* Solo "from": el final es el valor propio de cada elemento (p. ej. la
-   opacidad 0.72 del texto de portada se conserva). */
+/* Solo "from": el final es el valor propio de cada elemento. */
 @keyframes subir-mascara { from { transform: translateY(110%); } }
 @keyframes aparecer { from { opacity: 0; transform: translateY(18px); } }
-@keyframes descubrir { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes descubrir { from { clip-path: inset(0 0 100% 0 round var(--radio)); } to { clip-path: inset(0 0 0 0 round var(--radio)); } }
 @keyframes asentar { from { scale: 1.08; } to { scale: 1; } }
 
 /* Línea enmascarada: el texto sube desde debajo de su propio borde.
@@ -1099,6 +1268,7 @@ body.lb-abierto { overflow: hidden; }
 .hero-texto .boton { animation: aparecer 0.8s var(--suave) 0.66s both; }
 .hero-foto { animation: descubrir 1.1s var(--suave) 0.6s both; }
 .hero-foto img { animation: asentar 1.8s var(--suave) 0.6s both; }
+.tarjeta-flotante { animation: aparecer 0.8s var(--suave) 1.2s both; }
 
 /* Portada de cada tour: la foto (heredada del estilo en línea) se asienta
    lentamente y se desplaza con el scroll vía --desplazar (script.js). */
