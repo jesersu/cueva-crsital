@@ -37,3 +37,6 @@ jobs:
             **/.claude/**
             skills-lock.json
             CLAUDE.md
+            PRODUCT.md
+            DESIGN.md
+            **/.impeccable/**

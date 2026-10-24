@@ -1,8 +1,8 @@
 /* ==========================================================
    LOS CRISTALES - Agencia de viajes y turismo
    Hoja de estilos única para todo el sitio
-   Estilo: pizarra profunda primero (tema oscuro por defecto) con
-   tema claro invertido vía [data-theme="light"]. Paleta 60-30-10:
+   Estilo: tema claro por defecto (lienzo blanco, aireado) con tema oscuro
+   de pizarra profunda vía [data-theme="dark"]. Paleta 60-30-10:
    Deep Slate #2D3436, Pure White #FFFFFF, Teal #008080 (acciones),
    Mist Gray #F5F6FA (fondos sutiles) y Aged Gold #C4A77D (acentos).
    Titulares en Playfair Display, texto e interfaz en Lato.
@@ -24,8 +24,6 @@
   --sobre-oro: var(--pizarra); /* text on gold fills (5.54:1) */
 
   /* Surfaces that stay dark in both themes */
-  --pie-fondo: #23292B;    /* footer and top bar (dark theme: one step below the page) */
-  --portada-fundido: #2D3436; /* tour covers fade into the page colour */
   --vidrio-oscuro: rgba(35, 41, 43, 0.78); /* glass over photos (WhatsApp, badges) */
   --desenfoque: blur(20px) saturate(1.2);
   --brillo-oro: 0 0 14px rgba(196, 167, 125, 0.35), inset 0 0 10px rgba(196, 167, 125, 0.12);
@@ -60,10 +58,41 @@
   --paso: 80ms;            /* stagger between revealed elements */
 }
 
-/* Dark theme (default). Also re-declared on the parts that stay dark in
-   both themes: photo heroes, the footer, the top bar, the lightbox and the
-   transparent header over the home hero. */
+/* Light theme (default, also without JS): airy white canvas, slate text,
+   soft cool-grey surfaces; teal and gold stay. */
 :root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --lienzo: #FFFFFF;
+  --lienzo-alterno: #F6F8FA;   /* alternating band */
+  --superficie: #F3F5F8;       /* cards */
+  --superficie-banda: #FFFFFF; /* cards on the alternating band */
+  --superficie-2: #E8ECF1;     /* secondary fills, notices */
+  --superficie-3: #DCE1E8;     /* hover on secondary fills */
+  --texto: #2D3436;            /* 12.7:1 on white */
+  --texto-2: #3F484B;
+  --texto-3: #566165;          /* >= 5.3:1 up to superficie-2 */
+  --linea: #E6EAF0;
+  --linea-fuerte: #8A9498;     /* 3.1:1 on white */
+  --enlace: #006B6B;           /* darker teal for small text on white (6.3:1) */
+  --foco: #006B6B;
+  --oro-texto: #7D5F34;        /* darker gold for text/icons on white (5.9:1) */
+  --error: #B3261E;
+  --exito: #1E7B4A;
+  --cabecera-fondo: #FFFFFF;
+  --marca-fondo: transparent;  /* the logo's greens read on white */
+  --vidrio: rgba(255, 255, 255, 0.82);
+  --vidrio-hover: rgba(232, 236, 241, 0.95);
+  --pie-fondo: #2D3436;
+  --portada-fundido: rgba(25, 29, 30, 0.9);
+  /* Light cards float on a very soft, cool shadow (none on dark) */
+  --sombra: 0 1px 2px rgba(45, 52, 54, 0.04), 0 12px 32px -16px rgba(45, 52, 54, 0.16);
+}
+
+/* Dark theme (the toggle's other option). Also re-declared on the parts that
+   stay dark in both themes: photo heroes, the footer, the top bar, the
+   lightbox and the transparent header over the home hero. */
+:root[data-theme="dark"],
 .hero,
 .portada-tour,
 .pie,
@@ -79,45 +108,24 @@
   --superficie-3: #4C5659;     /* hover on secondary fills */
   --texto: #F5F6FA;            /* primary text (11.7:1 on page) */
   --texto-2: #D3D8DB;          /* long-form body (7.6:1 on cards) */
-  --texto-3: #AFB8BC;          /* muted text, metadata (≥ 4.5:1 up to superficie-2) */
+  --texto-3: #AFB8BC;          /* muted text, metadata (>= 4.5:1 up to superficie-2) */
   --linea: rgba(245, 246, 250, 0.14);  /* dividers */
-  --linea-fuerte: #808B8F;     /* field borders and ghost buttons (≥ 3:1 on page) */
+  --linea-fuerte: #808B8F;     /* field borders and ghost buttons (>= 3:1 on page) */
   --enlace: #5FC9C9;           /* teal for text links / active links on dark (6.4:1) */
   --foco: #5FC9C9;             /* focus ring */
   --oro-texto: #C4A77D;        /* gold as text/icon on dark (5.5:1) */
   --error: #FF9A8F;
-  --exito: #6FCF97;            /* valid field border (≥ 3:1 on page and cards) */
+  --exito: #6FCF97;            /* valid field border (>= 3:1 on page and cards) */
   --cabecera-fondo: #2D3436;
   --marca-fondo: #F5F6FA;      /* light chip behind the full-colour logo */
   --vidrio: rgba(65, 74, 77, 0.72);
   --vidrio-hover: rgba(65, 74, 77, 0.92);
+  --sombra: none;
 }
-
-/* Light theme: inverted (white base, slate text); teal and gold stay */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --lienzo: #FFFFFF;
-  --lienzo-alterno: #F5F6FA;
-  --superficie: #F5F6FA;
-  --superficie-banda: #FFFFFF;
-  --superficie-2: #EAECF2;
-  --superficie-3: #DFE2EA;
-  --texto: #2D3436;            /* 12.7:1 on white */
-  --texto-2: #3F484B;
-  --texto-3: #5B666A;          /* ≥ 5:1 up to superficie-2 */
-  --linea: #E3E6EE;
-  --linea-fuerte: #8A9498;     /* 3.1:1 on white */
-  --enlace: #006B6B;           /* darker teal for small text on white (6.3:1) */
-  --foco: #006B6B;
-  --oro-texto: #7D5F34;        /* darker gold for text/icons on white (5.9:1) */
-  --error: #B3261E;
-  --exito: #1E7B4A;
-  --cabecera-fondo: #FFFFFF;
-  --marca-fondo: transparent;  /* the logo's greens read on white */
-  --vidrio: rgba(255, 255, 255, 0.82);
-  --vidrio-hover: rgba(234, 236, 242, 0.95);
-  --pie-fondo: #2D3436;
-  --portada-fundido: rgba(25, 29, 30, 0.9);
+/* Dark page: the footer and top bar sit one step below the page tone */
+:root[data-theme="dark"] {
+  --pie-fondo: #23292B;
+  --portada-fundido: #2D3436;  /* tour covers fade into the page colour */
 }
 
 /* Theme switch: every colour changes in the same frame (script.js adds
@@ -136,6 +144,19 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+/* Icon set: one inline-SVG line style (24 grid, 1.75 stroke, round caps and
+   joins, currentColor). Each context only sets the size. */
+.ico {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Taps fire immediately (no double-tap-zoom wait) */
@@ -198,6 +219,7 @@ p { text-wrap: pretty; }
 }
 /* The › arrow slides right on hover or focus */
 .enlace > span[aria-hidden] { display: inline-block; transition: translate 0.2s var(--salida); }
+.enlace .ico { width: 1.1em; height: 1.1em; vertical-align: -0.2em; }
 .enlace:focus-visible > span[aria-hidden] { translate: 3px 0; }
 @media (hover: hover) and (pointer: fine) {
   .enlace:hover > span[aria-hidden] { translate: 3px 0; }
@@ -212,6 +234,7 @@ p { text-wrap: pretty; }
   border-radius: var(--radio);
   background: var(--superficie);
   color: var(--texto);
+  box-shadow: var(--sombra);
 }
 .banda-oscura > .contenedor { width: min(1040px, 100% - 48px); }
 .banda-oscura p { color: var(--texto-2); }
@@ -243,6 +266,7 @@ p { text-wrap: pretty; }
 }
 .barra-superior a { color: var(--enlace); }
 .barra-superior span { white-space: nowrap; }
+.barra-superior .ico { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; color: var(--oro); }
 
 /* Header: solid (slate / white) everywhere; transparent over the home hero
    until the visitor scrolls (script.js adds .dinamica and toggles .solida) */
@@ -306,11 +330,11 @@ p { text-wrap: pretty; }
   transition: background-color 0.2s ease, border-color 0.2s ease, scale 0.16s var(--salida);
 }
 .tema-listo .tema-toggle { visibility: visible; }
-.tema-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* Dark theme shows the sun (switch to light); light shows the moon */
-.tema-toggle .icono-luna,
-:root[data-theme="light"] .tema-toggle .icono-sol { display: none; }
-:root[data-theme="light"] .tema-toggle .icono-luna { display: block; }
+.tema-toggle .ico { width: 20px; height: 20px; }
+/* Light theme (default) shows the moon (switch to dark); dark shows the sun */
+.tema-toggle .icono-sol,
+:root[data-theme="dark"] .tema-toggle .icono-luna { display: none; }
+:root[data-theme="dark"] .tema-toggle .icono-sol { display: block; }
 .tema-toggle:active { scale: 0.92; }
 @media (hover: hover) and (pointer: fine) {
   .tema-toggle:hover { background: var(--superficie-2); border-color: var(--linea-fuerte); }
@@ -362,6 +386,7 @@ p { text-wrap: pretty; }
   -webkit-user-select: none;
   transition: opacity 0.2s ease, scale 0.16s var(--salida);
 }
+.boton-menu .ico { width: 24px; height: 24px; }
 .boton-menu:active { scale: 0.92; }
 @media (hover: hover) and (pointer: fine) {
   .boton-menu:hover { opacity: 0.8; }
@@ -382,6 +407,7 @@ p { text-wrap: pretty; }
   text-decoration: none;
   transition: color 0.2s ease;
 }
+.menu .ico-chevron { width: 14px; height: 14px; margin-left: 2px; vertical-align: -2px; }
 .menu > li:focus-within > a { color: var(--texto); }
 /* Active page: teal text */
 .menu > li > a[aria-current="page"] { color: var(--enlace); }
@@ -484,89 +510,189 @@ p { text-wrap: pretty; }
 
 /* ---------- 2. PARTE MEDIA: INICIO ---------- */
 
-/* Hero: dark in both themes; the vignetted photo fades into the slate */
-.hero { position: relative; background: var(--lienzo); color: var(--texto); overflow: hidden; }
+/* Hero = the "Próximamente" announcement. Dark in both themes. A full-height
+   photo stage fills the right 66% and fades into the slate behind the text
+   (phones: the stage is full-bleed and the text sits on its lower scrim).
+   Layers, back to front: photo stage (parallax + Ken Burns), scrims, text,
+   photo controls. */
+.hero { position: relative; isolation: isolate; background: var(--lienzo); color: var(--texto); overflow: hidden; }
 .hero-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  display: flex;
   align-items: center;
-  column-gap: 40px;
-  min-height: clamp(600px, calc(90vh - var(--alto-cabecera)), 920px);
-  min-height: clamp(600px, calc(90svh - var(--alto-cabecera)), 920px);
-  padding: 48px 0;   /* the glass bar floats over the photo's lower edge */
+  min-height: clamp(620px, calc(100vh - 40px), 940px);
+  min-height: clamp(620px, calc(100svh - 40px), 940px);
+  /* Room for the header (it overlays the hero) and the photo controls */
+  padding: calc(var(--alto-cabecera) + 40px) 0 104px;
 }
-/* The header overlays the home hero: reserve its height */
-.inicio .hero-grid { padding-top: calc(48px + var(--alto-cabecera)); }
-.hero-texto { position: relative; z-index: 2; }
+.hero-texto { position: relative; z-index: 2; max-width: 38rem; }
+
+/* "Próximamente" label: gold pill with a softly pulsing dot */
+.hero-insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 7px 14px;
+  border: 1px solid rgba(196, 167, 125, 0.45);
+  border-radius: var(--pill);
+  background: rgba(196, 167, 125, 0.12);
+  color: var(--oro-texto);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.33;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hero-insignia::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--oro);
+  animation: latido 2.4s ease-in-out infinite;
+}
 .hero-titular {
-  font-size: clamp(44px, 7vw, 84px);
+  font-size: clamp(38px, 5.4vw, 78px);
   line-height: 1.05;
   letter-spacing: -0.01em;
 }
-.hero-titular .eyebrow { margin-bottom: 16px; }
-.hero-subtitulo {
-  max-width: 32ch;
-  margin-top: 24px;
-  font-family: var(--fuente);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.45;
+.hero-anuncio { margin-top: 28px; max-width: 34ch; }
+.hero-anuncio p {
+  font-size: 18px;
+  line-height: 1.55;
   color: var(--texto-2);
 }
-.hero-texto .enlace { margin-top: 20px; }
-
-/* The photo fades into the slate with a vignette (radial mask) */
-.hero-foto {
-  position: relative;
-  /* Landscape photo: bleeds to the right edge of the viewport */
-  margin-right: calc((min(1200px, 100vw - 32px) - 100vw) / 2);
-  height: min(70vh, 680px);
-  height: min(70svh, 680px);
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 50% at 52% 48%, #000 45%, transparent 100%);
+.hero-destino {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--fuente-titulo);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--texto);
 }
-/* Scrim: the photo darkens towards its lower edge, where the glass bar
-   floats, so the bar's text keeps its contrast over bright photos. */
+.hero-anuncio .enlace { margin-top: 12px; }
+.hero-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 28px;
+}
+.hero-meta {
+  margin-top: 28px;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--texto-3);
+}
+
+/* Photo stage: sits behind the text, bleeding to the top, right and bottom
+   edges. The scrim layers keep the header, the text and the controls AA over
+   bright crystals. */
+.hero-medio { position: absolute; inset: 0; z-index: 1; }
+.hero-foto {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 66%;
+  margin: 0;
+  overflow: hidden; /* the Ken Burns zoom must not spill past the stage */
+}
+/* Scrims. The side fade lives on the stage; the top (header) and bottom
+   (controls) ones span the full hero width so there is no seam where the
+   stage starts. */
 .hero-foto::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 55%);
+  background: linear-gradient(to right, var(--lienzo), var(--lienzo) 14%, rgba(45, 52, 54, 0) 72%);
 }
-/* Hero slider: slides are stacked and only .activa is visible (the first one
-   carries it in the HTML, so no-JS shows it). The container takes the
-   scroll zoom/dim; each slide only changes its own opacity, so they never fight. */
-.hero-medio { position: relative; }
-.hero-diapositivas { position: relative; height: 100%; }
+.hero-medio::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(25, 29, 30, 0.8), rgba(25, 29, 30, 0.45) 110px, rgba(25, 29, 30, 0) 240px),
+    linear-gradient(to top, rgba(25, 29, 30, 0.72), rgba(25, 29, 30, 0) 38%);
+}
+.hero-diapositivas { position: absolute; inset: 0; }
+/* Slides are stacked and only .activa is visible (the first one carries it in
+   the HTML, so no-JS shows it). The container takes the scroll parallax; each
+   slide only changes its own opacity and runs the slow Ken Burns zoom. */
 .hero-diapositiva {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Default keeps the main waterfall centred; other slides set --encuadre inline */
-  object-position: var(--encuadre, 52% 40%);
+  object-position: var(--encuadre, 50% 40%);
+  transform-origin: var(--origen, 50% 50%);
   opacity: 0;
 }
 /* The incoming slide fades in on top; the outgoing one stays opaque beneath
-   it until script.js drops .saliente, so the crossfade never dips to black. */
+   it until script.js drops .saliente, so the crossfade never dips to black.
+   Both run the same animation, so the zoom carries on while it fades out. */
 .hero-diapositiva.activa {
   z-index: 2;
   opacity: 1;
   transition: opacity 1s cubic-bezier(0.45, 0, 0.55, 1);
 }
 .hero-diapositiva.saliente { z-index: 1; opacity: 1; }
+.hero-diapositiva.activa,
+.hero-diapositiva.saliente { animation: recorrer 9s linear both; }
+.hero-medio.en-pausa .hero-diapositiva { animation-play-state: paused; }
 
-/* Slider pause/play (WCAG 2.2.2): round glass button.
-   Stays [hidden] until script.js starts auto-rotation. */
-.hero-pausa {
+/* Photo controls (hidden until script.js starts): indicators + pause, bottom
+   left on the container's grid, clear of the floating WhatsApp button */
+.hero-controles {
   position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 3;
+  z-index: 4;
+  left: max(16px, calc((100% - 1200px) / 2));
+  bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hero-controles[hidden] { display: none; }
+.hero-indicadores { display: flex; gap: 6px; }
+.hero-punto {
+  display: grid;
+  align-items: center;
+  width: 56px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.hero-punto span {
+  position: relative;
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(245, 246, 250, 0.4);
+}
+.hero-punto span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--texto);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.hero-punto.activo span::after { transform: scaleX(1); }
+/* While the photos rotate the active bar fills over one interval (script.js
+   restarts it with each timer, so it never drifts from the real change) */
+.hero-punto.activo.corre span::after { animation: llenar var(--intervalo, 5.5s) linear both; }
+.hero-punto:focus-visible { outline: 2px solid var(--oro); outline-offset: -2px; border-radius: 6px; }
+
+/* Pause/play (WCAG 2.2.2): round glass button */
+.hero-pausa {
   display: grid;
   place-items: center;
   width: 40px;
@@ -580,10 +706,9 @@ p { text-wrap: pretty; }
   color: var(--texto);
   cursor: pointer;
   transition: background-color 0.2s ease, scale 0.16s var(--salida);
-  animation: aparecer 0.8s var(--curva) 1.2s both;
 }
 .hero-pausa[hidden] { display: none; }
-.hero-pausa svg { width: 14px; height: 14px; fill: currentColor; }
+.hero-pausa .ico { width: 20px; height: 20px; }
 .hero-pausa .icono-reanudar,
 .hero-pausa.pausado .icono-pausa { display: none; }
 .hero-pausa.pausado .icono-reanudar { display: block; }
@@ -592,32 +717,9 @@ p { text-wrap: pretty; }
   .hero-pausa:hover { background: var(--vidrio-hover); }
 }
 
-/* Floating glass bar, anchored bottom-right of the hero */
-.barra-vidrio {
-  position: absolute;
-  right: 0;
-  bottom: 104px;   /* clears the floating WhatsApp button in the first viewport */
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  max-width: 100%;
-  padding: 12px 12px 12px 24px;
-  background: var(--vidrio);
-  -webkit-backdrop-filter: var(--desenfoque);
-  backdrop-filter: var(--desenfoque);
-  border: 1px solid var(--linea);
-  border-radius: var(--radio);
-}
-.barra-vidrio p {
-  color: var(--texto);
-  font-size: 14px;
-  line-height: 1.43;
-}
-
 /* ---------- Secciones ---------- */
 
-.seccion { padding: 120px 0; }
+.seccion { padding: 112px 0; }
 /* Consecutive plain sections share one gap */
 .seccion:not(.banda-clara) + .seccion:not(.banda-clara) { padding-top: 0; }
 .seccion > .banda-oscura { margin-bottom: 0; }
@@ -655,10 +757,27 @@ p { text-wrap: pretty; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 280px;
-  padding: 28px;
+  min-height: 260px;
+  padding: 32px;
   background: var(--superficie);
   border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transition: translate 0.2s var(--salida);
+}
+/* Fact cards lift a few px on precise pointers; the icon chip nudges with them */
+@media (hover: hover) and (pointer: fine) {
+  .tarjeta-dato:hover { translate: 0 -3px; }
+}
+/* Icon tile: gold line icon on a page-toned chip */
+.tarjeta-dato .icono-dato {
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: var(--lienzo);
+  color: var(--oro-texto);
 }
 .tarjeta-dato .etiqueta-dato {
   color: var(--oro-texto);
@@ -668,97 +787,10 @@ p { text-wrap: pretty; }
   text-transform: uppercase;
 }
 .tarjeta-dato h3 {
-  font-size: 28px;
-  line-height: 1.18;
+  font-size: 26px;
+  line-height: 1.2;
 }
 .tarjeta-dato p { margin-top: auto; color: var(--texto-2); }
-
-/* ---------- Próximamente: horizontal photo slider ----------
-   Native scroll-snap track that bleeds to the viewport edges while the first
-   card lines up with .contenedor. The gutter uses container units (the
-   section is the container), so it matches .contenedor without the 100vw
-   scrollbar error; the 100vw line is the fallback for older browsers. Cards
-   share one height; widths follow each photo's orientation (object-fit). */
-.proximamente { container-type: inline-size; }
-.proximamente .titulo-seccion h2 .eyebrow { margin-bottom: 8px; }
-.carrusel { --alto-tarjeta: clamp(400px, 46vw, 560px); }
-.carrusel-pista {
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(16px, calc((100vw - 1200px) / 2));
-  scroll-padding-inline: max(16px, calc((100cqw - 1200px) / 2));
-  scrollbar-width: none;
-}
-.carrusel-pista::-webkit-scrollbar { display: none; }
-.carrusel-pista:focus-visible { outline-offset: -2px; }
-/* width: max-content makes the list's own padding part of the scroll range,
-   so the last card can snap to the same gutter on every browser */
-.carrusel-lista {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  padding-inline: max(16px, calc((100vw - 1200px) / 2));
-  padding-inline: max(16px, calc((100cqw - 1200px) / 2));
-}
-.carrusel-tarjeta {
-  position: relative;
-  flex: none;
-  width: calc(var(--alto-tarjeta) * 0.75);
-  height: var(--alto-tarjeta);
-  overflow: hidden;
-  border-radius: var(--radio);
-  background: var(--superficie);
-  scroll-snap-align: start;
-}
-.carrusel-tarjeta.horizontal { width: min(calc(var(--alto-tarjeta) * 4 / 3), 84vw); width: min(calc(var(--alto-tarjeta) * 4 / 3), 84cqw); }
-.carrusel-tarjeta img { width: 100%; height: 100%; object-fit: cover; }
-/* Badge over the photo: dark glass in both themes, gold text */
-.carrusel-insignia {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 6px 12px;
-  border-radius: var(--pill);
-  background: var(--vidrio-oscuro);
-  -webkit-backdrop-filter: var(--desenfoque);
-  backdrop-filter: var(--desenfoque);
-  color: var(--oro);
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.33;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-/* Prev/next: round buttons under the track, revealed by script.js */
-.carrusel-controles {
-  display: flex;
-  justify-content: flex-start; /* clear of the fixed WhatsApp float (bottom-right) */
-  gap: 12px;
-  margin-top: 24px;
-}
-.carrusel-controles[hidden] { display: none; }
-.carrusel-boton {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--linea);
-  border-radius: var(--pill);
-  background: var(--superficie-2);
-  color: var(--texto);
-  cursor: pointer;
-  transition: background-color 0.2s ease, opacity 0.2s ease, scale 0.16s var(--salida);
-}
-.carrusel-boton svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.carrusel-boton:disabled { opacity: 0.36; cursor: default; }
-.carrusel-boton:active:not(:disabled) { scale: 0.95; }
-@media (hover: hover) and (pointer: fine) {
-  .carrusel-boton:hover:not(:disabled) { background: var(--superficie-3); }
-}
 
 /* Statement: short sentences (hook for the word-by-word highlight) */
 .declaracion {
@@ -850,6 +882,7 @@ p { text-wrap: pretty; }
   font-size: 16px;
   font-weight: 700;
 }
+.tarjeta-tour .nombre .ico { width: 18px; height: 18px; vertical-align: -4px; }
 .tarjeta-tour .nombre .flecha {
   display: inline-block;
   transition: transform 0.2s var(--salida);
@@ -954,6 +987,7 @@ p { text-wrap: pretty; }
   border-radius: var(--radio);
   padding: clamp(28px, 5vw, 56px);
   margin-bottom: 20px;
+  box-shadow: var(--sombra);
 }
 .bloque h2 {
   font-size: clamp(30px, 3.6vw, 44px);
@@ -1061,11 +1095,7 @@ p { text-wrap: pretty; }
   width: 24px;
   height: 24px;
   margin-top: 2px;
-  fill: none;
-  stroke: var(--oro-texto);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  color: var(--oro-texto);
 }
 .canal > div { min-width: 0; }
 .canal h3 {
@@ -1099,6 +1129,7 @@ p { text-wrap: pretty; }
   background: var(--superficie);
   border-radius: var(--radio);
   padding: 40px;
+  box-shadow: var(--sombra);
 }
 .contacto-formulario-intro { margin-bottom: 32px; }
 .contacto-formulario-intro p { margin-top: 14px; color: var(--texto-2); }
@@ -1287,6 +1318,7 @@ form:not(.validacion-viva) .campo select:user-invalid { border-color: var(--erro
   font-size: clamp(30px, 3.6vw, 44px);
   line-height: 1.12;
 }
+.hoja-cabecera h1 .ico-titulo { width: 0.8em; height: 0.8em; margin-right: 6px; vertical-align: -0.06em; color: var(--oro-texto); }
 .hoja-cabecera p { font-size: 17px; color: var(--texto-3); margin-top: 8px; }
 .hoja-cabecera .proveedor {
   background: var(--superficie-2);
@@ -1364,6 +1396,8 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 }
 .pie p, .pie li { font-size: 13px; line-height: 1.45; }
 .pie ul { list-style: none; }
+.pie li .ico { width: 15px; height: 15px; margin-right: 6px; vertical-align: -3px; color: var(--oro); }
+.pie li .ico-flecha { margin: 0 0 0 4px; }
 .pie li { padding: 5px 0; overflow-wrap: anywhere; }
 .pie a { color: var(--texto-3); text-decoration: none; transition: color 0.2s ease; }
 @media (hover: hover) and (pointer: fine) {
@@ -1428,35 +1462,31 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .submenu a { font-size: 16px; color: var(--texto-2); }
   .submenu::before { display: none; }
 
-  .hero-grid {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
-    padding: 48px 0 48px;
+  /* Hero on phones: the photo stage is full-bleed; the text sits on its
+     lower scrim, the photo shows through the top (portraits fit the tall
+     frame; --encuadre-movil frames each one) */
+  .hero-grid { align-items: flex-end; padding: calc(var(--alto-cabecera) + 24px) 0 88px; }
+  .hero-foto { inset: 0; width: 100%; }
+  .hero-foto::after { display: none; }
+  .hero-medio::after {
+    background:
+      linear-gradient(to bottom, rgba(25, 29, 30, 0.8), rgba(25, 29, 30, 0.4) 90px, rgba(25, 29, 30, 0) 200px),
+      linear-gradient(to top, rgba(25, 29, 30, 0.97), rgba(25, 29, 30, 0.9) 42%, rgba(25, 29, 30, 0.45) 66%, rgba(25, 29, 30, 0) 88%);
   }
-  .inicio .hero-grid { padding-top: calc(40px + var(--alto-cabecera)); }
-  .hero-foto { height: auto; margin: 24px -16px 0; }
-  .hero-diapositivas { height: auto; aspect-ratio: 1 / 1; }
-  /* The square crop can need its own framing (--encuadre-movil, inline) */
-  .hero-diapositiva { object-position: var(--encuadre-movil, var(--encuadre, 52% 40%)); }
-  /* Pause button: top-right corner of the square photo, away from the glass bar */
-  .hero-pausa { top: 36px; }
-  /* The glass bar goes full width, over the bottom of the photo */
-  .barra-vidrio {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    margin-top: -72px;
-    width: 100%;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 12px 12px 20px;
-  }
+  .hero-diapositiva { object-position: var(--encuadre-movil, var(--encuadre, 50% 50%)); }
+  .hero-titular { font-size: clamp(32px, 9vw, 52px); }
+  .hero-anuncio { margin-top: 20px; }
+  .hero-anuncio p { font-size: 16px; }
+  .hero-destino { font-size: 22px; }
+  .hero-acciones { margin-top: 20px; }
+  .hero-meta { display: none; }
+  .hero-controles { bottom: 20px; gap: 8px; }
+  .hero-punto { width: 48px; }
 
   .grid-datos { grid-template-columns: 1fr; gap: 16px; }
-  .carrusel-lista { gap: 12px; }
   .tarjeta-dato { min-height: 0; }
 
-  .seccion { padding: 80px 0; }
+  .seccion { padding: 72px 0; }
   .banda-foto { margin-bottom: 80px; }
   .titulo-seccion { margin-bottom: 36px; }
   .portada-tour { height: 420px; }
@@ -1473,18 +1503,6 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .canal p { font-size: 20px; }
 }
 
-/* Phones: the glass bar stacks its text over the button and keeps its
-   content clear of the column where the fixed WhatsApp button sits
-   (right 14px, ~50px wide), so "Reservar" never ends up beneath it. */
-@media (max-width: 560px) {
-  .barra-vidrio {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px 64px 16px 20px;
-  }
-}
-
 @media (max-width: 420px) {
   .boton-reservar { padding: 8px 14px; letter-spacing: 0.08em; }
   .cabecera-acciones { gap: 6px; }
@@ -1492,14 +1510,14 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 
 /* Print: dark text on white, no dark surfaces */
 @media print {
-  .barra-superior, .cabecera, .pie, .envio, .barra-vidrio, .hero-pausa, .carrusel-controles { display: none; }
+  .barra-superior, .cabecera, .pie, .envio, .hero-controles { display: none; }
   body, .hero, .banda-clara, .banda-oscura, .bloque, .hoja, .tarjeta-dato, .tarjeta-tour,
   .contacto-mensaje, .portada-tour, .legal .intro, .legal .nota, .datos-legal,
   .alerta-esnna, .nota-legal { background: #fff !important; color: #000 !important; }
   h1, h2, h3, h4, p, li, strong, small, span, a, .declaracion { color: #000 !important; }
   .portada-tour { height: auto; }
   .portada-tour::before, .portada-tour::after { display: none; }
-  .hero-foto { -webkit-mask-image: none; mask-image: none; }
+  .hero-medio { display: none; }
 }
 
 
@@ -1518,7 +1536,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 /* ---------- Páginas de políticas ---------- */
 
 /* Reading column on the page: 760px */
-.bloque.legal { background: transparent; padding: 24px 0 0; border-radius: 0; }
+.bloque.legal { background: transparent; padding: 24px 0 0; border-radius: 0; box-shadow: none; }
 .legal { max-width: 760px; margin-inline: auto; color: var(--texto-2); }
 .legal strong { color: var(--texto); }
 .legal h1 {
@@ -1681,25 +1699,24 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--vidrio-oscuro);
-  -webkit-backdrop-filter: var(--desenfoque);
-  backdrop-filter: var(--desenfoque);
+  background: #168A45;     /* WhatsApp-style green; white text: 4.6:1 */
   color: var(--blanco);
   font-size: 14px;
   font-weight: 700;
   padding: 10px;
-  border: 1px solid rgba(196, 167, 125, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--pill);
+  box-shadow: 0 6px 20px rgba(22, 138, 69, 0.35);
   text-decoration: none;
   user-select: none;
   -webkit-user-select: none;
   transition: background-color 0.2s ease, scale 0.16s var(--salida);
 }
 .wa-flotante span { padding-right: 8px; }
-.wa-flotante svg { width: 28px; height: 28px; }
+.wa-flotante .ico { width: 26px; height: 26px; }
 .wa-flotante:active { scale: 0.95; }
 @media (hover: hover) and (pointer: fine) {
-  .wa-flotante:hover { background: rgba(35, 41, 43, 0.95); text-decoration: none; }
+  .wa-flotante:hover { background: #12763B; text-decoration: none; }
 }
 @media (max-width: 560px) {
   .wa-flotante { right: 14px; bottom: 14px; }
@@ -1784,6 +1801,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   touch-action: pinch-zoom;
   transition: opacity 0.2s ease-out;   /* exit: fast (script.js waits for it) */
 }
+.lightbox button .ico { width: 24px; height: 24px; margin: auto; }
 .lightbox.abierto { opacity: 1; pointer-events: auto; transition-duration: 0.3s; }
 .lightbox[hidden] { display: none; }
 .lightbox figure {
@@ -1824,7 +1842,6 @@ body.lb-abierto { overflow: hidden; }
 @keyframes fundido { from { opacity: 0; } }
 @keyframes subir-mascara { from { transform: translateY(110%); } }
 @keyframes aparecer { from { opacity: 0; transform: translateY(18px); } }
-@keyframes subir-vidrio { from { opacity: 0; transform: translateY(32px); } }
 /* The photo lights up from dark: opacity and brightness */
 @keyframes encender { from { opacity: 0; filter: brightness(0.4); } }
 @keyframes asentar { from { scale: 1.08; } to { scale: 1; } }
@@ -1850,54 +1867,37 @@ main { animation: fundido 0.3s ease-out backwards; }
 /* Adjacent negative margins collapse into one: double it so the line gap stays exact */
 .mascara + .mascara { margin-top: -0.24em; }
 
-/* Home hero entrance (CSS only: works without JS) */
-.hero-titular .eyebrow { animation: aparecer 0.8s var(--curva) 0.15s both; }
+/* Home hero entrance (CSS only: works without JS). The heading lines rise
+   through their masks, the rest fades up in sequence, the photos light up. */
+.hero-insignia { animation: aparecer 0.8s var(--curva) 0.15s both; }
 .hero-titular .mascara > span { animation: subir-mascara 1s var(--curva) 0.3s both; }
 .hero-titular .mascara + .mascara > span { animation-delay: 0.42s; }
-.hero-subtitulo { animation: aparecer 0.9s var(--curva) 0.65s both; }
-.hero-texto .enlace { animation: aparecer 0.9s var(--curva) 0.78s both; }
-.hero-foto { animation: encender 1.6s var(--curva) 0.3s both; }
-.hero-diapositivas { animation: asentar 2.2s var(--curva) 0.3s both; }
-.barra-vidrio { animation: subir-vidrio 1s var(--curva) 1.1s both; }
+.hero-anuncio { animation: aparecer 0.9s var(--curva) 0.65s both; }
+.hero-acciones { animation: aparecer 0.9s var(--curva) 0.78s both; }
+.hero-meta { animation: aparecer 0.9s var(--curva) 0.9s both; }
+.hero-controles { animation: aparecer 0.8s var(--curva) 1.1s both; }
+.hero-foto { animation: encender 1.6s var(--curva) 0.2s both; }
+.hero-diapositivas { animation: asentar 2.2s var(--curva) 0.2s both; }
+/* Ken Burns: slow zoom on the visible photo (transform only) */
+@keyframes recorrer { from { transform: scale(1); } to { transform: scale(1.1); } }
+/* Progress bar of the active indicator */
+@keyframes llenar { from { transform: scaleX(0); } }
+/* "Próximamente" dot */
+@keyframes latido { 50% { opacity: 0.3; } }
 
-/* Typewriter: script.js splits each H1 line into .letra spans (an
-   aria-hidden copy; screen readers read a hidden full copy) and replaces
-   the line rise. Letters keep their place and only turn visible, one per
-   65ms; a gold caret follows the last typed letter and blinks three times
-   at the end. Reduced motion removes the animations: full text at once. */
-.hero-titular.tecleando .mascara > span { animation: none; }
-.letra {
-  position: relative;
-  animation: teclear 1ms linear calc(0.35s + var(--n, 0) * 65ms) backwards;
-}
-.letra::after {
-  content: "";
-  position: absolute;
-  top: 0.12em;
-  bottom: 0.06em;
-  right: -0.05em;
-  width: max(2px, 0.05em);
-  background: var(--oro);
-  opacity: 0;
-  animation: cursor 65ms linear calc(0.35s + var(--n, 0) * 65ms);
-}
-.letra.ultima::after { animation: parpadeo 1s step-end calc(0.35s + var(--n, 0) * 65ms) 3; }
-@keyframes teclear { from { opacity: 0; } }
-/* No fill mode: the caret is only visible while its animation runs */
-@keyframes cursor { from, to { opacity: 1; } }
-@keyframes parpadeo { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
-
-/* Scroll-linked hero: script.js writes --progreso (0–1). The photo zooms
-   and dims, the text rises and fades; the glass bar stays. Each effect uses
-   a different property from the entrance animation (transform vs scale),
-   so they never compete. */
+/* Scroll-linked hero: script.js writes --progreso (0-1, the hero's own scroll
+   range). Three layers move at different speeds, all with composite-only
+   properties: the photo stage sinks at 28% of its height (so it scrolls
+   slower than the page), the slides zoom and dim, the text rises and fades.
+   Each uses a different property from the entrance animations (translate /
+   transform vs scale / opacity on other elements), so they never compete. */
 .hero-texto {
   translate: 0 calc(var(--progreso, 0) * -72px);
   opacity: calc(1 - var(--progreso, 0) * 1.4);
 }
-.hero-foto { translate: 0 calc(var(--progreso, 0) * 56px); }
+.hero-foto { translate: 0 calc(var(--progreso, 0) * 28%); }
 .hero-diapositivas {
-  transform: scale(calc(1 + var(--progreso, 0) * 0.12));
+  transform: scale(calc(1 + var(--progreso, 0) * 0.1));
   opacity: calc(1 - var(--progreso, 0) * 0.6);
 }
 
@@ -1946,6 +1946,7 @@ main { animation: fundido 0.3s ease-out backwards; }
   .itinerario.revelar-grupo li::before { transform: none; }
   .revelar-mascara { opacity: 1; translate: none; }
   .pie-copy.revelar-marca::before { opacity: 1; translate: none; }
+  .tarjeta-dato:hover { transform: none; translate: none; }
   .tarjeta-tour:hover img, .tarjeta-tour:focus-visible img,
   .galeria a:hover img, .galeria a:focus-visible img,
   .tarjeta-tour:hover .nombre .flecha, .tarjeta-tour:focus-visible .nombre .flecha,
@@ -1959,13 +1960,11 @@ main { animation: fundido 0.3s ease-out backwards; }
   /* Microinteractions: no scale on hover or press */
   .boton:hover, .boton:active, .boton-reservar:hover, .boton-reservar:active,
   .boton-menu:active, .tema-toggle:active, .tarjeta-tour:active,
-  .wa-flotante:active, .lightbox button:active, .hero-pausa:active,
-  .carrusel-boton:active:not(:disabled) { scale: none; }
+  .wa-flotante:active, .lightbox button:active, .hero-pausa:active { scale: none; }
   .tarjeta-tour:hover, .tarjeta-tour:focus-visible,
   .enlace:hover > span[aria-hidden], .enlace:focus-visible > span[aria-hidden] { translate: none; }
 }
 /* Less transparency: glass turns solid (same tones, no blur) */
 @media (prefers-reduced-transparency: reduce) {
-  .barra-vidrio, .lightbox button, .hero-pausa { background: var(--superficie-2); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .wa-flotante, .carrusel-insignia { background: var(--pie-fondo); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .lightbox button, .hero-pausa { background: var(--superficie-2); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

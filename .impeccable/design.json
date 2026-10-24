@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T00:00:00Z",
+  "title": "Design System: Los Cristales",
+  "extensions": {
+    "colorMeta": {
+      "teal": { "role": "primary", "displayName": "Rainforest Teal", "canonical": "#008080", "tonalRamp": ["#003333", "#004D4D", "#006666", "#008080", "#33A0A0", "#5FC9C9", "#A6E3E3", "#DFF5F5"] },
+      "aged-gold": { "role": "secondary", "displayName": "Aged Gold", "canonical": "#C4A77D", "tonalRamp": ["#3D3220", "#5E4D31", "#7D5F34", "#9C8159", "#C4A77D", "#D6C0A0", "#E7D8C2", "#F4ECE0"] },
+      "deep-slate": { "role": "neutral", "displayName": "Deep Slate", "canonical": "#2D3436", "tonalRamp": ["#1B1F20", "#23292B", "#2D3436", "#363E41", "#414A4D", "#4C5659", "#808B8F", "#AFB8BC"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero and tour cover titles." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles." },
+      "body": { "displayName": "Body", "purpose": "All copy and UI text." },
+      "label": { "displayName": "Label", "purpose": "Gold uppercase eyebrows." }
+    },
+    "shadows": [
+      { "name": "gold-glow", "value": "0 0 14px rgba(196,167,125,0.35), inset 0 0 10px rgba(196,167,125,0.12)", "purpose": "Reservar button border halo." },
+      { "name": "gold-glow-strong", "value": "0 0 22px rgba(196,167,125,0.55), inset 0 0 12px rgba(196,167,125,0.18)", "purpose": "Reservar hover." }
+    ],
+    "motion": [
+      { "name": "salida", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Ease-out for UI responses, under 300ms." },
+      { "name": "curva", "value": "cubic-bezier(0.28, 0.11, 0.32, 1)", "purpose": "Cinematic entrances." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "560px" },
+      { "name": "tablet", "value": "860px" },
+      { "name": "desktop", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Teal pill for the main action on a surface.",
+      "html": "<button class=\"ds-btn\">Enviar mensaje</button>",
+      "css": ".ds-btn{background:#008080;color:#fff;font:700 16px Lato,system-ui,sans-serif;padding:12px 24px;border:1px solid transparent;border-radius:9999px;cursor:pointer;transition:background-color .2s ease,scale .2s cubic-bezier(.23,1,.32,1)}.ds-btn:hover{background:#007373;scale:1.02}.ds-btn:active{scale:.97}.ds-btn:focus-visible{outline:2px solid #5FC9C9;outline-offset:3px}"
+    },
+    {
+      "name": "Reservar Button",
+      "kind": "button",
+      "refersTo": "button-reserve",
+      "description": "Header call to action with a gold glowing border.",
+      "html": "<a class=\"ds-reservar\" href=\"#\">Reservar</a>",
+      "css": ".ds-reservar{display:inline-flex;align-items:center;min-height:40px;padding:8px 20px;border:1px solid #C4A77D;border-radius:9999px;color:#F5F6FA;font:700 13px Lato,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;box-shadow:0 0 14px rgba(196,167,125,.35),inset 0 0 10px rgba(196,167,125,.12);transition:background-color .2s ease,box-shadow .2s ease,scale .2s cubic-bezier(.23,1,.32,1)}.ds-reservar:hover{background:rgba(196,167,125,.14);box-shadow:0 0 22px rgba(196,167,125,.55);scale:1.02}.ds-reservar:focus-visible{outline:2px solid #5FC9C9;outline-offset:3px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Pill field, inset on cards, with a teal focus ring.",
+      "html": "<input class=\"ds-field\" placeholder=\"Correo electrónico\">",
+      "css": ".ds-field{width:100%;min-height:52px;padding:12px 20px;font:17px Lato,system-ui,sans-serif;color:#F5F6FA;background:#2D3436;border:1px solid #808B8F;border-radius:210px}.ds-field::placeholder{color:#AFB8BC}.ds-field:focus{outline:2px solid #5FC9C9;outline-offset:0;border-color:transparent}"
+    },
+    {
+      "name": "Eyebrow",
+      "kind": "custom",
+      "description": "Small gold uppercase label above a heading.",
+      "html": "<span class=\"ds-eyebrow\">Próximamente</span>",
+      "css": ".ds-eyebrow{display:block;color:#C4A77D;font:700 13px/1.4 Lato,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}"
+    }
+  ],
+  "narrative": {
+    "northStar": "El diario de la selva",
+    "overview": "A bright, airy travel journal (light by default, deep slate by toggle): real photographs of Tingo María as the main event, and a single warm thread of aged gold marking the details that matter.",
+    "keyCharacteristics": ["Light, airy canvas by default with a true dark slate inversion behind the header toggle", "Playfair headlines over Lato body", "Pill buttons and fields, 24px cards", "One inline-SVG line icon set (1.75 stroke, round)", "Próximamente photo slider as the full-height hero with parallax and Ken Burns motion", "Gold glow only on the Reservar border", "Usable without JavaScript and under reduced motion"],
+    "rules": [
+      { "name": "The One Action Rule", "body": "Teal fills mark actions only; accents, labels and icons are gold.", "section": "colors" },
+      { "name": "The Contrast Pair Rule", "body": "Small text uses --enlace and --oro-texto, never the raw brand teal or gold.", "section": "colors" },
+      { "name": "The Serif-For-Voice Rule", "body": "Playfair is for headings only; UI, forms and buttons are always Lato.", "section": "typography" },
+      { "name": "The Tonal Depth Rule", "body": "Separate surfaces by tone and hairlines; light cards may carry the single soft --sombra, dark ones none.", "section": "elevation" }
+    ],
+    "dos": ["Do let real photos carry the page; keep the interface quiet around them.", "Do use teal fills for actions and gold for labels, icons and accents.", "Do keep the hero, covers, footer, top bar and lightbox dark in both themes.", "Do keep every effect usable without JS and off under prefers-reduced-motion.", "Do credit every third-party photo in creditos.html."],
+    "donts": ["Don't use raw gold or teal for small text; use --oro-texto and --enlace.", "Don't add drop shadows for depth: tone steps and hairlines, plus the one soft --sombra on light cards.", "Don't put credit text on or beside photos, or crop/mask a watermark.", "Don't present a photo as a different place than it shows.", "Don't import brand content from the Terra spec (names, destinations, testimonials)."]
+  }
+}

@@ -44,17 +44,17 @@
     requestFrame();
   }, { passive: true });
 
-  /* ---------- Theme (dark default / light) ---------- */
-  // The inline <head> script already set data-theme (saved choice or dark)
+  /* ---------- Theme (light default / dark) ---------- */
+  // The inline <head> script already set data-theme (saved choice or light)
   // before the first paint. Here the header button switches it, persists the
   // choice in localStorage ("tema") and keeps the browser's theme-color in
-  // sync. Without JS the site stays dark and the button stays invisible
+  // sync. Without JS the site stays light and the button stays invisible
   // (styles.css only shows it once .tema-listo is on <html>).
   const root = document.documentElement;
   const themeButtons = document.querySelectorAll('.tema-toggle');
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const THEME_COLOR = { dark: '#2D3436', light: '#FFFFFF' };
-  const currentTheme = () => (root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  const currentTheme = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
   const syncTheme = () => {
     const theme = currentTheme();
     if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
@@ -73,13 +73,13 @@
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => root.classList.remove('cambiando-tema')));
   };
   themeButtons.forEach((button) => button.addEventListener('click', () => {
-    const next = currentTheme() === 'light' ? 'dark' : 'light';
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     try { localStorage.setItem('tema', next); } catch (err) { /* storage blocked: this page view only */ }
   }));
   // Another tab changed the theme: follow it.
   window.addEventListener('storage', (e) => {
-    if (e.key === 'tema') applyTheme(e.newValue === 'light' ? 'light' : 'dark');
+    if (e.key === 'tema') applyTheme(e.newValue === 'dark' ? 'dark' : 'light');
   });
   syncTheme();
   root.classList.add('tema-listo');
@@ -183,44 +183,6 @@
     });
   }
 
-  /* ---------- Hero headline: typewriter entrance ---------- */
-  // Each visual line of the H1 is split into letters that appear one after
-  // another (styles.css staggers them from --n) with a gold caret following
-  // the last typed letter. Letters hold their place from the start (only
-  // opacity changes), so the layout never shifts. Screen readers get one
-  // hidden copy of each line; the letters are aria-hidden. Without JS the
-  // CSS line rise shows the full text; under reduced motion nothing animates.
-  // It runs once: CSS animations don't replay.
-  const headline = document.querySelector('.hero-titular');
-  if (headline && !reducedMotion) {
-    const LINE_PAUSE = 3; // extra letter slots between lines
-    let slot = 0;
-    let lastLetter = null;
-    headline.querySelectorAll('.mascara > span').forEach((line, i) => {
-      const text = line.textContent;
-      const copy = document.createElement('span');
-      copy.className = 'sr-only';
-      copy.textContent = text;
-      const visual = document.createElement('span');
-      visual.setAttribute('aria-hidden', 'true');
-      if (i > 0) slot += LINE_PAUSE;
-      Array.from(text).forEach((char) => {
-        const letter = document.createElement('span');
-        letter.className = 'letra';
-        letter.textContent = char;
-        letter.style.setProperty('--n', String(slot));
-        slot += 1;
-        visual.append(letter);
-        lastLetter = letter;
-      });
-      line.replaceChildren(copy, visual);
-    });
-    if (lastLetter) {
-      lastLetter.classList.add('ultima');
-      headline.classList.add('tecleando');
-    }
-  }
-
   /* ---------- Scroll-linked hero ---------- */
   // --progreso (0–1) is the hero's own scroll range; styles.css maps it to the
   // photo zoom/dim and the text drift. Only a custom property is written, so
@@ -239,19 +201,26 @@
   }
 
   /* ---------- Hero slider (crossfade) ---------- */
-  // Slides are stacked; the new .activa fades in on top while the previous
-  // one stays opaque beneath it as .saliente until the fade ends, so the photo
-  // never dips to black. Auto-rotation waits while the visitor paused it, the
-  // tab is hidden, the hero is off-screen, the pointer or keyboard focus is on
-  // the pause button, or reduced motion is on (the button then stays hidden,
-  // as without JS). Inactive slides are aria-hidden and there is no aria-live,
-  // so automatic changes are never announced.
+  // The four "Próximamente" photos are stacked; the new .activa fades in on
+  // top while the previous one stays opaque beneath it as .saliente until the
+  // fade ends, so the photo never dips to black (CSS adds a slow Ken Burns
+  // zoom to both). Auto-rotation waits while the visitor paused it, the tab
+  // is hidden, the hero is off-screen, the pointer or keyboard focus is on the
+  // controls, or reduced motion is on. Under reduced motion the pause button
+  // stays hidden and nothing advances, but the indicators still pick a photo.
+  // Inactive slides are aria-hidden and there is no aria-live, so automatic
+  // changes are never announced. The active indicator's bar (.corre) fills
+  // over one interval and is restarted with every timer.
   const sliderRoot = document.querySelector('.hero-medio');
+  const controlsBox = sliderRoot && sliderRoot.querySelector('.hero-controles');
   const pauseButton = sliderRoot && sliderRoot.querySelector('.hero-pausa');
+  const dots = sliderRoot ? Array.from(sliderRoot.querySelectorAll('.hero-punto')) : [];
   let slides = sliderRoot ? Array.from(sliderRoot.querySelectorAll('.hero-diapositiva')) : [];
-  if (slides.length > 1 && pauseButton) {
+  if (slides.length > 1 && pauseButton && controlsBox && dots.length === slides.length) {
     const INTERVAL = 5500;
     const FADE = 1000; // matches the .hero-diapositiva.activa transition
+    sliderRoot.style.setProperty('--intervalo', INTERVAL + 'ms');
+    const photos = slides.slice(); // original order, matches the indicators
     let current = Math.max(0, slides.findIndex((s) => s.classList.contains('activa')));
     let timer = null;
     let fadeTimer = null;
@@ -259,11 +228,34 @@
     let hovering = false;
     let keyboardFocus = false;
     let onScreen = true;
+    let wanted = -1; // photo chosen by an indicator that is still loading
 
     const canRotate = () => !reducedMotion && !userPaused && !document.hidden
       && onScreen && !hovering && !keyboardFocus && slides.length > 1;
 
+    const syncDots = () => {
+      const active = photos.indexOf(slides[current]);
+      dots.forEach((dot, i) => {
+        const on = i === active;
+        dot.classList.toggle('activo', on);
+        if (on) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    };
+
+    // Restart the bar's fill animation in step with the timer
+    const syncBar = (running) => {
+      dots.forEach((dot) => dot.classList.remove('corre'));
+      sliderRoot.classList.toggle('en-pausa', !running);
+      if (!running) return;
+      const dot = dots[photos.indexOf(slides[current])];
+      if (!dot) return;
+      void dot.offsetWidth; // reflow so the animation restarts
+      dot.classList.add('corre');
+    };
+
     const goTo = (next) => {
+      if (next === current) return;
       const outgoing = slides[current];
       const incoming = slides[next];
       window.clearTimeout(fadeTimer);
@@ -273,43 +265,62 @@
       incoming.classList.add('activa');
       incoming.removeAttribute('aria-hidden');
       current = next;
+      syncDots();
       fadeTimer = window.setTimeout(() => outgoing.classList.remove('saliente'), FADE);
     };
 
     const schedule = () => {
       window.clearTimeout(timer);
-      timer = canRotate() ? window.setTimeout(advance, INTERVAL) : null;
+      const running = canRotate();
+      timer = running ? window.setTimeout(advance, INTERVAL) : null;
+      syncBar(running);
     };
 
     // Never fade to a photo that hasn't loaded yet (they are lazy): load it
-    // first and try again on the next interval; a broken image is dropped.
-    function advance() {
-      const next = (current + 1) % slides.length;
-      const img = slides[next];
-      if (img.complete && img.naturalWidth) {
-        goTo(next);
-        schedule();
-        return;
-      }
+    // first and try again; a broken image is dropped (with its indicator).
+    const whenReady = (index, then) => {
+      const img = slides[index];
+      if (img.complete && img.naturalWidth) { then(); return; }
       const drop = () => {
+        const at = photos.indexOf(img);
         img.remove();
         slides = slides.filter((s) => s !== img);
-        current = slides.findIndex((s) => s.classList.contains('activa'));
-        syncButton();
+        if (at > -1) { photos.splice(at, 1); dots.splice(at, 1)[0].remove(); }
+        current = Math.max(0, slides.findIndex((s) => s.classList.contains('activa')));
+        if (slides.length < 2) controlsBox.hidden = true;
+        syncDots();
         schedule();
       };
       // An image that already failed never fires 'error' again.
       if (img.complete) { drop(); return; }
       img.loading = 'eager';
-      img.addEventListener('load', schedule, { once: true });
+      img.addEventListener('load', () => then(), { once: true });
       img.addEventListener('error', drop, { once: true });
+    };
+
+    function advance() {
+      const next = (current + 1) % slides.length;
+      whenReady(next, () => { goTo(next); schedule(); });
     }
 
     const syncButton = () => {
-      pauseButton.hidden = reducedMotion || slides.length < 2;
+      pauseButton.hidden = reducedMotion;
       pauseButton.classList.toggle('pausado', userPaused);
       pauseButton.setAttribute('aria-label', userPaused ? 'Reanudar fotos' : 'Pausar fotos');
     };
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const next = slides.indexOf(photos[dots.indexOf(dot)]);
+        if (next < 0 || next === current) return;
+        wanted = next;
+        whenReady(next, () => {
+          if (wanted !== next) return; // a later click replaced this one
+          goTo(next);
+          schedule();
+        });
+      });
+    });
 
     pauseButton.addEventListener('click', () => {
       userPaused = !userPaused;
@@ -318,15 +329,16 @@
       if (!userPaused && !reducedMotion) advance();
       else schedule();
     });
-    pauseButton.addEventListener('pointerenter', () => { hovering = true; schedule(); });
-    pauseButton.addEventListener('pointerleave', () => { hovering = false; schedule(); });
-    // Only keyboard focus holds the slider: a mouse click also focuses the
-    // button in some browsers, and that alone shouldn't freeze it.
-    pauseButton.addEventListener('focus', () => {
-      try { keyboardFocus = pauseButton.matches(':focus-visible'); } catch (err) { keyboardFocus = true; }
+    // Hover / keyboard focus on the controls holds the slider. Only keyboard
+    // focus counts: a mouse click also focuses the button in some browsers,
+    // and that alone shouldn't freeze it.
+    controlsBox.addEventListener('pointerenter', () => { hovering = true; schedule(); });
+    controlsBox.addEventListener('pointerleave', () => { hovering = false; schedule(); });
+    controlsBox.addEventListener('focusin', (e) => {
+      try { keyboardFocus = e.target.matches(':focus-visible'); } catch (err) { keyboardFocus = true; }
       schedule();
     });
-    pauseButton.addEventListener('blur', () => { keyboardFocus = false; schedule(); });
+    controlsBox.addEventListener('focusout', () => { keyboardFocus = false; schedule(); });
     document.addEventListener('visibilitychange', schedule);
     if (hasIO) {
       new IntersectionObserver(([entry]) => {
@@ -338,75 +350,10 @@
     const refresh = () => { syncButton(); schedule(); };
     onMotionStop.push(refresh);
     onMotionStart.push(refresh);
+    controlsBox.hidden = false;
+    syncDots();
     refresh();
   }
-
-  /* ---------- Horizontal photo slider (Próximamente) ---------- */
-  // The track is a native scroll-snap scroller, so touch, trackpad and arrow
-  // keys (once the track has focus) work without JS. Here we only reveal the
-  // prev/next buttons: each one moves to the neighbouring card's snap point
-  // (cards differ in width) and is disabled at its end of the track. State is
-  // refreshed on the track's own passive scroll listener, once per frame.
-  document.querySelectorAll('.carrusel').forEach((root) => {
-    const track = root.querySelector('.carrusel-pista');
-    const controls = root.querySelector('.carrusel-controles');
-    const prev = root.querySelector('.carrusel-anterior');
-    const next = root.querySelector('.carrusel-siguiente');
-    const cards = Array.from(root.querySelectorAll('.carrusel-tarjeta'));
-    if (!track || !controls || !prev || !next || cards.length < 2) return;
-
-    const EDGE = 2; // px tolerance for fractional scroll positions
-    let pending = false;
-
-    // Scroll position at which each card sits on the snap line. The first
-    // card's offset is the gutter (list padding = scroll-padding).
-    const snapPoints = () => {
-      const left = track.getBoundingClientRect().left - track.scrollLeft;
-      const offsets = cards.map((card) => card.getBoundingClientRect().left - left);
-      const max = track.scrollWidth - track.clientWidth;
-      return offsets.map((x) => Math.min(max, Math.max(0, x - offsets[0])));
-    };
-
-    const update = () => {
-      pending = false;
-      const max = track.scrollWidth - track.clientWidth;
-      controls.hidden = max <= EDGE; // nothing to scroll (very wide screens)
-      const atStart = track.scrollLeft <= EDGE;
-      const atEnd = track.scrollLeft >= max - EDGE;
-      // A focused button that becomes disabled drops focus to <body>, so
-      // hand keyboard focus to the other button first.
-      const focused = document.activeElement;
-      if (!atStart) prev.disabled = false;
-      if (!atEnd) next.disabled = false;
-      if (atEnd && focused === next && !atStart) prev.focus();
-      if (atStart && focused === prev && !atEnd) next.focus();
-      prev.disabled = atStart;
-      next.disabled = atEnd;
-    };
-    const requestUpdate = () => {
-      if (pending) return;
-      pending = true;
-      window.requestAnimationFrame(update);
-    };
-
-    const go = (direction) => {
-      const x = track.scrollLeft;
-      const points = snapPoints();
-      const target = direction > 0
-        ? points.find((p) => p > x + EDGE)
-        : points.slice().reverse().find((p) => p < x - EDGE);
-      if (target === undefined) return;
-      // 'auto' is instant here: the track sets no CSS scroll-behavior.
-      track.scrollBy({ left: target - x, behavior: reducedMotion ? 'auto' : 'smooth' });
-    };
-
-    prev.addEventListener('click', () => go(-1));
-    next.addEventListener('click', () => go(1));
-    track.addEventListener('scroll', requestUpdate, { passive: true });
-    measureTasks.push(requestUpdate);
-    controls.hidden = false;
-    update();
-  });
 
   /* ---------- Word-by-word highlight ---------- */
   // Each statement keeps a visually hidden copy for screen readers; the word
@@ -708,10 +655,10 @@
     box.setAttribute('aria-modal', 'true');
     box.setAttribute('aria-label', 'Galería de fotos');
     box.innerHTML = `
-      <button class="lb-cerrar" type="button" aria-label="Cerrar">×</button>
-      <button class="lb-prev" type="button" aria-label="Foto anterior">‹</button>
+      <button class="lb-cerrar" type="button" aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="lb-prev" type="button" aria-label="Foto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"/></svg></button>
       <figure><img alt=""><figcaption></figcaption></figure>
-      <button class="lb-next" type="button" aria-label="Foto siguiente">›</button>`;
+      <button class="lb-next" type="button" aria-label="Foto siguiente"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></button>`;
     document.body.appendChild(box);
 
     const img = box.querySelector('img');
