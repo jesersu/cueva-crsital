@@ -304,6 +304,16 @@ p { text-wrap: pretty; }
   text-decoration: none;
 }
 .marca img { height: 36px; width: auto; object-fit: contain; }
+/* Large screens: a bigger logo, and on the home page (header transparent over
+   the hero) a much bigger one while the page sits at the top. The scale is
+   visual only (transform), so the header keeps its height and nothing shifts
+   when it settles back on scroll. */
+.marca { transform-origin: left top; transition: transform 0.3s var(--salida); }
+@media (min-width: 1024px) {
+  .marca img { height: 44px; }
+  .inicio .cabecera.dinamica:not(.solida) .marca { transform: translateY(10px) scale(1.7); }
+}
+@media (prefers-reduced-motion: reduce) { .marca { transition: none; } }
 
 /* Right side: theme switch + booking CTA */
 .cabecera-acciones {
