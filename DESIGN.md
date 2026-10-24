@@ -90,7 +90,7 @@ The system is light by default (white canvas, slate text, also without JS and on
 - One icon set: inline SVG line icons on a 24 grid, 1.75 stroke, round caps and joins, `currentColor`; no emoji.
 - Playfair Display headlines over Lato body; gold uppercase eyebrows.
 - Pill buttons and pill fields, 24px cards; photos fill square tour cards.
-- The "Próximamente" photo showcase follows the hero as the home's main imagery.
+- The first view of the home is the "Próximamente" announcement: a full-height dark hero whose photos (the upcoming cave) crossfade behind the "Agencia de viajes Los Cristales" heading.
 - Gold glow only on the header "Reservar" border.
 - Everything usable without JavaScript and under reduced motion.
 
@@ -124,7 +124,7 @@ A 60-30-10 palette: slate surfaces, white/mist text and fills, teal for actions,
 **Character:** An editorial serif for the voice, a plain humanist sans for the work.
 
 ### Hierarchy
-- **Display** (600, clamp(44px, 7vw, 84px), 1.15): home hero and tour cover titles; typewriter entrance on the home H1.
+- **Display** (600, clamp(44px, 7vw, 84px), 1.15): home hero and tour cover titles; the home H1 lines rise through a mask on load.
 - **Headline** (600, clamp(30px, 3.6vw, 44px), 1.15): section titles.
 - **Body** (400, 17px, 1.6): all copy; long-form legal text uses the softer `--texto-2`.
 - **Label** (700, 13px, 0.14em, uppercase): gold eyebrows; the Reservar button uses 13px/0.12em.
@@ -134,11 +134,11 @@ A 60-30-10 palette: slate surfaces, white/mist text and fills, teal for actions,
 
 ## Layout
 
-A single 1200px container with a 16px minimum gutter, sections in generous vertical bands that alternate page and band tones. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The "Próximamente" showcase sits directly after the hero: a two-column display title and description, then a full-bleed scroll-snap track of large photo cards (up to 720px high) aligned to the container; "Lo principal." follows. Nothing may scroll horizontally at 360–390px.
+A single 1200px container with a 16px minimum gutter, sections in generous vertical bands that alternate page and band tones. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The home hero is full height (100svh minus the top bar, 620-940px): text on the left container grid, a photo stage filling the right 66% on desktop (full-bleed with a bottom scrim on phones), indicators and pause bottom-left; "Lo principal." follows directly. Nothing may scroll horizontally at 360–390px.
 
 ## Elevation & Depth
 
-Flat and tonal. Depth comes from stepping tones (page, band, card, secondary fill) and hairlines. In the light theme cards add one very soft cool shadow (`--sombra`); dark has none. The only glow is the gold halo on the Reservar border (`0 0 14px rgba(196,167,125,.35)`, stronger on hover). Over photos, translucent glass (`blur(20px) saturate(1.2)`) holds controls such as the WhatsApp float and slider arrows, with a solid fallback under reduced transparency.
+Flat and tonal. Depth comes from stepping tones (page, band, card, secondary fill) and hairlines. In the light theme cards add one very soft cool shadow (`--sombra`); dark has none. The only glow is the gold halo on the Reservar border (`0 0 14px rgba(196,167,125,.35)`, stronger on hover). Over photos, translucent glass (`blur(20px) saturate(1.2)`) holds controls such as the WhatsApp float and the hero pause button, with a solid fallback under reduced transparency.
 
 ### Named Rules
 **The Tonal Depth Rule.** Separate surfaces by tone and hairlines (`rgba(245,246,250,.14)` on dark), not by drop shadows; the only shadow is the soft light-theme `--sombra`.
@@ -167,11 +167,11 @@ Rounded and pill-shaped: buttons and the header CTA are full pills (9999px), sin
 ### Navigation
 Centred uppercase-free Lato links, active link in teal text, TOURS submenu (hover/first-tap on desktop). Mobile is a CSS checkbox menu. Theme toggle: gold moon (light, default) / sun (dark) icon button named "Tema claro" with `aria-pressed` (true = light).
 
-### Hero slider & Próximamente carousel
-Hero photos crossfade every 5.5s under a bottom scrim with a glass pause button. The Próximamente track is native scroll-snap of large cards with prev/next arrows (48px) at the left, un-hidden only with JS; cards zoom 1.04 on hover.
+### Hero slider
+The four Próximamente photos crossfade every 5.5s with a slow Ken Burns zoom (1 to 1.1 over 9s). Four 56px-wide progress indicators (the active bar fills over the interval; each is a button named "Ver foto N de 4") and a 40px glass pause button sit bottom-left, un-hidden only with JS; under reduced motion nothing advances and the pause button is hidden. On scroll the stage, slides and text move at different speeds (parallax, composite-only).
 
 ### Icons
-One inline SVG line set (`.ico`: 24 viewBox, stroke 1.75, round caps/joins, `currentColor`) for the toggle, WhatsApp, contact details, fact-card chips, top bar, footer, menu, carousel, hero pause/play, lightbox and arrows. Decorative icons are `aria-hidden`; icon-only controls keep their `aria-label`.
+One inline SVG line set (`.ico`: 24 viewBox, stroke 1.75, round caps/joins, `currentColor`) for the toggle, WhatsApp, contact details, fact-card chips, top bar, footer, menu, hero pause/play, lightbox and arrows. Decorative icons are `aria-hidden`; icon-only controls keep their `aria-label`.
 
 ## Do's and Don'ts
 

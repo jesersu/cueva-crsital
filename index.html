@@ -63,80 +63,56 @@
 
   <!-- ========== 2. PARTE MEDIA ========== -->
   <main>
-    <!-- Portada: fondo pizarra con la foto viñeteada y una barra de vidrio
-         flotante que lleva la única acción teal de la página -->
+    <!-- Portada: the first view is the "Próximamente" announcement. Real photos
+         of the upcoming destination (a cave with crystal formations) crossfade
+         behind the brand heading. Describe only what the photos show: no
+         place name, dates, prices or location. Without JS the first photo
+         shows and everything else is visible; script.js adds the crossfade,
+         the photo indicators, the pause button and the scroll parallax. -->
     <section class="hero" id="inicio">
       <div class="contenedor hero-grid">
         <div class="hero-texto">
-          <h1 class="hero-titular"><span class="eyebrow">Los Cristales</span><span class="mascara"><span>Más allá</span></span><span class="mascara"><span>de la selva.</span></span><span class="sr-only"> – Agencia de viajes y turismo en Tingo María</span></h1>
-          <p class="hero-subtitulo">Tours de día completo al Parque Nacional de Tingo María, la Laguna de los Milagros y la Catarata Honolulo.</p>
-          <a class="enlace" href="#tours">Ver los tours <span aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a>
+          <p class="hero-insignia">Próximamente</p>
+          <h1 class="hero-titular"><span class="mascara"><span>Agencia de viajes</span></span> <span class="mascara"><span>Los Cristales</span></span></h1>
+          <div class="hero-anuncio">
+            <!-- TODO: once the place's name is known, put it in the
+                 .hero-destino line (e.g. "Nombre del lugar." instead of
+                 "Un nuevo destino."), keep the "Próximamente" label and
+                 update the aria-label of .hero-medio. -->
+            <p><strong class="hero-destino">Un nuevo destino.</strong> Formaciones de cristal en el interior de una cueva. Muy pronto podrás visitarlas con nosotros.</p>
+            <a class="enlace" href="contacto.html">Quiero más información <span aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a>
+          </div>
+          <div class="hero-acciones">
+            <a class="boton" href="contacto.html">Reservar</a>
+            <a class="enlace" href="#tours">Ver los tours <span aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a>
+          </div>
+          <p class="hero-meta">Más allá de la selva · Tours de día completo · Recojo en tu hospedaje</p>
         </div>
-        <!-- Hero slider: real photos only (one per tour plus Tingo María).
-             Without JS only the first (.activa) shows; script.js crossfades
-             them and reveals the pause button. Adding a slide: see CLAUDE.md. -->
-        <div class="hero-medio" role="region" aria-roledescription="carrusel" aria-label="Fotos de Tingo María y sus tours">
+        <!-- Photo stage (full-bleed, behind the text). Slide 1 carries .activa
+             and loads eagerly (LCP); the others load lazily. --encuadre /
+             --encuadre-movil set each photo's object-position (desktop stage /
+             tall phone crop); --origen is the Ken Burns zoom origin. -->
+        <div class="hero-medio" role="region" aria-roledescription="carrusel" aria-label="Fotos del nuevo destino">
           <figure class="hero-foto">
             <div class="hero-diapositivas">
-              <img class="hero-diapositiva activa" src="img/honol-08.jpg" alt="Catarata Honolulo cayendo entre la vegetación de la selva">
-              <img class="hero-diapositiva" src="img/pntm-10.jpg" alt="Interior de la Cueva de las Lechuzas, Parque Nacional de Tingo María" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 50% 45%">
-              <img class="hero-diapositiva" src="img/lagu-11.jpg" alt="La mano gigante y el corazón gigante, mirador del tour a la Laguna de los Milagros, con vista al valle" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 66% 50%; --encuadre-movil: 74% 50%">
-              <img class="hero-diapositiva" src="img/tingo-01.jpg" alt="Tingo María y el río Huallaga al atardecer, rodeados de cerros de selva" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 40% 60%; --encuadre-movil: 22% 50%">
+              <img class="hero-diapositiva activa" src="img/prox-01.jpg" alt="Formación de cristal iluminada con una linterna en el interior de una cueva" width="960" height="1280" fetchpriority="high" style="--encuadre: 50% 30%; --encuadre-movil: 56% 50%; --origen: 55% 35%">
+              <img class="hero-diapositiva" src="img/prox-02.jpg" alt="Campo de cristales puntiagudos sobre el suelo de una cueva" width="1280" height="960" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 50% 55%; --encuadre-movil: 56% 50%; --origen: 55% 70%">
+              <img class="hero-diapositiva" src="img/prox-03.jpg" alt="Formación de cristal iluminada con luz amarilla dentro de una cueva" width="960" height="1280" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 50% 32%; --encuadre-movil: 62% 50%; --origen: 62% 40%">
+              <img class="hero-diapositiva" src="img/prox-04.jpg" alt="Finos hilos de cristal blanco sobre una estalactita" width="960" height="1280" loading="lazy" decoding="async" fetchpriority="low" aria-hidden="true" style="--encuadre: 50% 42%; --encuadre-movil: 44% 50%; --origen: 45% 50%">
             </div>
           </figure>
-          <button class="hero-pausa" type="button" aria-label="Pausar fotos" hidden>
-            <svg class="ico icono-pausa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5v14M15 5v14"/></svg>
-            <svg class="ico icono-reanudar" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 4.8v14.4a.8.8 0 0 0 1.2.7l11.6-7.2a.8.8 0 0 0 0-1.4L8.7 4.1a.8.8 0 0 0-1.2.7z"/></svg>
-          </button>
-        </div>
-        <!-- Datos reales tomados de las páginas de cada tour -->
-        <div class="barra-vidrio">
-          <p>Tours de día completo · Recojo en tu hospedaje</p>
-          <a class="boton" href="contacto.html">Reservar</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Próximamente: the main photo showcase right after the hero. A new
-         destination whose name is not known yet. Only describe what the photos show (no name, dates, prices or location).
-         The track is a native scroll-snap scroller (touch, trackpad and arrow
-         keys work without JS); script.js only reveals the prev/next buttons. -->
-    <section class="seccion proximamente" aria-labelledby="titulo-proximamente">
-      <div class="contenedor">
-        <div class="titulo-seccion titulo-proximamente">
-          <!-- TODO: once the place's name is known, put it in the heading
-               (e.g. "Nombre del lugar." instead of "Un nuevo destino."),
-               keep the "Próximamente" eyebrow and update the track's aria-label. -->
-          <h2 id="titulo-proximamente"><span class="eyebrow">Próximamente</span> Un nuevo destino.</h2>
-          <p>Formaciones de cristal en el interior de una cueva. Muy pronto podrás visitarlas con nosotros.</p>
-          <a class="enlace" href="contacto.html">Quiero más información <span aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a>
-        </div>
-      </div>
-      <div class="carrusel">
-        <div class="carrusel-pista" id="pista-proximamente" role="region" aria-label="Fotos del nuevo destino" tabindex="0">
-          <ul class="carrusel-lista">
-            <li class="carrusel-tarjeta">
-              <img src="img/prox-01.jpg" alt="Formación de cristal iluminada con una linterna en el interior de una cueva" width="960" height="1280" loading="lazy" decoding="async">
-              <span class="carrusel-insignia" aria-hidden="true">Próximamente</span>
-            </li>
-            <li class="carrusel-tarjeta horizontal">
-              <img src="img/prox-02.jpg" alt="Campo de cristales puntiagudos sobre el suelo de una cueva" width="1280" height="960" loading="lazy" decoding="async">
-            </li>
-            <li class="carrusel-tarjeta">
-              <img src="img/prox-03.jpg" alt="Formación de cristal iluminada con luz amarilla dentro de una cueva" width="960" height="1280" loading="lazy" decoding="async">
-            </li>
-            <li class="carrusel-tarjeta">
-              <img src="img/prox-04.jpg" alt="Finos hilos de cristal blanco sobre una estalactita" width="960" height="1280" loading="lazy" decoding="async">
-            </li>
-          </ul>
-        </div>
-        <div class="contenedor carrusel-controles" hidden>
-          <button class="carrusel-boton carrusel-anterior" type="button" aria-label="Foto anterior" aria-controls="pista-proximamente">
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"/></svg>
-          </button>
-          <button class="carrusel-boton carrusel-siguiente" type="button" aria-label="Foto siguiente" aria-controls="pista-proximamente">
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg>
-          </button>
+          <div class="hero-controles" hidden>
+            <div class="hero-indicadores" role="group" aria-label="Elegir foto">
+              <button class="hero-punto activo" type="button" aria-label="Ver foto 1 de 4" aria-current="true"><span></span></button>
+              <button class="hero-punto" type="button" aria-label="Ver foto 2 de 4"><span></span></button>
+              <button class="hero-punto" type="button" aria-label="Ver foto 3 de 4"><span></span></button>
+              <button class="hero-punto" type="button" aria-label="Ver foto 4 de 4"><span></span></button>
+            </div>
+            <button class="hero-pausa" type="button" aria-label="Pausar fotos">
+              <svg class="ico icono-pausa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5v14M15 5v14"/></svg>
+              <svg class="ico icono-reanudar" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 4.8v14.4a.8.8 0 0 0 1.2.7l11.6-7.2a.8.8 0 0 0 0-1.4L8.7 4.1a.8.8 0 0 0-1.2.7z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>

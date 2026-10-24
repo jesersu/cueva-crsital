@@ -64,7 +64,7 @@
   "narrative": {
     "northStar": "El diario de la selva",
     "overview": "A bright, airy travel journal (light by default, deep slate by toggle): real photographs of Tingo María as the main event, and a single warm thread of aged gold marking the details that matter.",
-    "keyCharacteristics": ["Light, airy canvas by default with a true dark slate inversion behind the header toggle", "Playfair headlines over Lato body", "Pill buttons and fields, 24px cards", "One inline-SVG line icon set (1.75 stroke, round)", "Próximamente photo showcase directly after the hero", "Gold glow only on the Reservar border", "Usable without JavaScript and under reduced motion"],
+    "keyCharacteristics": ["Light, airy canvas by default with a true dark slate inversion behind the header toggle", "Playfair headlines over Lato body", "Pill buttons and fields, 24px cards", "One inline-SVG line icon set (1.75 stroke, round)", "Próximamente photo slider as the full-height hero with parallax and Ken Burns motion", "Gold glow only on the Reservar border", "Usable without JavaScript and under reduced motion"],
     "rules": [
       { "name": "The One Action Rule", "body": "Teal fills mark actions only; accents, labels and icons are gold.", "section": "colors" },
       { "name": "The Contrast Pair Rule", "body": "Small text uses --enlace and --oro-texto, never the raw brand teal or gold.", "section": "colors" },
