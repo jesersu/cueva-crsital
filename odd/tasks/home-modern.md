@@ -28,7 +28,7 @@ New business facts, destination name, EN/ES, deploy.
 - [x] T1 — Light by default + light tokens. Route: delegated (11 pages + css/js). Evidence: Playwright, cleared localStorage -> data-theme=light, meta #FFFFFF, body rgb(255,255,255); toggle -> dark, localStorage tema=dark, meta #2D3436, persists after reload; toggling back persists light; head script identical in 11 pages (sort -u = 1 line); node --check ok.
 - [x] T2 — Home restructure with Próximamente as hero-level imagery. Route: delegated. Evidence: section moved directly after the hero, display title + large cards (up to 720px high); screenshots at 1366/390 light and dark viewed (.playwright-mcp/t2-*.png); slider behaviour checked at the end.
 - [x] T3 — Icon set. Route: delegated. Evidence: all emoji/glyph icons replaced with shared `.ico` inline SVG (24 grid, 1.75 stroke, round, currentColor); no emoji/arrow glyphs left in *.html/script.js (grep 0); topbar, toggle, menu button, TOURS nav, WhatsApp float and footer md5-identical across 11 pages; screenshots viewed; node --check ok.
-- [ ] T4 — Motion polish + docs. Route: delegated.
+- [x] T4 — Motion polish + docs. Route: delegated. Evidence: fact-card lift and carousel photo zoom (fine pointer only, <=300ms UI, composite props), reduced-motion overrides added; CLAUDE.md, DESIGN.md, .impeccable/design.json updated. Playwright: slider next/prev/ArrowRight work (scrollLeft 0->560->1440->560), icon-only buttons all have aria-label, no horizontal overflow at 390/360 on 4 pages, contact form shows 4 aria-invalid + hints on empty submit, dark Próximamente screenshot viewed.
 
 ## Acceptance criteria
 - First visit (no saved choice) renders light, no flash; toggle still switches/persists.
@@ -40,7 +40,7 @@ New business facts, destination name, EN/ES, deploy.
 Test-first exception: no runner. node --check, greps, Playwright screenshots/behaviour.
 
 ## Progress / Evidence
-(none yet)
+T1-T4 done on feat/home-modern, one commit each; not pushed.
 
 ## Next step
-Delegate T1–T4 to one writer.
+Parent review, then user decides on push/merge (deploys to production).
