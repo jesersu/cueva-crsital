@@ -34,7 +34,7 @@ New business facts (prices, schedules), payment, new photos, other pages.
 No runner: node --check, php -l 7.4/8.3 in Docker, PHP harness, Playwright at 1920/1366/820/390, both languages/themes.
 
 ## Progress / Evidence
-T1 done (verified, uncommitted hash recorded below when committed):
+T1 done (verified, commit 824e96e):
 - Layout deviation: photo mosaic sits under the itinerary in the left column (form alone in the sticky right column) because form (~890px) + photos could never fit a viewport; stacked order on mobile is itinerary, form, photos as specified.
 - `node --check script.js`: ok. `php -l enviar.php` php:7.4-cli and php:8.3-cli: no syntax errors.
 - PHP harness (php:8.3 built-in server, capturing sendmail): es/en JSON ok, business email has `Tour de interés: <tour>`, no `pagina` in email; no-JS 303 -> `/laguna-de-los-milagros.html#enviado`, `/en/parque-nacional-tingo-maria.html#enviado`; `//evil.com`, `https://evil.com`, `../x`, `x.html`, `/en/..`, empty, array `pagina[]` -> contact page; reclamo ignores `pagina`; error path returns to the tour page `#error`.
