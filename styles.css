@@ -1752,6 +1752,35 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 .wa-flotante span { padding-right: 8px; }
 .wa-flotante .ico { width: 26px; height: 26px; }
 .wa-flotante:active { scale: 0.95; }
+/* Attention cue: a soft green ring pulses out of the button and the icon
+   gives a short wiggle, once every few seconds; paused while hovered or
+   focused, absent under reduced motion. transform/opacity only. */
+@media (prefers-reduced-motion: no-preference) {
+  .wa-flotante::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 2px solid #168A45;
+    opacity: 0;
+    pointer-events: none;
+    animation: wa-anillo 3.6s var(--salida) 2.4s infinite;
+  }
+  .wa-flotante .ico { animation: wa-sacudida 3.6s ease-in-out 2.4s infinite; transform-origin: 50% 60%; }
+  .wa-flotante:hover::after, .wa-flotante:focus-visible::after,
+  .wa-flotante:hover .ico, .wa-flotante:focus-visible .ico { animation-play-state: paused; }
+}
+@keyframes wa-anillo {
+  0% { transform: scale(1); opacity: 0.55; }
+  45%, 100% { transform: scale(1.5, 1.9); opacity: 0; }
+}
+@keyframes wa-sacudida {
+  0%, 22%, 100% { transform: rotate(0); }
+  4% { transform: rotate(-14deg); }
+  8% { transform: rotate(12deg); }
+  12% { transform: rotate(-9deg); }
+  16% { transform: rotate(6deg); }
+}
 @media (hover: hover) and (pointer: fine) {
   .wa-flotante:hover { background: #12763B; text-decoration: none; }
 }
