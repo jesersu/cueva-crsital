@@ -17,8 +17,8 @@
  * - Language: the optional hidden field "idioma" (es | en, whitelisted,
  *   default es) picks the language of the visitor-facing responses (JSON
  *   message, no-JS page) and the redirect target (/en/<page> for English).
- *   Internal emails stay in Spanish; the business email gets an
- *   "Idioma: es|en" line.
+ *   The consumer's copy of a complaint follows the same language; the
+ *   business email stays in Spanish and gets an "Idioma: es|en" line.
  *
  * Plain PHP 7.4+, no dependencies.
  */
@@ -546,15 +546,28 @@ if (!enviar_correo(DESTINO, 'Libro de Reclamaciones ' . $numero . ' - Los Crista
     responder($formulario, false, 500, mensaje('reclamo_error'));
 }
 
-// Copy for the consumer, with the same claim number.
-$copia = 'Hola, ' . $valores['nombre'] . ":\n\n"
-    . "Hemos recibido tu reclamo en el Libro de Reclamaciones virtual de Los Cristales.\n"
-    . "Conserva este correo como constancia; a continuación encontrarás una copia de tu hoja de reclamación.\n\n"
-    . $hoja . "\n"
-    . "El proveedor debe responder a la reclamación en un plazo no superior a quince (15) días naturales, pudiendo ampliar el plazo hasta quince días más.\n"
-    . "La formulación del reclamo no excluye el recurso a otros medios de resolución de controversias ni es un requisito previo para presentar una denuncia ante el Indecopi.\n";
+// Copy for the consumer, with the same claim number, in the visitor's
+// language. The complaint sheet itself keeps its Spanish labels: it is the
+// registered document.
+if (idioma() === 'en') {
+    $asuntoCopia = 'Copy of your complaint ' . $numero . ' - Los Cristales';
+    $copia = 'Hello, ' . $valores['nombre'] . ":\n\n"
+        . "We have received your complaint in the virtual Complaints Book (Libro de Reclamaciones) of Los Cristales.\n"
+        . "Please keep this email as proof; below is a copy of your complaint sheet (the sheet keeps its original Spanish labels).\n\n"
+        . $hoja . "\n"
+        . "The provider must reply to the complaint within fifteen (15) calendar days at most, and may extend that period by up to another fifteen days.\n"
+        . "Filing a complaint does not exclude other means of dispute resolution, nor is it a prerequisite for filing a report with Indecopi.\n";
+} else {
+    $asuntoCopia = 'Copia de tu reclamo ' . $numero . ' - Los Cristales';
+    $copia = 'Hola, ' . $valores['nombre'] . ":\n\n"
+        . "Hemos recibido tu reclamo en el Libro de Reclamaciones virtual de Los Cristales.\n"
+        . "Conserva este correo como constancia; a continuación encontrarás una copia de tu hoja de reclamación.\n\n"
+        . $hoja . "\n"
+        . "El proveedor debe responder a la reclamación en un plazo no superior a quince (15) días naturales, pudiendo ampliar el plazo hasta quince días más.\n"
+        . "La formulación del reclamo no excluye el recurso a otros medios de resolución de controversias ni es un requisito previo para presentar una denuncia ante el Indecopi.\n";
+}
 
-if (!enviar_correo($valores['correo'], 'Copia de tu reclamo ' . $numero . ' - Los Cristales', $copia, DESTINO)) {
+if (!enviar_correo($valores['correo'], $asuntoCopia, $copia, DESTINO)) {
     error_log('enviar.php: mail() failed (formulario=reclamo, consumer copy)');
     responder($formulario, true, 200, idioma() === 'en'
         ? 'Your complaint was registered with number ' . $numero . '. We could not email you a copy: please keep this number.'
