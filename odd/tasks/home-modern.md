@@ -1,0 +1,46 @@
+# Feature: home-modern
+
+Locator: `odd/tasks/home-modern.md` · Engram topic: `odd/home-modern/tasks` · Branch: `feat/home-modern` (from `feat/terra-redesign` @ ba1ede7, not merged)
+
+## Objective
+Make the site lighter and more modern: light theme by default, "Próximamente / Un nuevo destino" photos as the main visual of the home (not a strip under the hero), a coherent refined icon set, and Emil-Kowalski-style interaction polish.
+
+## Problem / Why
+User request: more modern home; the Próximamente photos should be principal images, not below the main image; improve all icons; theme generally lighter (user chose: light theme by default, dark stays as the toggle option).
+
+## Scope
+- T1: light theme by default on all 11 pages (inline `<head>` script, theme-color meta, `script.js` fallback, toggle semantics unchanged, saved choice still wins); refine light-theme tokens (airier, softer surfaces). Hero, tour covers, footer, top bar, lightbox stay dark.
+- T2: home restructure: Próximamente becomes a primary photo-led section directly after/with the hero (large featured imagery, slider kept), polish home spacing/hierarchy, "Lo principal." and tour cards modernised.
+- T3: icon set: one consistent inline-SVG line style (same stroke, size, caps) for theme toggle, WhatsApp, contact details, fact cards, carousel/hero buttons, footer; accessible names preserved; applied identically on all 11 pages where shared.
+- T4: motion/polish pass using the animation skills (press/hover/reveal), then CLAUDE.md/DESIGN.md update.
+
+## Out of scope
+New business facts, destination name, EN/ES, deploy.
+
+## Constraints
+- Shared chrome identical on all 11 pages (`grep -c`); no-JS usable; reduced motion; AA contrast both themes; no horizontal scroll 360–390px; photo rules (credits, no watermark crops); `enviar.php` contract untouched.
+- Push/merge to `main` deploys to production: only with explicit user approval.
+
+## Delivery strategy
+`exception-ok`, local branch.
+
+## Tasks
+- [x] T1 — Light by default + light tokens. Route: delegated (11 pages + css/js). Evidence: Playwright, cleared localStorage -> data-theme=light, meta #FFFFFF, body rgb(255,255,255); toggle -> dark, localStorage tema=dark, meta #2D3436, persists after reload; toggling back persists light; head script identical in 11 pages (sort -u = 1 line); node --check ok.
+- [ ] T2 — Home restructure with Próximamente as hero-level imagery. Route: delegated.
+- [ ] T3 — Icon set. Route: delegated.
+- [ ] T4 — Motion polish + docs. Route: delegated.
+
+## Acceptance criteria
+- First visit (no saved choice) renders light, no flash; toggle still switches/persists.
+- Home shows the Próximamente photos prominently near the top as main imagery; slider still works (keys, arrows, no-JS).
+- All icons share one style; every icon-only control keeps an accessible name.
+- node --check passes; Playwright checks at 1366/390 in both themes.
+
+## Checks
+Test-first exception: no runner. node --check, greps, Playwright screenshots/behaviour.
+
+## Progress / Evidence
+(none yet)
+
+## Next step
+Delegate T1–T4 to one writer.

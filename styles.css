@@ -1,8 +1,8 @@
 /* ==========================================================
    LOS CRISTALES - Agencia de viajes y turismo
    Hoja de estilos única para todo el sitio
-   Estilo: pizarra profunda primero (tema oscuro por defecto) con
-   tema claro invertido vía [data-theme="light"]. Paleta 60-30-10:
+   Estilo: tema claro por defecto (lienzo blanco, aireado) con tema oscuro
+   de pizarra profunda vía [data-theme="dark"]. Paleta 60-30-10:
    Deep Slate #2D3436, Pure White #FFFFFF, Teal #008080 (acciones),
    Mist Gray #F5F6FA (fondos sutiles) y Aged Gold #C4A77D (acentos).
    Titulares en Playfair Display, texto e interfaz en Lato.
@@ -24,8 +24,6 @@
   --sobre-oro: var(--pizarra); /* text on gold fills (5.54:1) */
 
   /* Surfaces that stay dark in both themes */
-  --pie-fondo: #23292B;    /* footer and top bar (dark theme: one step below the page) */
-  --portada-fundido: #2D3436; /* tour covers fade into the page colour */
   --vidrio-oscuro: rgba(35, 41, 43, 0.78); /* glass over photos (WhatsApp, badges) */
   --desenfoque: blur(20px) saturate(1.2);
   --brillo-oro: 0 0 14px rgba(196, 167, 125, 0.35), inset 0 0 10px rgba(196, 167, 125, 0.12);
@@ -60,10 +58,41 @@
   --paso: 80ms;            /* stagger between revealed elements */
 }
 
-/* Dark theme (default). Also re-declared on the parts that stay dark in
-   both themes: photo heroes, the footer, the top bar, the lightbox and the
-   transparent header over the home hero. */
+/* Light theme (default, also without JS): airy white canvas, slate text,
+   soft cool-grey surfaces; teal and gold stay. */
 :root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --lienzo: #FFFFFF;
+  --lienzo-alterno: #F6F8FA;   /* alternating band */
+  --superficie: #F3F5F8;       /* cards */
+  --superficie-banda: #FFFFFF; /* cards on the alternating band */
+  --superficie-2: #E8ECF1;     /* secondary fills, notices */
+  --superficie-3: #DCE1E8;     /* hover on secondary fills */
+  --texto: #2D3436;            /* 12.7:1 on white */
+  --texto-2: #3F484B;
+  --texto-3: #566165;          /* >= 5.3:1 up to superficie-2 */
+  --linea: #E6EAF0;
+  --linea-fuerte: #8A9498;     /* 3.1:1 on white */
+  --enlace: #006B6B;           /* darker teal for small text on white (6.3:1) */
+  --foco: #006B6B;
+  --oro-texto: #7D5F34;        /* darker gold for text/icons on white (5.9:1) */
+  --error: #B3261E;
+  --exito: #1E7B4A;
+  --cabecera-fondo: #FFFFFF;
+  --marca-fondo: transparent;  /* the logo's greens read on white */
+  --vidrio: rgba(255, 255, 255, 0.82);
+  --vidrio-hover: rgba(232, 236, 241, 0.95);
+  --pie-fondo: #2D3436;
+  --portada-fundido: rgba(25, 29, 30, 0.9);
+  /* Light cards float on a very soft, cool shadow (none on dark) */
+  --sombra: 0 1px 2px rgba(45, 52, 54, 0.04), 0 12px 32px -16px rgba(45, 52, 54, 0.16);
+}
+
+/* Dark theme (the toggle's other option). Also re-declared on the parts that
+   stay dark in both themes: photo heroes, the footer, the top bar, the
+   lightbox and the transparent header over the home hero. */
+:root[data-theme="dark"],
 .hero,
 .portada-tour,
 .pie,
@@ -79,45 +108,24 @@
   --superficie-3: #4C5659;     /* hover on secondary fills */
   --texto: #F5F6FA;            /* primary text (11.7:1 on page) */
   --texto-2: #D3D8DB;          /* long-form body (7.6:1 on cards) */
-  --texto-3: #AFB8BC;          /* muted text, metadata (≥ 4.5:1 up to superficie-2) */
+  --texto-3: #AFB8BC;          /* muted text, metadata (>= 4.5:1 up to superficie-2) */
   --linea: rgba(245, 246, 250, 0.14);  /* dividers */
-  --linea-fuerte: #808B8F;     /* field borders and ghost buttons (≥ 3:1 on page) */
+  --linea-fuerte: #808B8F;     /* field borders and ghost buttons (>= 3:1 on page) */
   --enlace: #5FC9C9;           /* teal for text links / active links on dark (6.4:1) */
   --foco: #5FC9C9;             /* focus ring */
   --oro-texto: #C4A77D;        /* gold as text/icon on dark (5.5:1) */
   --error: #FF9A8F;
-  --exito: #6FCF97;            /* valid field border (≥ 3:1 on page and cards) */
+  --exito: #6FCF97;            /* valid field border (>= 3:1 on page and cards) */
   --cabecera-fondo: #2D3436;
   --marca-fondo: #F5F6FA;      /* light chip behind the full-colour logo */
   --vidrio: rgba(65, 74, 77, 0.72);
   --vidrio-hover: rgba(65, 74, 77, 0.92);
+  --sombra: none;
 }
-
-/* Light theme: inverted (white base, slate text); teal and gold stay */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --lienzo: #FFFFFF;
-  --lienzo-alterno: #F5F6FA;
-  --superficie: #F5F6FA;
-  --superficie-banda: #FFFFFF;
-  --superficie-2: #EAECF2;
-  --superficie-3: #DFE2EA;
-  --texto: #2D3436;            /* 12.7:1 on white */
-  --texto-2: #3F484B;
-  --texto-3: #5B666A;          /* ≥ 5:1 up to superficie-2 */
-  --linea: #E3E6EE;
-  --linea-fuerte: #8A9498;     /* 3.1:1 on white */
-  --enlace: #006B6B;           /* darker teal for small text on white (6.3:1) */
-  --foco: #006B6B;
-  --oro-texto: #7D5F34;        /* darker gold for text/icons on white (5.9:1) */
-  --error: #B3261E;
-  --exito: #1E7B4A;
-  --cabecera-fondo: #FFFFFF;
-  --marca-fondo: transparent;  /* the logo's greens read on white */
-  --vidrio: rgba(255, 255, 255, 0.82);
-  --vidrio-hover: rgba(234, 236, 242, 0.95);
-  --pie-fondo: #2D3436;
-  --portada-fundido: rgba(25, 29, 30, 0.9);
+/* Dark page: the footer and top bar sit one step below the page tone */
+:root[data-theme="dark"] {
+  --pie-fondo: #23292B;
+  --portada-fundido: #2D3436;  /* tour covers fade into the page colour */
 }
 
 /* Theme switch: every colour changes in the same frame (script.js adds
@@ -212,6 +220,7 @@ p { text-wrap: pretty; }
   border-radius: var(--radio);
   background: var(--superficie);
   color: var(--texto);
+  box-shadow: var(--sombra);
 }
 .banda-oscura > .contenedor { width: min(1040px, 100% - 48px); }
 .banda-oscura p { color: var(--texto-2); }
@@ -307,10 +316,10 @@ p { text-wrap: pretty; }
 }
 .tema-listo .tema-toggle { visibility: visible; }
 .tema-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* Dark theme shows the sun (switch to light); light shows the moon */
-.tema-toggle .icono-luna,
-:root[data-theme="light"] .tema-toggle .icono-sol { display: none; }
-:root[data-theme="light"] .tema-toggle .icono-luna { display: block; }
+/* Light theme (default) shows the moon (switch to dark); dark shows the sun */
+.tema-toggle .icono-sol,
+:root[data-theme="dark"] .tema-toggle .icono-luna { display: none; }
+:root[data-theme="dark"] .tema-toggle .icono-sol { display: block; }
 .tema-toggle:active { scale: 0.92; }
 @media (hover: hover) and (pointer: fine) {
   .tema-toggle:hover { background: var(--superficie-2); border-color: var(--linea-fuerte); }
@@ -659,6 +668,7 @@ p { text-wrap: pretty; }
   padding: 28px;
   background: var(--superficie);
   border-radius: var(--radio);
+  box-shadow: var(--sombra);
 }
 .tarjeta-dato .etiqueta-dato {
   color: var(--oro-texto);
@@ -954,6 +964,7 @@ p { text-wrap: pretty; }
   border-radius: var(--radio);
   padding: clamp(28px, 5vw, 56px);
   margin-bottom: 20px;
+  box-shadow: var(--sombra);
 }
 .bloque h2 {
   font-size: clamp(30px, 3.6vw, 44px);
@@ -1099,6 +1110,7 @@ p { text-wrap: pretty; }
   background: var(--superficie);
   border-radius: var(--radio);
   padding: 40px;
+  box-shadow: var(--sombra);
 }
 .contacto-formulario-intro { margin-bottom: 32px; }
 .contacto-formulario-intro p { margin-top: 14px; color: var(--texto-2); }
@@ -1518,7 +1530,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 /* ---------- Páginas de políticas ---------- */
 
 /* Reading column on the page: 760px */
-.bloque.legal { background: transparent; padding: 24px 0 0; border-radius: 0; }
+.bloque.legal { background: transparent; padding: 24px 0 0; border-radius: 0; box-shadow: none; }
 .legal { max-width: 760px; margin-inline: auto; color: var(--texto-2); }
 .legal strong { color: var(--texto); }
 .legal h1 {

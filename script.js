@@ -44,17 +44,17 @@
     requestFrame();
   }, { passive: true });
 
-  /* ---------- Theme (dark default / light) ---------- */
-  // The inline <head> script already set data-theme (saved choice or dark)
+  /* ---------- Theme (light default / dark) ---------- */
+  // The inline <head> script already set data-theme (saved choice or light)
   // before the first paint. Here the header button switches it, persists the
   // choice in localStorage ("tema") and keeps the browser's theme-color in
-  // sync. Without JS the site stays dark and the button stays invisible
+  // sync. Without JS the site stays light and the button stays invisible
   // (styles.css only shows it once .tema-listo is on <html>).
   const root = document.documentElement;
   const themeButtons = document.querySelectorAll('.tema-toggle');
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const THEME_COLOR = { dark: '#2D3436', light: '#FFFFFF' };
-  const currentTheme = () => (root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  const currentTheme = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
   const syncTheme = () => {
     const theme = currentTheme();
     if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
@@ -73,13 +73,13 @@
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => root.classList.remove('cambiando-tema')));
   };
   themeButtons.forEach((button) => button.addEventListener('click', () => {
-    const next = currentTheme() === 'light' ? 'dark' : 'light';
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     try { localStorage.setItem('tema', next); } catch (err) { /* storage blocked: this page view only */ }
   }));
   // Another tab changed the theme: follow it.
   window.addEventListener('storage', (e) => {
-    if (e.key === 'tema') applyTheme(e.newValue === 'light' ? 'light' : 'dark');
+    if (e.key === 'tema') applyTheme(e.newValue === 'dark' ? 'dark' : 'light');
   });
   syncTheme();
   root.classList.add('tema-listo');
