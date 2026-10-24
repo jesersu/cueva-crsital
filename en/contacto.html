@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="color-scheme" content="light dark">
+  <!-- Theme before first paint: saved choice (localStorage "tema") or light -->
+  <script>(function(){var d=document.documentElement,t="light";try{if(localStorage.getItem("tema")==="dark")t="dark"}catch(e){}d.setAttribute("data-theme",t);if(t==="dark"){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#2D3436")}})();</script>
+  <title>Contact | Los Cristales</title>
+  <meta name="description" content="Contact Los Cristales, a travel and tourism agency in Tingo María: WhatsApp, phone, email and an inquiry form for your tours.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@600&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <div class="barra-superior">
+    <div class="contenedor">
+      <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> C.P. NARANJILLO JR. J KUSUNOKY Lt 03-</span>
+      <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A14.5 14.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg> <a href="tel:+51978571323">978571323</a></span>
+      <span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 6.5 8.2 6.2 8.2-6.2"/></svg> <a href="mailto:info@turismoloscristales.com">info@turismoloscristales.com</a></span>
+    </div>
+  </div>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="index.html" aria-label="Los Cristales - Travel and tourism agency - Home">
+        <img src="/logo-header.png" alt="Los Cristales - Travel and tourism agency">
+      </a>
+
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="boton-menu" aria-label="Open menu"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></label>
+
+      <nav>
+        <ul class="menu">
+          <li><a href="index.html">HOME</a></li>
+          <li>
+            <a href="index.html#tours">TOURS <svg class="ico ico-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></a>
+            <ul class="submenu">
+              <li><a href="parque-nacional-tingo-maria.html">01 · Parque Nacional Tingo María</a></li>
+              <li><a href="laguna-de-los-milagros.html">02 · Laguna de los Milagros</a></li>
+              <li><a href="catarata-honolulo.html">03 · Catarata Honolulo</a></li>
+            </ul>
+          </li>
+          <li><a href="contacto.html" aria-current="page">CONTACT</a></li>
+        </ul>
+      </nav>
+
+      <!-- Theme switch (revealed by script.js) and the header booking CTA -->
+      <div class="cabecera-acciones">
+        <div class="idioma" role="group" aria-label="Language">
+          <a href="/contacto.html" lang="es" hreflang="es" aria-label="Español">ES</a>
+          <a href="/en/contacto.html" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a>
+        </div>
+        <button class="tema-toggle" type="button" aria-pressed="true" aria-label="Light theme">
+          <svg class="ico icono-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+          <svg class="ico icono-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.6 6.6 0 0 0 10.7 10.7z"/></svg>
+        </button>
+        <a class="boton-reservar" href="contacto.html">Book now</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="contacto-portada">
+      <div class="contenedor">
+        <p class="migas"><a href="index.html">Home</a> › Contact</p>
+        <span class="eyebrow">Contact</span>
+        <h1>Let's talk.</h1>
+        <p class="contacto-intro">Tell us which tour interests you, when you would like to travel and how many people are coming. We will help you plan your visit to Tingo María.</p>
+      </div>
+    </section>
+
+    <!-- Two columns: contact channels (left) and the form (right); stacked on phones -->
+    <div class="contenedor contacto-columnas">
+      <section class="contacto-canales" aria-labelledby="titulo-canales">
+        <h2 id="titulo-canales">Contact us.</h2>
+        <ul class="lista-canales">
+          <li class="canal">
+            <svg class="ico canal-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            <div>
+              <h3>Address</h3>
+              <p>C.P. NARANJILLO JR. J KUSUNOKY Lt 03-<br>Tingo María</p>
+            </div>
+          </li>
+          <li class="canal">
+            <svg class="ico canal-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.5 2.5A14.5 14.5 0 0 1 2.5 6 2.5 2.5 0 0 1 5 3.5z"/></svg>
+            <div>
+              <h3>Phone</h3>
+              <p><a href="tel:+51978571323">978 571 323</a></p>
+            </div>
+          </li>
+          <li class="canal">
+            <svg class="ico canal-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 6.5 8.2 6.2 8.2-6.2"/></svg>
+            <div>
+              <h3>Email</h3>
+              <p><a href="mailto:info@turismoloscristales.com">info@turismoloscristales.com</a></p>
+            </div>
+          </li>
+          <li class="canal">
+            <svg class="ico canal-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.3 8.8c.3-.5.8-.5 1.1-.1l.7 1.1c.2.3.1.6-.1.8l-.5.5c.5 1 1.3 1.8 2.3 2.3l.5-.5c.2-.2.5-.3.8-.1l1.1.7c.4.3.4.8 0 1.1-.7.7-1.7.8-2.8.3-1.9-.9-3.2-2.2-4-4-.4-1-.2-1.6.9-2.1z"/></svg>
+            <div>
+              <h3>WhatsApp</h3>
+              <p><a href="https://wa.me/51978571323?text=Hello%2C%20Los%20Cristales.%20I%20would%20like%20to%20make%20an%20inquiry." target="_blank" rel="noopener">978 571 323</a></p>
+              <p class="canal-nota">It is the fastest way to check availability and book your tour.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="contacto-mensaje" id="formulario" aria-labelledby="titulo-formulario">
+        <div class="contacto-formulario-intro">
+          <h2 id="titulo-formulario">Send us a message.</h2>
+          <p>Fill in the form and your inquiry will reach us by email. We will reply to your email address or, if you provide it, to your phone number.</p>
+        </div>
+
+        <!-- Result of a submission without JavaScript: enviar.php redirects to #enviado or #error -->
+        <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
+          <p><strong>Inquiry sent.</strong> Thank you for writing to us; we will reply to your email address or your phone number.</p>
+        </div>
+        <div class="aviso-envio" id="error" role="alert" tabindex="-1">
+          <p><strong>We could not send your inquiry.</strong> Check the required fields and try again, or message us on WhatsApp.</p>
+        </div>
+
+        <form class="contacto" id="form-contacto" action="/enviar.php" method="post">
+          <input type="hidden" name="formulario" value="contacto">
+          <input type="hidden" name="idioma" value="en">
+          <input type="hidden" name="tiempo" value="">
+          <!-- Anti-spam honeypot: hidden from view; people leave it empty -->
+          <div class="campo-trampa">
+            <label for="c-control">Do not fill in this field if you are a person</label>
+            <input type="text" id="c-control" name="campo_control" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="campos">
+            <div class="campo">
+              <label for="c-nombre">Name <span class="req">*</span></label>
+              <input type="text" id="c-nombre" name="nombre" maxlength="120" autocomplete="name" required>
+            </div>
+            <div class="campo">
+              <label for="c-correo">Email address <span class="req">*</span></label>
+              <input type="email" id="c-correo" name="correo" maxlength="254" autocomplete="email" required>
+            </div>
+            <div class="campo">
+              <label for="c-telefono">Phone</label>
+              <input type="tel" id="c-telefono" name="telefono" maxlength="30" autocomplete="tel">
+            </div>
+            <div class="campo">
+              <label for="c-tour">Tour of interest</label>
+              <select id="c-tour" name="tour">
+                <option value="">Select an option</option>
+                <option value="Parque Nacional de Tingo María">Parque Nacional Tingo María</option>
+                <option value="Laguna de los Milagros">Laguna de los Milagros</option>
+                <option value="Catarata Honolulo">Catarata Honolulo</option>
+                <option value="Otro / aún no lo sé">Other / not sure yet</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="c-fecha">Tentative date</label>
+              <input type="date" id="c-fecha" name="fecha">
+            </div>
+            <div class="campo">
+              <label for="c-personas">Number of people</label>
+              <input type="number" id="c-personas" name="personas" min="1" max="9999" step="1" inputmode="numeric">
+            </div>
+            <div class="campo ancho">
+              <label for="c-mensaje">Message <span class="req">*</span></label>
+              <textarea id="c-mensaje" name="mensaje" maxlength="5000" required></textarea>
+            </div>
+          </div>
+
+          <div class="aceptacion">
+            <input type="checkbox" id="c-acepto" name="acepto" value="Sí" required>
+            <label for="c-acepto">I have read and accept the <a href="politicas-de-privacidad.html">Privacy and Personal Data Protection Policy</a> and authorize the processing of my personal data in accordance with Peruvian Law No. 29733 on Personal Data Protection. <span class="req">*</span></label>
+          </div>
+
+          <div class="contacto-envio">
+            <button class="boton" type="submit">Send inquiry</button>
+            <p class="estado-formulario" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie-grid">
+      <div>
+        <h4>Company details</h4>
+        <ul>
+          <li class="dato"><strong>Legal name:</strong> CORPORACIÓN TULUMAYO MYSTIC S.A.C.</li>
+          <li class="dato"><strong>Trade name:</strong> Los Cristales</li>
+          <li class="dato"><strong>RUC:</strong> 20616494750</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li class="dato"><strong>Phone:</strong> <a href="tel:+51978571323">978571323</a></li>
+          <li class="dato"><strong>Email:</strong> <a href="mailto:info@turismoloscristales.com">info@turismoloscristales.com</a></li>
+          <li class="dato"><strong>Address:</strong> C.P. NARANJILLO JR. J KUSUNOKY Lt 03-</li>
+          <li><a href="contacto.html">Contact form <svg class="ico ico-flecha" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Policies</h4>
+        <ul>
+          <li><a href="terminos-y-condiciones.html">Terms and Conditions of Use and Purchase</a></li>
+          <li><a href="politicas-de-privacidad.html">Privacy and Personal Data Protection Policy</a></li>
+          <li><a href="politicas-de-pago.html">Payment, Cancellation and Refund Policies</a></li>
+          <li><a href="prevencion-esnna.html">Child and Adolescent Sexual Exploitation (ESNNA) Prevention Policies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Customer service</h4>
+        <ul>
+          <li><a href="libro-de-reclamaciones.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg> Complaints Book (Libro de Reclamaciones)</a></li>
+          <li><a href="creditos.html">Photo credits</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie-copy">© 2026 Los Cristales – CORPORACIÓN TULUMAYO MYSTIC S.A.C. All rights reserved.</div>
+  </footer>
+
+<a class="wa-flotante" href="https://wa.me/51978571323?text=Hello%2C%20Los%20Cristales%2C%20I%20would%20like%20more%20information" target="_blank" rel="noopener" aria-label="Message us on WhatsApp at 978 571 323" title="Message us on WhatsApp">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.3 8.8c.3-.5.8-.5 1.1-.1l.7 1.1c.2.3.1.6-.1.8l-.5.5c.5 1 1.3 1.8 2.3 2.3l.5-.5c.2-.2.5-.3.8-.1l1.1.7c.4.3.4.8 0 1.1-.7.7-1.7.8-2.8.3-1.9-.9-3.2-2.2-4-4-.4-1-.2-1.6.9-2.1z"/></svg>
+  <span>WhatsApp</span>
+</a>
+<script src="/script.js" defer></script>
+</body>
+</html>

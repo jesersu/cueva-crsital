@@ -340,6 +340,47 @@ p { text-wrap: pretty; }
   .tema-toggle:hover { background: var(--superficie-2); border-color: var(--linea-fuerte); }
 }
 
+/* Language switch (ES | EN): a compact pill with two links; the current
+   language carries a filled tone plus a gold underline (state is never
+   colour alone) and aria-current. Tokens follow the theme, including the
+   dark tokens over the transparent home header. */
+.idioma {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--linea);
+  border-radius: var(--pill);
+}
+.idioma a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: var(--pill);
+  color: var(--texto-2);
+  font-family: var(--fuente);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, scale 0.16s var(--salida);
+}
+.idioma a[aria-current="true"] {
+  background: var(--superficie-2);
+  color: var(--texto);
+  box-shadow: inset 0 -2px 0 var(--oro);
+}
+.idioma a:active { scale: 0.94; }
+.idioma a:focus-visible { outline: 2px solid var(--foco); outline-offset: 1px; }
+@media (hover: hover) and (pointer: fine) {
+  .idioma a:not([aria-current="true"]):hover { background: var(--superficie-2); color: var(--enlace); text-decoration: none; }
+}
+
 /* Header CTA: outlined pill with a glowing gold border */
 .boton-reservar {
   display: inline-flex;
@@ -1501,6 +1542,12 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 @media (max-width: 560px) {
   /* Long email address: step down so it rarely breaks */
   .canal p { font-size: 20px; }
+}
+
+@media (max-width: 860px) {
+  /* 44px touch targets for the language links */
+  .idioma a { min-width: 36px; min-height: 44px; }
+  .idioma { padding: 0 2px; }
 }
 
 @media (max-width: 420px) {
