@@ -626,7 +626,7 @@ p { text-wrap: pretty; }
 
 /* ---------- Secciones ---------- */
 
-.seccion { padding: 120px 0; }
+.seccion { padding: 112px 0; }
 /* Consecutive plain sections share one gap */
 .seccion:not(.banda-clara) + .seccion:not(.banda-clara) { padding-top: 0; }
 .seccion > .banda-oscura { margin-bottom: 0; }
@@ -664,8 +664,8 @@ p { text-wrap: pretty; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 280px;
-  padding: 28px;
+  min-height: 260px;
+  padding: 32px;
   background: var(--superficie);
   border-radius: var(--radio);
   box-shadow: var(--sombra);
@@ -678,8 +678,8 @@ p { text-wrap: pretty; }
   text-transform: uppercase;
 }
 .tarjeta-dato h3 {
-  font-size: 28px;
-  line-height: 1.18;
+  font-size: 26px;
+  line-height: 1.2;
 }
 .tarjeta-dato p { margin-top: auto; color: var(--texto-2); }
 
@@ -689,9 +689,31 @@ p { text-wrap: pretty; }
    section is the container), so it matches .contenedor without the 100vw
    scrollbar error; the 100vw line is the fallback for older browsers. Cards
    share one height; widths follow each photo's orientation (object-fit). */
-.proximamente { container-type: inline-size; }
-.proximamente .titulo-seccion h2 .eyebrow { margin-bottom: 8px; }
-.carrusel { --alto-tarjeta: clamp(400px, 46vw, 560px); }
+.proximamente { container-type: inline-size; padding: 96px 0 112px; }
+.proximamente .titulo-seccion h2 .eyebrow { margin-bottom: 12px; }
+/* The showcase is the main imagery of the home: a big display title on the
+   left, the one-line description and link on the right, then large photos. */
+.titulo-proximamente {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: 16px 56px;
+  margin-bottom: 48px;
+}
+.titulo-proximamente h2 {
+  grid-row: 1 / span 2;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+.titulo-proximamente p {
+  grid-column: 2;
+  order: 0;
+  font-size: 19px;
+  color: var(--texto-2);
+}
+.titulo-proximamente .enlace { grid-column: 2; justify-self: start; }
+.carrusel { --alto-tarjeta: clamp(440px, 56vw, 720px); }
 .carrusel-pista {
   overflow-x: auto;
   overflow-y: hidden;
@@ -722,14 +744,25 @@ p { text-wrap: pretty; }
   border-radius: var(--radio);
   background: var(--superficie);
   scroll-snap-align: start;
+  isolation: isolate;
+}
+/* Soft top scrim so the badge stays legible over bright crystals */
+.carrusel-tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 55% 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(25, 29, 30, 0.45), rgba(25, 29, 30, 0));
 }
 .carrusel-tarjeta.horizontal { width: min(calc(var(--alto-tarjeta) * 4 / 3), 84vw); width: min(calc(var(--alto-tarjeta) * 4 / 3), 84cqw); }
 .carrusel-tarjeta img { width: 100%; height: 100%; object-fit: cover; }
 /* Badge over the photo: dark glass in both themes, gold text */
 .carrusel-insignia {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  z-index: 2;
+  top: 20px;
+  left: 20px;
   padding: 6px 12px;
   border-radius: var(--pill);
   background: var(--vidrio-oscuro);
@@ -747,14 +780,14 @@ p { text-wrap: pretty; }
   display: flex;
   justify-content: flex-start; /* clear of the fixed WhatsApp float (bottom-right) */
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 28px;
 }
 .carrusel-controles[hidden] { display: none; }
 .carrusel-boton {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   border: 1px solid var(--linea);
   border-radius: var(--pill);
@@ -1468,7 +1501,11 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .carrusel-lista { gap: 12px; }
   .tarjeta-dato { min-height: 0; }
 
-  .seccion { padding: 80px 0; }
+  .seccion { padding: 72px 0; }
+  .proximamente { padding: 64px 0 72px; }
+  .titulo-proximamente { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-bottom: 32px; }
+  .titulo-proximamente h2 { grid-row: auto; }
+  .titulo-proximamente p, .titulo-proximamente .enlace { grid-column: 1; }
   .banda-foto { margin-bottom: 80px; }
   .titulo-seccion { margin-bottom: 36px; }
   .portada-tour { height: 420px; }
