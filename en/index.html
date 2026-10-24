@@ -220,19 +220,6 @@
       </div>
     </section>
 
-    <!-- Statement: short phrases (hook for the scroll highlight) -->
-    <section class="seccion" aria-label="What you will experience">
-      <div class="contenedor">
-        <p class="declaracion">A cave. A lagoon. Five waterfalls. All in one day, from your accommodation.</p>
-      </div>
-    </section>
-
-    <!-- Full-width photo band (third-party photo: see creditos.html) -->
-    <figure class="banda-foto">
-      <img loading="lazy" src="/img/tingo-01.jpg" width="2000" height="1333" alt="Tingo María and the Huallaga River at sunset, surrounded by jungle hills">
-      <figcaption class="contenedor">Tingo María and the Huallaga River.</figcaption>
-    </figure>
-
     <section class="seccion banda-clara" id="tours">
       <div class="contenedor">
         <div class="titulo-seccion">
@@ -275,12 +262,44 @@
       </div>
     </section>
 
+    <!-- Statement: short phrases (hook for the scroll highlight) -->
+    <section class="seccion" aria-label="What you will experience">
+      <div class="contenedor">
+        <p class="declaracion">A cave. A lagoon. Five waterfalls. All in one day, from your accommodation.</p>
+      </div>
+    </section>
+
+    <!-- Tingo María photo slider: native scroll-snap strip (third-party photos: see creditos.html); script.js adds arrows and indicators -->
+    <section class="seccion panorama" aria-labelledby="titulo-panorama">
+      <div class="contenedor titulo-seccion panorama-cabecera">
+        <h2 id="titulo-panorama">Tingo María and the Huallaga River.</h2>
+        <div class="panorama-controles" hidden></div>
+      </div>
+      <div class="panorama-pista" role="region" aria-label="Photos of Tingo María and the Huallaga River" tabindex="0">
+        <ul class="panorama-lista">
+          <li class="panorama-slide">
+            <img loading="lazy" decoding="async" src="/img/tingo-01.jpg" width="2000" height="1333" style="--encuadre: 50% 72%" alt="Tingo María and the Huallaga River at sunset, surrounded by jungle hills">
+          </li>
+          <li class="panorama-slide">
+            <img loading="lazy" decoding="async" src="/img/tingo-02.jpg" width="1600" height="1200" style="--encuadre: 50% 62%" alt="Tingo María seen from above, with the Huallaga River on the right and the Bella Durmiente hills behind">
+          </li>
+          <li class="panorama-slide">
+            <img loading="lazy" decoding="async" src="/img/tingo-03.jpg" width="1600" height="1200" style="--encuadre: 50% 88%" alt="Tingo María under a blue sky, with jungle-covered hills above the town">
+          </li>
+        </ul>
+      </div>
+      <div class="contenedor"><div class="panorama-puntos" hidden></div></div>
+    </section>
+
     <section class="seccion">
       <div class="banda-oscura banda-cta">
         <div class="contenedor">
           <h2>Plan your trip.</h2>
           <p>Tell us which tour interests you, the date and how many people are coming, and we will help you organize it.</p>
-          <a class="boton claro" href="contacto.html">Contact us</a>
+          <div class="banda-cta-acciones">
+            <a class="boton claro" href="contacto.html">Contact us</a>
+            <a class="boton fantasma" href="https://wa.me/51978571323?text=Hello%2C%20Los%20Cristales%2C%20I%20would%20like%20more%20information" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.3 8.8c.3-.5.8-.5 1.1-.1l.7 1.1c.2.3.1.6-.1.8l-.5.5c.5 1 1.3 1.8 2.3 2.3l.5-.5c.2-.2.5-.3.8-.1l1.1.7c.4.3.4.8 0 1.1-.7.7-1.7.8-2.8.3-1.9-.9-3.2-2.2-4-4-.4-1-.2-1.6.9-2.1z"/></svg>WhatsApp</a>
+          </div>
         </div>
       </div>
     </section>

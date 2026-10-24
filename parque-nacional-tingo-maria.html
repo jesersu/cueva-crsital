@@ -203,24 +203,96 @@
     <div class="contenedor">
       <p class="migas"><a href="index.html">Inicio</a> › Tours › 01 · Parque Nacional de Tingo María</p>
 
-      <section class="bloque">
-        <h2>Itinerario del tour</h2>
-        <ul class="itinerario">
-          <li><strong>10:00 – 10:30 am</strong> · Recojo en su hospedaje</li>
-          <li>Visita al Parque Nacional de Tingo María</li>
-          <li>Ingreso a la Cueva de las Lechuzas</li>
-          <li>Río Perdido</li>
-          <li>Paseo en bote por el río Monzón (opcional)</li>
-          <li>Fábrica de chocolates</li>
-          <li>Artesanías locales y tragos exóticos</li>
-          <li>Aguas sulfurosas</li>
-          <li>Almuerzo típico</li>
-          <li>Mirador de Jacintillo</li>
-          <li>Caminata a la Catarata Santa Carmen (aprox. 15 min)</li>
-          <li>Mirador de San Francisco (Mirador de la Bella Durmiente)</li>
-          <li><strong>5:30 pm</strong> · Retorno</li>
-        </ul>
-      </section>
+      <div class="tour-layout">
+        <section class="bloque tour-itinerario">
+          <h2>Itinerario del tour</h2>
+          <ul class="itinerario">
+            <li><strong>10:00 – 10:30 am</strong> · Recojo en su hospedaje</li>
+            <li>Visita al Parque Nacional de Tingo María</li>
+            <li>Ingreso a la Cueva de las Lechuzas</li>
+            <li>Río Perdido</li>
+            <li>Paseo en bote por el río Monzón (opcional)</li>
+            <li>Fábrica de chocolates</li>
+            <li>Artesanías locales y tragos exóticos</li>
+            <li>Aguas sulfurosas</li>
+            <li>Almuerzo típico</li>
+            <li>Mirador de Jacintillo</li>
+            <li>Caminata a la Catarata Santa Carmen (aprox. 15 min)</li>
+            <li>Mirador de San Francisco (Mirador de la Bella Durmiente)</li>
+            <li><strong>5:30 pm</strong> · Retorno</li>
+          </ul>
+        </section>
+
+        <aside class="tour-solicitud" aria-labelledby="titulo-solicitud">
+          <span class="eyebrow">Tour 01</span>
+          <h2 id="titulo-solicitud">Solicita este tour.</h2>
+          <p class="tour-solicitud-intro">Déjanos tus datos y la fecha que prefieres; te responderemos a tu correo electrónico o a tu teléfono.</p>
+
+          <!-- Resultado del envío sin JavaScript: enviar.php redirige a #enviado o #error -->
+          <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
+            <p><strong>Solicitud enviada.</strong> Gracias por tu interés; te responderemos a tu correo electrónico o a tu teléfono.</p>
+          </div>
+          <div class="aviso-envio" id="error" role="alert" tabindex="-1">
+            <p><strong>No pudimos enviar tu solicitud.</strong> Revisa los campos obligatorios e inténtalo de nuevo, o escríbenos por WhatsApp.</p>
+          </div>
+
+          <form class="contacto" id="form-tour" action="enviar.php" method="post" data-tour>
+            <input type="hidden" name="formulario" value="contacto">
+            <input type="hidden" name="idioma" value="es">
+            <input type="hidden" name="tour" value="Parque Nacional de Tingo María">
+            <input type="hidden" name="pagina" value="parque-nacional-tingo-maria">
+            <input type="hidden" name="tiempo" value="">
+            <!-- Campo trampa antispam: oculto a la vista; las personas lo dejan vacío -->
+            <div class="campo-trampa">
+              <label for="t-control">No completes este campo si eres una persona</label>
+              <input type="text" id="t-control" name="campo_control" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="campos">
+              <div class="campo">
+                <label for="t-nombre">Nombre <span class="req">*</span></label>
+                <input type="text" id="t-nombre" name="nombre" maxlength="120" autocomplete="name" required>
+              </div>
+              <div class="campo">
+                <label for="t-correo">Correo electrónico <span class="req">*</span></label>
+                <input type="email" id="t-correo" name="correo" maxlength="254" autocomplete="email" required>
+              </div>
+              <div class="campo">
+                <label for="t-telefono">Teléfono</label>
+                <input type="tel" id="t-telefono" name="telefono" maxlength="30" autocomplete="tel">
+              </div>
+              <div class="campo mitad">
+                <label for="t-fecha">Fecha tentativa</label>
+                <input type="date" id="t-fecha" name="fecha">
+              </div>
+              <div class="campo mitad">
+                <label for="t-personas">Número de personas</label>
+                <input type="number" id="t-personas" name="personas" min="1" max="9999" step="1" inputmode="numeric">
+              </div>
+              <div class="campo ancho">
+                <label for="t-mensaje">Mensaje <span class="req">*</span></label>
+                <textarea id="t-mensaje" name="mensaje" maxlength="5000" required>Hola, quiero solicitar el tour Parque Nacional de Tingo María. Me gustaría conocer la disponibilidad y cómo reservar.</textarea>
+              </div>
+            </div>
+
+            <div class="aceptacion">
+              <input type="checkbox" id="t-acepto" name="acepto" value="Sí" required>
+              <label for="t-acepto">He leído y acepto la <a href="politicas-de-privacidad.html">Política de privacidad y protección de datos personales</a> y autorizo el tratamiento de mis datos personales conforme a la Ley N.º 29733 de Protección de Datos Personales. <span class="req">*</span></label>
+            </div>
+
+            <div class="contacto-envio">
+              <button class="boton" type="submit">Solicitar este tour</button>
+              <p class="estado-formulario" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </aside>
+
+        <div class="galeria tour-mosaico" role="group" aria-label="Fotos del tour">
+          <a href="img/pntm-12.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/pntm-12.jpg" width="1280" height="959" alt="Río Monzón al pie de un cerro de selva en el Parque Nacional de Tingo María"></a>
+          <a href="img/pntm-09.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/pntm-09.jpg" width="526" height="261" alt="Catarata y poza natural en Tingo María"></a>
+          <a href="img/pntm-06.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/pntm-06.jpg" width="352" height="210" alt="Interior de la Cueva de las Lechuzas"></a>
+          <a href="img/pntm-08.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/pntm-08.jpg" width="439" height="292" alt="Mirador de la Bella Durmiente"></a>
+        </div>
+      </div>
 
       <section class="bloque">
         <h2>Panel fotográfico</h2>
