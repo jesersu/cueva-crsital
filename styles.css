@@ -51,6 +51,12 @@
   /* Sizes */
   --alto-cabecera: 64px;
 
+  /* Vertical rhythm of the home sections: one gap between plain sections,
+     three quarters of it on each side of a tinted band, one for the opener. */
+  --ritmo: clamp(64px, 7.5vw, 96px);
+  --ritmo-banda: calc(var(--ritmo) * 0.75);
+  --ritmo-titulo: clamp(32px, 4vw, 48px);
+
   /* Motion */
   --suave: cubic-bezier(0.25, 0.1, 0.25, 1);
   --curva: cubic-bezier(0.28, 0.11, 0.32, 1);   /* cinematic entrances */
@@ -762,9 +768,14 @@ p { text-wrap: pretty; }
 
 /* ---------- Secciones ---------- */
 
-.seccion { padding: 112px 0; }
-/* Consecutive plain sections share one gap */
+.seccion { padding: var(--ritmo) 0; }
+/* Consecutive plain sections share one gap (the top padding folds away) */
 .seccion:not(.banda-clara) + .seccion:not(.banda-clara) { padding-top: 0; }
+/* Either side of a tinted band the gap is three quarters, so the colour edge
+   adds no more air than a plain gap does. */
+.seccion.banda-clara { padding: var(--ritmo-banda) 0; }
+.seccion:not(.banda-clara):has(+ .banda-clara) { padding-bottom: var(--ritmo-banda); }
+.banda-clara + .seccion:not(.banda-clara) { padding-top: var(--ritmo-banda); }
 .seccion > .banda-oscura { margin-bottom: 0; }
 
 /* Section opener: heading on the left, link on the right */
@@ -774,7 +785,7 @@ p { text-wrap: pretty; }
   align-items: baseline;
   justify-content: space-between;
   gap: 12px 32px;
-  margin-bottom: 48px;
+  margin-bottom: var(--ritmo-titulo);
 }
 .titulo-seccion h2 {
   font-size: clamp(30px, 3.6vw, 44px);
@@ -800,8 +811,8 @@ p { text-wrap: pretty; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 260px;
-  padding: 32px;
+  min-height: 232px;
+  padding: clamp(24px, 2.4vw, 32px);
   background: var(--superficie);
   border-radius: var(--radio);
   box-shadow: var(--sombra);
@@ -830,32 +841,145 @@ p { text-wrap: pretty; }
   text-transform: uppercase;
 }
 .tarjeta-dato h3 {
-  font-size: 26px;
+  font-size: clamp(22px, 2.1vw, 26px);
   line-height: 1.2;
+  text-wrap: balance;
 }
 .tarjeta-dato p { margin-top: auto; color: var(--texto-2); }
 
-/* Statement: short sentences (hook for the word-by-word highlight) */
+/* Statement: short sentences (hook for the word-by-word highlight). A short
+   gold rule opens it so it reads as a pause between the tours and the photos. */
 .declaracion {
-  max-width: 24ch;
+  max-width: 21ch;
   font-family: var(--fuente-titulo);
-  font-size: clamp(32px, 4.6vw, 58px);
+  font-size: clamp(34px, 5.4vw, 72px);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.1;
+  text-wrap: balance;
   color: var(--texto);
 }
-
-/* Full-width photo band between sections (home) */
-.banda-foto { margin: 0 0 120px; }
-.banda-foto img {
-  width: 100%;
-  height: clamp(320px, 52vw, 720px);
-  object-fit: cover;
+.declaracion::before {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+  background: var(--oro);
 }
-.banda-foto figcaption {
-  padding-top: 14px;
-  font-size: 14px;
-  color: var(--texto-3);
+
+/* Tingo María photo slider (home): a native scroll-snap strip. Its first
+   photo lines up with .contenedor and the next one peeks into the margin;
+   script.js adds the arrows, the indicators and the .activa state. The
+   section is a size container so the gutter can be measured in cqw. */
+.panorama { container-type: inline-size; }
+.panorama-cabecera { margin-bottom: var(--ritmo-titulo); }
+.panorama-controles { display: flex; gap: 8px; }
+.panorama-controles[hidden], .panorama-puntos[hidden] { display: none; }
+.panorama-flecha {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--pill);
+  cursor: pointer;
+  transition: background-color 0.2s var(--salida), opacity 0.2s var(--salida), scale 0.16s var(--salida);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.panorama-flecha .ico { width: 22px; height: 22px; }
+.panorama-flecha:active:not(:disabled) { scale: 0.94; }
+.panorama-flecha:disabled { opacity: 0.35; cursor: default; }
+.panorama-flecha:focus-visible { outline: 2px solid var(--foco); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .panorama-flecha:hover:not(:disabled) { background: var(--superficie-2); }
+}
+
+.panorama-pista {
+  --margen: 16px;
+  --ancho-slide: calc(100% - 2 * var(--margen) - 40px);
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--margen);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.panorama-pista::-webkit-scrollbar { display: none; }
+.panorama-pista:focus-visible { outline: 2px solid var(--foco); outline-offset: -4px; }
+@supports (width: 1cqw) {
+  .panorama-pista {
+    --margen: max(16px, calc((100cqw - 1200px) / 2));
+    --ancho-slide: calc(100cqw - 2 * var(--margen) - 40px);
+  }
+}
+.panorama-lista {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  padding-inline: var(--margen);
+  list-style: none;
+}
+.panorama-slide {
+  position: relative;
+  flex: 0 0 var(--ancho-slide);
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  background: var(--superficie-2);
+  border-radius: var(--radio);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.panorama-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--encuadre, 50% 50%);
+}
+/* With JS the photos beside the current one are dimmed (opacity only) */
+.panorama-pista[data-listo] .panorama-slide img { transition: opacity 0.3s var(--salida); }
+.panorama-pista[data-listo] .panorama-slide:not(.activa) img { opacity: 0.55; }
+
+/* The dots' 44px hit area carries 20px of slack below the bar: pull it back */
+.panorama-puntos { display: flex; margin: 12px 0 -20px; }
+.panorama-punto {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.panorama-punto span {
+  display: block;
+  width: 24px;
+  height: 4px;
+  border-radius: var(--pill);
+  background: var(--linea-fuerte);
+  transition: width 0.25s var(--salida), background-color 0.25s var(--salida);
+}
+.panorama-punto[aria-current="true"] span { width: 32px; background: var(--oro-texto); }
+.panorama-punto:focus-visible { outline: 2px solid var(--foco); outline-offset: -2px; border-radius: 8px; }
+@media (hover: hover) and (pointer: fine) {
+  .panorama-punto:hover span { background: var(--texto-3); }
+  .panorama-punto[aria-current="true"]:hover span { background: var(--oro-texto); }
+}
+@media (max-width: 1024px) {
+  .panorama-slide { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 600px) {
+  .panorama-lista { gap: 12px; }
+  .panorama-slide { aspect-ratio: 4 / 5; border-radius: var(--radio-medio); }
+  .panorama-flecha { width: 44px; height: 44px; }
 }
 
 .grid-tours {
@@ -964,13 +1088,49 @@ p { text-wrap: pretty; }
   border-radius: var(--pill);
 }
 
-/* Call-to-action panel (home) */
-.banda-cta { padding: 96px 0; }
+/* Call-to-action panel (home): copy on the left, actions on the right, a soft
+   gold glow in the top-right corner (static, no motion). */
+.banda-cta { padding: clamp(40px, 6vw, 72px) 0; }
+.banda-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 130% at 100% 0%, rgba(196, 167, 125, 0.2), rgba(196, 167, 125, 0) 65%);
+}
+.banda-cta > .contenedor {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-areas: "titulo acciones" "texto acciones";
+  align-items: center;
+  column-gap: clamp(32px, 6vw, 80px);
+}
 .banda-cta h2 {
+  grid-area: titulo;
   font-size: clamp(32px, 4.6vw, 56px);
   line-height: 1.1;
 }
-.banda-cta p { max-width: 560px; margin: 20px 0 32px; font-size: 19px; }
+.banda-cta p { grid-area: texto; max-width: 560px; margin: 16px 0 0; font-size: 19px; }
+.banda-cta-acciones {
+  grid-area: acciones;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.banda-cta-acciones .boton { width: 100%; }
+.banda-cta-acciones .ico { width: 20px; height: 20px; vertical-align: -4px; }
+@media (max-width: 860px) {
+  .banda-cta > .contenedor {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "titulo" "texto" "acciones";
+  }
+  .banda-cta-acciones { margin-top: 28px; }
+}
+@media (min-width: 561px) and (max-width: 860px) {
+  .banda-cta-acciones { flex-direction: row; flex-wrap: wrap; }
+  .banda-cta-acciones .boton { width: auto; }
+}
 
 /* ---------- Página de cada tour ---------- */
 
@@ -1304,7 +1464,6 @@ form.contacto .aceptacion a { color: var(--enlace); }
   .contacto-portada .migas { padding-bottom: 32px; }
   .contacto-columnas { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-bottom: 80px; }
   .contacto-mensaje { padding: 28px 20px; }
-  .banda-cta { padding: 64px 0; }
   .banda-oscura { margin-bottom: 80px; }
   .banda-oscura > .contenedor { width: calc(100% - 40px); }
 }
@@ -1589,9 +1748,6 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   .grid-datos { grid-template-columns: 1fr; gap: 16px; }
   .tarjeta-dato { min-height: 0; }
 
-  .seccion { padding: 72px 0; }
-  .banda-foto { margin-bottom: 80px; }
-  .titulo-seccion { margin-bottom: 36px; }
   .portada-tour { height: 420px; }
   .bloque { margin-bottom: 16px; }
   .hoja-cabecera { padding: 28px 20px; }
@@ -2096,10 +2252,13 @@ main { animation: fundido 0.3s ease-out backwards; }
   .hero-texto, .hero-diapositivas, .palabra { opacity: 1 !important; }
   .hero-diapositivas, .portada-tour::after { transform: none !important; }
   .tarjeta-tour .marco img, .galeria img { scale: none !important; }
+  /* Tingo María slider: scrolls instantly (JS), no fade between photos */
+  .panorama-pista { scroll-behavior: auto; }
+  .panorama-pista[data-listo] .panorama-slide img, .panorama-punto span { transition: none; }
   .cabecera.oculta { translate: none; }
   /* Microinteractions: no scale on hover or press */
   .boton:hover, .boton:active, .boton-reservar:hover, .boton-reservar:active,
-  .boton-menu:active, .tema-toggle:active, .tarjeta-tour:active,
+  .boton-menu:active, .tema-toggle:active, .tarjeta-tour:active, .panorama-flecha:active,
   .wa-flotante:active, .lightbox button:active, .hero-pausa:active { scale: none; }
   .tarjeta-tour:hover, .tarjeta-tour:focus-visible,
   .enlace:hover > span[aria-hidden], .enlace:focus-visible > span[aria-hidden] { translate: none; }

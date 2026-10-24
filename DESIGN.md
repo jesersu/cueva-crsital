@@ -134,7 +134,7 @@ A 60-30-10 palette: slate surfaces, white/mist text and fills, teal for actions,
 
 ## Layout
 
-A single 1200px container with a 16px minimum gutter, sections in generous vertical bands that alternate page and band tones. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The home hero is full height (100svh minus the top bar, at least 620px): text on the left container grid, a full-bleed photo stage covering the whole first screen at every width (a left-to-right scrim on desktop keeps the text readable, a bottom scrim on phones), indicators and pause bottom-left; "Lo principal." follows directly. Nothing may scroll horizontally at 360–390px.
+A single 1200px container with a 16px minimum gutter, sections in vertical bands that alternate page and band tones, on one rhythm: `--ritmo` (64–96px) between plain sections, three quarters of it either side of a tinted band, and a 32–48px gap from each section heading to its content. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The home hero is full height (100svh minus the top bar, at least 620px): text on the left container grid, a full-bleed photo stage covering the whole first screen at every width (a left-to-right scrim on desktop keeps the text readable, a bottom scrim on phones), indicators and pause bottom-left; "Lo principal." follows directly. Nothing may scroll horizontally at 360–390px.
 
 ## Elevation & Depth
 
@@ -172,6 +172,9 @@ Centred uppercase-free Lato links, active link in teal text, TOURS submenu (hove
 
 ### Hero slider
 The four Próximamente photos crossfade every 5.5s with a slow Ken Burns zoom (1 to 1.1 over 9s). Four 56px-wide progress indicators (the active bar fills over the interval; each is a button named "Ver foto N de 4") and a 40px glass pause button sit bottom-left, un-hidden only with JS; under reduced motion nothing advances and the pause button is hidden. On scroll the stage, slides and text move at different speeds (parallax, composite-only).
+
+### Tingo María photo slider
+A native scroll-snap strip under the heading "Tingo María y el río Huallaga.": the first 2:1 photo (4:3 on tablets, 4:5 on phones) lines up with the container and the next one peeks into the margin, dimmed to 55% until current. Round 48px prev/next arrows sit at the heading's right, 4px indicator bars (the current one wider and in gold) below; both are built by JS, so without JS it is a plain scrollable strip. No autoplay; reduced motion makes jumps instant.
 
 ### Icons
 One inline SVG line set (`.ico`: 24 viewBox, stroke 1.75, round caps/joins, `currentColor`) for the toggle, WhatsApp, contact details, fact-card chips, top bar, footer, menu, hero pause/play, lightbox and arrows. Decorative icons are `aria-hidden`; icon-only controls keep their `aria-label`.

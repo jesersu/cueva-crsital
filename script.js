@@ -46,6 +46,7 @@
       close: 'Cerrar',
       prev: 'Foto anterior',
       next: 'Foto siguiente',
+      photoOf: (n, total) => `Foto ${n} de ${total}`,
     },
     en: {
       pausePhotos: 'Pause photos',
@@ -67,6 +68,7 @@
       close: 'Close',
       prev: 'Previous photo',
       next: 'Next photo',
+      photoOf: (n, total) => `Photo ${n} of ${total}`,
     },
   };
   const t = (key, ...args) => {
@@ -407,6 +409,86 @@
     controlsBox.hidden = false;
     syncDots();
     refresh();
+  }
+
+  /* ---------- Tingo María photo slider (scroll-snap) ---------- */
+  // The strip is a native scroll-snap scroller: touch, trackpad and the
+  // browser's own scrolling already work without this file. Here we add the
+  // prev/next arrows and indicators (built here so their names come from
+  // STRINGS), keep the .activa photo in step with the scroll position, and
+  // handle ArrowLeft/Right/Home/End on the focused strip. There is no
+  // autoplay; reduced motion only makes arrow jumps instant.
+  const stripTrack = document.querySelector('.panorama-pista');
+  const stripSlides = stripTrack ? Array.from(stripTrack.querySelectorAll('.panorama-slide')) : [];
+  const stripControls = document.querySelector('.panorama-controles');
+  const stripDots = document.querySelector('.panorama-puntos');
+  if (stripSlides.length > 1 && stripControls && stripDots) {
+    const ARROW = (d) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`;
+    const makeButton = (className, label, html) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = className;
+      button.setAttribute('aria-label', label);
+      button.innerHTML = html;
+      return button;
+    };
+    const prevButton = makeButton('panorama-flecha', t('prev'), ARROW('m15 6-6 6 6 6'));
+    const nextButton = makeButton('panorama-flecha', t('next'), ARROW('m9 6 6 6-6 6'));
+    const dotButtons = stripSlides.map((_, i) => makeButton(
+      'panorama-punto', t('photoOf', i + 1, stripSlides.length), '<span></span>'));
+    stripControls.append(prevButton, nextButton);
+    stripDots.append(...dotButtons);
+    stripControls.hidden = false;
+    stripDots.hidden = false;
+
+    let stripIndex = -1;
+    const slideLeft = (i) => stripSlides[i].offsetLeft - stripSlides[0].offsetLeft;
+    const maxScroll = () => stripTrack.scrollWidth - stripTrack.clientWidth;
+    const nearest = () => {
+      if (stripTrack.scrollLeft >= maxScroll() - 2) return stripSlides.length - 1;
+      let best = 0;
+      let bestDistance = Infinity;
+      stripSlides.forEach((_, i) => {
+        const distance = Math.abs(stripTrack.scrollLeft - slideLeft(i));
+        if (distance < bestDistance) { best = i; bestDistance = distance; }
+      });
+      return best;
+    };
+    const syncStrip = () => {
+      const index = nearest();
+      if (index === stripIndex) return;
+      stripIndex = index;
+      stripSlides.forEach((slide, i) => slide.classList.toggle('activa', i === index));
+      dotButtons.forEach((dot, i) => {
+        if (i === index) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      prevButton.disabled = index === 0;
+      nextButton.disabled = index === stripSlides.length - 1;
+    };
+    const goToSlide = (i) => {
+      const target = Math.max(0, Math.min(stripSlides.length - 1, i));
+      stripTrack.scrollTo({ left: slideLeft(target), behavior: reducedMotion ? 'auto' : 'smooth' });
+    };
+
+    let stripFrame = 0;
+    stripTrack.addEventListener('scroll', () => {
+      if (stripFrame) return;
+      stripFrame = window.requestAnimationFrame(() => { stripFrame = 0; syncStrip(); });
+    }, { passive: true });
+    measureTasks.push(syncStrip);
+    prevButton.addEventListener('click', () => goToSlide(stripIndex - 1));
+    nextButton.addEventListener('click', () => goToSlide(stripIndex + 1));
+    dotButtons.forEach((dot, i) => dot.addEventListener('click', () => goToSlide(i)));
+    stripTrack.addEventListener('keydown', (e) => {
+      if (e.target !== stripTrack || e.altKey || e.ctrlKey || e.metaKey) return;
+      const keys = { ArrowLeft: stripIndex - 1, ArrowRight: stripIndex + 1, Home: 0, End: stripSlides.length - 1 };
+      if (!(e.key in keys)) return;
+      e.preventDefault();
+      goToSlide(keys[e.key]);
+    });
+    stripTrack.dataset.listo = '';
+    syncStrip();
   }
 
   /* ---------- Word-by-word highlight ---------- */
