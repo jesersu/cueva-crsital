@@ -146,6 +146,19 @@ html {
   text-size-adjust: 100%;
 }
 
+/* Icon set: one inline-SVG line style (24 grid, 1.75 stroke, round caps and
+   joins, currentColor). Each context only sets the size. */
+.ico {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* Taps fire immediately (no double-tap-zoom wait) */
 a, button, label, summary, select { touch-action: manipulation; }
 
@@ -206,6 +219,7 @@ p { text-wrap: pretty; }
 }
 /* The › arrow slides right on hover or focus */
 .enlace > span[aria-hidden] { display: inline-block; transition: translate 0.2s var(--salida); }
+.enlace .ico { width: 1.1em; height: 1.1em; vertical-align: -0.2em; }
 .enlace:focus-visible > span[aria-hidden] { translate: 3px 0; }
 @media (hover: hover) and (pointer: fine) {
   .enlace:hover > span[aria-hidden] { translate: 3px 0; }
@@ -252,6 +266,7 @@ p { text-wrap: pretty; }
 }
 .barra-superior a { color: var(--enlace); }
 .barra-superior span { white-space: nowrap; }
+.barra-superior .ico { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; color: var(--oro); }
 
 /* Header: solid (slate / white) everywhere; transparent over the home hero
    until the visitor scrolls (script.js adds .dinamica and toggles .solida) */
@@ -315,7 +330,7 @@ p { text-wrap: pretty; }
   transition: background-color 0.2s ease, border-color 0.2s ease, scale 0.16s var(--salida);
 }
 .tema-listo .tema-toggle { visibility: visible; }
-.tema-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tema-toggle .ico { width: 20px; height: 20px; }
 /* Light theme (default) shows the moon (switch to dark); dark shows the sun */
 .tema-toggle .icono-sol,
 :root[data-theme="dark"] .tema-toggle .icono-luna { display: none; }
@@ -371,6 +386,7 @@ p { text-wrap: pretty; }
   -webkit-user-select: none;
   transition: opacity 0.2s ease, scale 0.16s var(--salida);
 }
+.boton-menu .ico { width: 24px; height: 24px; }
 .boton-menu:active { scale: 0.92; }
 @media (hover: hover) and (pointer: fine) {
   .boton-menu:hover { opacity: 0.8; }
@@ -391,6 +407,7 @@ p { text-wrap: pretty; }
   text-decoration: none;
   transition: color 0.2s ease;
 }
+.menu .ico-chevron { width: 14px; height: 14px; margin-left: 2px; vertical-align: -2px; }
 .menu > li:focus-within > a { color: var(--texto); }
 /* Active page: teal text */
 .menu > li > a[aria-current="page"] { color: var(--enlace); }
@@ -592,7 +609,7 @@ p { text-wrap: pretty; }
   animation: aparecer 0.8s var(--curva) 1.2s both;
 }
 .hero-pausa[hidden] { display: none; }
-.hero-pausa svg { width: 14px; height: 14px; fill: currentColor; }
+.hero-pausa .ico { width: 20px; height: 20px; }
 .hero-pausa .icono-reanudar,
 .hero-pausa.pausado .icono-pausa { display: none; }
 .hero-pausa.pausado .icono-reanudar { display: block; }
@@ -669,6 +686,17 @@ p { text-wrap: pretty; }
   background: var(--superficie);
   border-radius: var(--radio);
   box-shadow: var(--sombra);
+}
+/* Icon tile: gold line icon on a page-toned chip */
+.tarjeta-dato .icono-dato {
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: var(--lienzo);
+  color: var(--oro-texto);
 }
 .tarjeta-dato .etiqueta-dato {
   color: var(--oro-texto);
@@ -796,7 +824,7 @@ p { text-wrap: pretty; }
   cursor: pointer;
   transition: background-color 0.2s ease, opacity 0.2s ease, scale 0.16s var(--salida);
 }
-.carrusel-boton svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.carrusel-boton .ico { width: 22px; height: 22px; }
 .carrusel-boton:disabled { opacity: 0.36; cursor: default; }
 .carrusel-boton:active:not(:disabled) { scale: 0.95; }
 @media (hover: hover) and (pointer: fine) {
@@ -893,6 +921,7 @@ p { text-wrap: pretty; }
   font-size: 16px;
   font-weight: 700;
 }
+.tarjeta-tour .nombre .ico { width: 18px; height: 18px; vertical-align: -4px; }
 .tarjeta-tour .nombre .flecha {
   display: inline-block;
   transition: transform 0.2s var(--salida);
@@ -1105,11 +1134,7 @@ p { text-wrap: pretty; }
   width: 24px;
   height: 24px;
   margin-top: 2px;
-  fill: none;
-  stroke: var(--oro-texto);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  color: var(--oro-texto);
 }
 .canal > div { min-width: 0; }
 .canal h3 {
@@ -1332,6 +1357,7 @@ form:not(.validacion-viva) .campo select:user-invalid { border-color: var(--erro
   font-size: clamp(30px, 3.6vw, 44px);
   line-height: 1.12;
 }
+.hoja-cabecera h1 .ico-titulo { width: 0.8em; height: 0.8em; margin-right: 6px; vertical-align: -0.06em; color: var(--oro-texto); }
 .hoja-cabecera p { font-size: 17px; color: var(--texto-3); margin-top: 8px; }
 .hoja-cabecera .proveedor {
   background: var(--superficie-2);
@@ -1409,6 +1435,8 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 }
 .pie p, .pie li { font-size: 13px; line-height: 1.45; }
 .pie ul { list-style: none; }
+.pie li .ico { width: 15px; height: 15px; margin-right: 6px; vertical-align: -3px; color: var(--oro); }
+.pie li .ico-flecha { margin: 0 0 0 4px; }
 .pie li { padding: 5px 0; overflow-wrap: anywhere; }
 .pie a { color: var(--texto-3); text-decoration: none; transition: color 0.2s ease; }
 @media (hover: hover) and (pointer: fine) {
@@ -1745,7 +1773,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   transition: background-color 0.2s ease, scale 0.16s var(--salida);
 }
 .wa-flotante span { padding-right: 8px; }
-.wa-flotante svg { width: 28px; height: 28px; }
+.wa-flotante .ico { width: 26px; height: 26px; }
 .wa-flotante:active { scale: 0.95; }
 @media (hover: hover) and (pointer: fine) {
   .wa-flotante:hover { background: rgba(35, 41, 43, 0.95); text-decoration: none; }
@@ -1833,6 +1861,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   touch-action: pinch-zoom;
   transition: opacity 0.2s ease-out;   /* exit: fast (script.js waits for it) */
 }
+.lightbox button .ico { width: 24px; height: 24px; margin: auto; }
 .lightbox.abierto { opacity: 1; pointer-events: auto; transition-duration: 0.3s; }
 .lightbox[hidden] { display: none; }
 .lightbox figure {

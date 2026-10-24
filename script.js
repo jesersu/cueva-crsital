@@ -708,10 +708,10 @@
     box.setAttribute('aria-modal', 'true');
     box.setAttribute('aria-label', 'Galería de fotos');
     box.innerHTML = `
-      <button class="lb-cerrar" type="button" aria-label="Cerrar">×</button>
-      <button class="lb-prev" type="button" aria-label="Foto anterior">‹</button>
+      <button class="lb-cerrar" type="button" aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="lb-prev" type="button" aria-label="Foto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"/></svg></button>
       <figure><img alt=""><figcaption></figcaption></figure>
-      <button class="lb-next" type="button" aria-label="Foto siguiente">›</button>`;
+      <button class="lb-next" type="button" aria-label="Foto siguiente"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></button>`;
     document.body.appendChild(box);
 
     const img = box.querySelector('img');

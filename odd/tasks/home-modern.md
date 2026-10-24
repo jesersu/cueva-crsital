@@ -27,7 +27,7 @@ New business facts, destination name, EN/ES, deploy.
 ## Tasks
 - [x] T1 — Light by default + light tokens. Route: delegated (11 pages + css/js). Evidence: Playwright, cleared localStorage -> data-theme=light, meta #FFFFFF, body rgb(255,255,255); toggle -> dark, localStorage tema=dark, meta #2D3436, persists after reload; toggling back persists light; head script identical in 11 pages (sort -u = 1 line); node --check ok.
 - [x] T2 — Home restructure with Próximamente as hero-level imagery. Route: delegated. Evidence: section moved directly after the hero, display title + large cards (up to 720px high); screenshots at 1366/390 light and dark viewed (.playwright-mcp/t2-*.png); slider behaviour checked at the end.
-- [ ] T3 — Icon set. Route: delegated.
+- [x] T3 — Icon set. Route: delegated. Evidence: all emoji/glyph icons replaced with shared `.ico` inline SVG (24 grid, 1.75 stroke, round, currentColor); no emoji/arrow glyphs left in *.html/script.js (grep 0); topbar, toggle, menu button, TOURS nav, WhatsApp float and footer md5-identical across 11 pages; screenshots viewed; node --check ok.
 - [ ] T4 — Motion polish + docs. Route: delegated.
 
 ## Acceptance criteria
