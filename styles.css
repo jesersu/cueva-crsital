@@ -1699,15 +1699,14 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--vidrio-oscuro);
-  -webkit-backdrop-filter: var(--desenfoque);
-  backdrop-filter: var(--desenfoque);
+  background: #168A45;     /* WhatsApp-style green; white text: 4.6:1 */
   color: var(--blanco);
   font-size: 14px;
   font-weight: 700;
   padding: 10px;
-  border: 1px solid rgba(196, 167, 125, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--pill);
+  box-shadow: 0 6px 20px rgba(22, 138, 69, 0.35);
   text-decoration: none;
   user-select: none;
   -webkit-user-select: none;
@@ -1717,7 +1716,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 .wa-flotante .ico { width: 26px; height: 26px; }
 .wa-flotante:active { scale: 0.95; }
 @media (hover: hover) and (pointer: fine) {
-  .wa-flotante:hover { background: rgba(35, 41, 43, 0.95); text-decoration: none; }
+  .wa-flotante:hover { background: #12763B; text-decoration: none; }
 }
 @media (max-width: 560px) {
   .wa-flotante { right: 14px; bottom: 14px; }
@@ -1968,5 +1967,4 @@ main { animation: fundido 0.3s ease-out backwards; }
 /* Less transparency: glass turns solid (same tones, no blur) */
 @media (prefers-reduced-transparency: reduce) {
   .lightbox button, .hero-pausa { background: var(--superficie-2); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .wa-flotante { background: var(--pie-fondo); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
