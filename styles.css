@@ -1619,6 +1619,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   background: var(--superficie);
   border-radius: var(--radio);
   padding: 24px 28px;
+  margin-bottom: 24px;
 }
 /* Photo credits: thumbnail + attribution data on cards */
 .legal.creditos { margin-bottom: 120px; }

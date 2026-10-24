@@ -29,7 +29,7 @@ New business facts, destination name, other languages, deploy without approval.
 
 ## Tasks
 - [x] T1 — i18n infrastructure + core EN pages + forms/JS/PHP. Route: delegated.
-- [ ] T2 — English legal pages. Route: delegated.
+- [x] T2 — English legal pages. Route: delegated.
 - [ ] T3 — SEO pass. Route: delegated.
 - [x] T4 — Hero Próximamente photos cover the whole screen (user request; accepted change, both languages). Route: delegated.
 
@@ -45,5 +45,7 @@ T1: `node --check script.js` OK; `php -l` OK on 7.4 and 8.3; PHP 8.3 harness: EN
 
 T4: `.hero-foto` is `inset: 0; width: 100%` at every width (no right-side fade; one left-to-right + top + bottom scrim on `.hero-medio::after`); hero max height raised 940 -> 1400px so it fills 1920x1080 and tablets; HTML unchanged (first slide already eager + fetchpriority high, per-photo `--encuadre` kept after visual review of all 4 slides at 1366/1920). Playwright: contrast of H1/description/meta/links over the 98th-percentile brightest pixels of each of the 4 slides, 1920x1080 and 1366x800, all >= 5.3:1 (description >= 7.3, H1 >= 7.4); 820 and 390 >= 7.5 (hero-meta >= 6.2); hero bottom == viewport bottom at 1920/1366/820; scroll 0/300/800 (dark and light) no gap, header solid then hidden; EN home same geometry; no horizontal scroll at 390/360; reduced motion: slide static, pause hidden, no animation; no-JS shows slide 1 + H1; no console errors. Commit: see git log.
 
+T2: five `en/` legal twins built (courtesy translations, not legally reviewed; notice + link to the Spanish original under the h1). python check: h1=1, h2/h3/li/tr/ul/img/select/option/textarea counts identical to ES twins (only +1 p, +1 a for the notice, +1 hidden `idioma` input on libro), all internal refs resolve (the dangling footer links are now resolved), chrome md5 identical to `en/index.html` after normalisation, switch hrefs/`aria-current` correct, every number/date/percentage of each Spanish page appears in its twin. Playwright (new tab, port 8015): no horizontal scroll at 1366/390 on all five, notice visible, ES<->EN switch lands on the twin for all five pairs, EN libro validation hints in English, mocked success shows the English claim-number message and the POST carries `idioma=en` + `formulario=reclamo`, no console errors. Only styles.css change: `.legal .nota` gets `margin-bottom: 24px`. Commit: see git log.
+
 ## Next step
-Delegate T2 (English legal pages; they also resolve the dangling footer links).
+Delegate T3 (SEO pass on all 22 pages); the business should review the English legal translations.
