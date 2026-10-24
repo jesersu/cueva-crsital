@@ -31,7 +31,7 @@ New business facts, destination name, other languages, deploy without approval.
 - [x] T1 — i18n infrastructure + core EN pages + forms/JS/PHP. Route: delegated.
 - [ ] T2 — English legal pages. Route: delegated.
 - [ ] T3 — SEO pass. Route: delegated.
-- [ ] T4 — Hero Próximamente photos cover the whole screen (user request; accepted change, both languages). Route: delegated.
+- [x] T4 — Hero Próximamente photos cover the whole screen (user request; accepted change, both languages). Route: delegated.
 
 ## Acceptance criteria
 - Every Spanish page has an English twin with a working switch both ways; `<html lang>` correct; forms work in EN with EN messages.
@@ -42,6 +42,8 @@ Test-first exception: no runner. node --check, php -l in Docker, python HTML lin
 
 ## Progress / Evidence
 T1: `node --check script.js` OK; `php -l` OK on 7.4 and 8.3; PHP 8.3 harness: EN JSON returns English message, no-JS EN 303 -> `/en/contacto.html#enviado|#error` (reclamo -> `/en/libro-de-reclamaciones.html#error`), ES unchanged, unknown `idioma` falls back to es, business mail carries `Idioma: en|es`; python check (IDs/tag counts vs ES twins, h1=1, refs resolve, chrome md5 identical per language, switch current/hrefs) PASS, only dangling links are the five EN legal twins (T2); Playwright: no horizontal scroll at 1366/390/360 on ES/EN home and EN contact, switch ES<->EN lands on twins, EN validation hints and mocked success panel in English, toggle name "Light theme"/"Tema claro", no console errors. Commit: see git log (feat: add English mirror and language switch).
+
+T4: `.hero-foto` is `inset: 0; width: 100%` at every width (no right-side fade; one left-to-right + top + bottom scrim on `.hero-medio::after`); hero max height raised 940 -> 1400px so it fills 1920x1080 and tablets; HTML unchanged (first slide already eager + fetchpriority high, per-photo `--encuadre` kept after visual review of all 4 slides at 1366/1920). Playwright: contrast of H1/description/meta/links over the 98th-percentile brightest pixels of each of the 4 slides, 1920x1080 and 1366x800, all >= 5.3:1 (description >= 7.3, H1 >= 7.4); 820 and 390 >= 7.5 (hero-meta >= 6.2); hero bottom == viewport bottom at 1920/1366/820; scroll 0/300/800 (dark and light) no gap, header solid then hidden; EN home same geometry; no horizontal scroll at 390/360; reduced motion: slide static, pause hidden, no animation; no-JS shows slide 1 + H1; no console errors. Commit: see git log.
 
 ## Next step
 Delegate T2 (English legal pages; they also resolve the dangling footer links).
