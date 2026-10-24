@@ -38,6 +38,8 @@
       sending: 'Enviando…',
       successTitle: 'Consulta enviada.',
       sendAnother: 'Enviar otro mensaje',
+      successTitleTour: 'Solicitud enviada.',
+      sendAnotherTour: 'Enviar otra solicitud',
       sendFail: 'No pudimos enviar el formulario. Inténtalo más tarde.',
       netFail: 'No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.',
       gallery: 'Galería de fotos',
@@ -57,6 +59,8 @@
       sending: 'Sending…',
       successTitle: 'Inquiry sent.',
       sendAnother: 'Send another message',
+      successTitleTour: 'Request sent.',
+      sendAnotherTour: 'Send another request',
       sendFail: 'We could not send the form. Please try again later.',
       netFail: 'We could not reach the server. Check your connection and try again.',
       gallery: 'Photo gallery',
@@ -601,6 +605,7 @@
     const buttonText = button ? button.textContent : '';
     const validation = setUpValidation(form);
     const replaceOnSuccess = form.classList.contains('contacto');
+    const isTour = form.hasAttribute('data-tour'); // tour-page request form: its own success wording
     let sending = false;
     let successPanel = null;
 
@@ -624,13 +629,13 @@
       successPanel.tabIndex = -1;
       const title = document.createElement('p');
       title.className = 'exito-titulo';
-      title.textContent = t('successTitle');
+      title.textContent = t(isTour ? 'successTitleTour' : 'successTitle');
       const text = document.createElement('p');
       text.textContent = message;
       const again = document.createElement('button');
       again.type = 'button';
       again.className = 'boton fantasma';
-      again.textContent = t('sendAnother');
+      again.textContent = t(isTour ? 'sendAnotherTour' : 'sendAnother');
       again.addEventListener('click', () => {
         successPanel.remove();
         successPanel = null;
@@ -692,7 +697,13 @@
   /* ---------- Gallery lightbox ---------- */
   const links = Array.from(document.querySelectorAll('.galeria a'));
   if (links.length) {
-    const items = links.map((a) => ({ src: a.href, alt: a.querySelector('img')?.alt || '' }));
+    // One slide per distinct photo: the tour-page mosaic can repeat a gallery photo.
+    const items = [];
+    const slideOf = links.map((a) => {
+      let i = items.findIndex((item) => item.src === a.href);
+      if (i < 0) i = items.push({ src: a.href, alt: a.querySelector('img')?.alt || '' }) - 1;
+      return i;
+    });
     let index = 0;
     let lastFocus = null;
     let hideTimer = null;
@@ -741,7 +752,7 @@
       hideTimer = window.setTimeout(() => { box.hidden = true; }, fadeMs());
     };
 
-    links.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); open(i); }));
+    links.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); open(slideOf[i]); }));
     closeBtn.addEventListener('click', close);
     box.querySelector('.lb-prev').addEventListener('click', () => show(index - 1));
     box.querySelector('.lb-next').addEventListener('click', () => show(index + 1));

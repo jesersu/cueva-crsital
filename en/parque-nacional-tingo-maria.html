@@ -203,24 +203,96 @@
     <div class="contenedor">
       <p class="migas"><a href="index.html">Home</a> › Tours › 01 · Parque Nacional Tingo María</p>
 
-      <section class="bloque">
-        <h2>Tour itinerary</h2>
-        <ul class="itinerario">
-          <li><strong>10:00 – 10:30 am</strong> · Pickup at your accommodation</li>
-          <li>Visit to Parque Nacional Tingo María</li>
-          <li>Entrance to the Cueva de las Lechuzas (Owl Cave)</li>
-          <li>Río Perdido</li>
-          <li>Boat ride on the Monzón River (optional)</li>
-          <li>Chocolate factory</li>
-          <li>Local handicrafts and exotic drinks</li>
-          <li>Sulfur springs</li>
-          <li>Traditional lunch</li>
-          <li>Jacintillo viewpoint</li>
-          <li>Walk to the Santa Carmen waterfall (approx. 15 min)</li>
-          <li>San Francisco viewpoint (Bella Durmiente viewpoint)</li>
-          <li><strong>5:30 pm</strong> · Return</li>
-        </ul>
-      </section>
+      <div class="tour-layout">
+        <section class="bloque tour-itinerario">
+          <h2>Tour itinerary</h2>
+          <ul class="itinerario">
+            <li><strong>10:00 – 10:30 am</strong> · Pickup at your accommodation</li>
+            <li>Visit to Parque Nacional Tingo María</li>
+            <li>Entrance to the Cueva de las Lechuzas (Owl Cave)</li>
+            <li>Río Perdido</li>
+            <li>Boat ride on the Monzón River (optional)</li>
+            <li>Chocolate factory</li>
+            <li>Local handicrafts and exotic drinks</li>
+            <li>Sulfur springs</li>
+            <li>Traditional lunch</li>
+            <li>Jacintillo viewpoint</li>
+            <li>Walk to the Santa Carmen waterfall (approx. 15 min)</li>
+            <li>San Francisco viewpoint (Bella Durmiente viewpoint)</li>
+            <li><strong>5:30 pm</strong> · Return</li>
+          </ul>
+        </section>
+
+        <aside class="tour-solicitud" aria-labelledby="titulo-solicitud">
+          <span class="eyebrow">Tour 01</span>
+          <h2 id="titulo-solicitud">Request this tour.</h2>
+          <p class="tour-solicitud-intro">Leave your details and your preferred date; we will reply to your email address or phone.</p>
+
+          <!-- No-JS result: enviar.php redirects to #enviado or #error -->
+          <div class="aviso-envio" id="enviado" role="status" tabindex="-1">
+            <p><strong>Request sent.</strong> Thank you for your interest; we will reply to your email address or phone.</p>
+          </div>
+          <div class="aviso-envio" id="error" role="alert" tabindex="-1">
+            <p><strong>We could not send your request.</strong> Check the required fields and try again, or message us on WhatsApp.</p>
+          </div>
+
+          <form class="contacto" id="form-tour" action="/enviar.php" method="post" data-tour>
+            <input type="hidden" name="formulario" value="contacto">
+            <input type="hidden" name="idioma" value="en">
+            <input type="hidden" name="tour" value="Parque Nacional de Tingo María">
+            <input type="hidden" name="pagina" value="parque-nacional-tingo-maria">
+            <input type="hidden" name="tiempo" value="">
+            <!-- Anti-spam honeypot: hidden from view; people leave it empty -->
+            <div class="campo-trampa">
+              <label for="t-control">Do not fill in this field if you are a person</label>
+              <input type="text" id="t-control" name="campo_control" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="campos">
+              <div class="campo">
+                <label for="t-nombre">Name <span class="req">*</span></label>
+                <input type="text" id="t-nombre" name="nombre" maxlength="120" autocomplete="name" required>
+              </div>
+              <div class="campo">
+                <label for="t-correo">Email address <span class="req">*</span></label>
+                <input type="email" id="t-correo" name="correo" maxlength="254" autocomplete="email" required>
+              </div>
+              <div class="campo">
+                <label for="t-telefono">Phone</label>
+                <input type="tel" id="t-telefono" name="telefono" maxlength="30" autocomplete="tel">
+              </div>
+              <div class="campo mitad">
+                <label for="t-fecha">Tentative date</label>
+                <input type="date" id="t-fecha" name="fecha">
+              </div>
+              <div class="campo mitad">
+                <label for="t-personas">Number of people</label>
+                <input type="number" id="t-personas" name="personas" min="1" max="9999" step="1" inputmode="numeric">
+              </div>
+              <div class="campo ancho">
+                <label for="t-mensaje">Message <span class="req">*</span></label>
+                <textarea id="t-mensaje" name="mensaje" maxlength="5000" required>Hello, I would like to request the Parque Nacional Tingo María tour. Please let me know about availability and how to book.</textarea>
+              </div>
+            </div>
+
+            <div class="aceptacion">
+              <input type="checkbox" id="t-acepto" name="acepto" value="Sí" required>
+              <label for="t-acepto">I have read and accept the <a href="politicas-de-privacidad.html">Privacy and Personal Data Protection Policy</a> and authorize the processing of my personal data in accordance with Peruvian Law No. 29733 on Personal Data Protection. <span class="req">*</span></label>
+            </div>
+
+            <div class="contacto-envio">
+              <button class="boton" type="submit">Request this tour</button>
+              <p class="estado-formulario" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </aside>
+
+        <div class="galeria tour-mosaico" role="group" aria-label="Tour photos">
+          <a href="/img/pntm-12.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/img/pntm-12.jpg" width="1280" height="959" alt="Monzón River at the foot of a jungle hill in Parque Nacional Tingo María"></a>
+          <a href="/img/pntm-09.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/img/pntm-09.jpg" width="526" height="261" alt="Waterfall and natural pool in Tingo María"></a>
+          <a href="/img/pntm-06.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/img/pntm-06.jpg" width="352" height="210" alt="Inside the Cueva de las Lechuzas"></a>
+          <a href="/img/pntm-08.jpg" target="_blank" rel="noopener"><img loading="lazy" src="/img/pntm-08.jpg" width="439" height="292" alt="Bella Durmiente viewpoint"></a>
+        </div>
+      </div>
 
       <section class="bloque">
         <h2>Photo gallery</h2>

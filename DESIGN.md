@@ -164,6 +164,9 @@ Rounded and pill-shaped: buttons and the header CTA are full pills (9999px), sin
 - **Focus:** 2px teal ring, border transparent.
 - **Validation:** red/green borders with `aria-invalid` and a linked text hint; success replaces the form with a status panel.
 
+### Tour request card
+On tour pages the itinerary sits beside a card (surface fill, 24px radius, gold "Tour NN" eyebrow, Playfair headline) holding a compact request form: pill fields (date and people share a row once the card is 380px wide), teal full-width submit, same validation and success panel as contact. It is sticky from 1200px (pinning with its submit button in view on short screens). A photo mosaic (one 21:9 photo over three small ones, 8px gaps, 16px radius, lightbox) sits under the itinerary so both columns stay filled; below 1024px the order is itinerary, form, photos.
+
 ### Navigation
 Centred uppercase-free Lato links, active link in teal text, TOURS submenu (hover/first-tap on desktop). Mobile is a CSS checkbox menu. Theme toggle: gold moon (light, default) / sun (dark) icon button named "Tema claro" with `aria-pressed` (true = light).
 

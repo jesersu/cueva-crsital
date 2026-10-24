@@ -1084,6 +1084,68 @@ p { text-wrap: pretty; }
   margin: 0 0 120px;
 }
 
+/* Tour pages: itinerary beside a request-form card. Below 1024px everything
+   stacks in DOM order (itinerary, form, photos); from 1024px the form takes
+   the right column over both rows, and the photo mosaic sits under the
+   itinerary so neither column is left empty. */
+.tour-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.tour-layout > .bloque { margin-bottom: 0; }
+.tour-solicitud {
+  container-type: inline-size;
+  min-width: 0;
+  background: var(--superficie);
+  border-radius: var(--radio);
+  padding: 28px 20px;
+  box-shadow: var(--sombra);
+}
+.tour-solicitud h2 { font-size: clamp(28px, 3vw, 34px); line-height: 1.15; margin-top: 10px; }
+.tour-solicitud-intro { margin-top: 10px; color: var(--texto-2); font-size: 16px; }
+.tour-solicitud .aviso-envio { margin: 20px 0 0; }
+.tour-solicitud form.contacto { margin-top: 20px; }
+.tour-solicitud form.contacto .campos { grid-template-columns: minmax(0, 1fr); gap: 14px; margin-bottom: 16px; }
+.tour-solicitud .campo textarea { min-height: 124px; }
+.tour-solicitud .contacto-envio { margin-top: 20px; gap: 12px; }
+/* Date and people share a row when the card is wide enough */
+@container (min-width: 380px) {
+  .tour-solicitud form.contacto .campos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tour-solicitud .campo:not(.mitad) { grid-column: 1 / -1; }
+}
+/* Photo mosaic: one wide photo over three small ones; the links reuse the
+   .galeria lightbox. */
+.galeria.tour-mosaico { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.tour-mosaico a { aspect-ratio: 1; }
+.tour-mosaico a:first-child { grid-column: 1 / -1; aspect-ratio: 21 / 9; }
+@media (min-width: 640px) {
+  .tour-mosaico a { aspect-ratio: 4 / 3; }
+}
+@media (min-width: 1024px) {
+  .tour-layout {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas: "itinerario solicitud" "mosaico solicitud";
+    gap: 20px 24px;
+    align-items: start;
+  }
+  .tour-itinerario { grid-area: itinerario; }
+  .tour-solicitud { grid-area: solicitud; padding: 32px; }
+  .tour-mosaico { grid-area: mosaico; }
+}
+/* Sticky from 1200px, where the card is about 900px tall. On viewports
+   shorter than that, `top` goes negative so the card pins with its bottom
+   (submit button) in view and only the title area scrolls away; the 760px
+   floor keeps the fields themselves visible. */
+@media (min-width: 1200px) and (min-height: 760px) {
+  .tour-solicitud {
+    position: sticky;
+    top: min(calc(var(--alto-cabecera) + 16px), calc(100vh - 960px));
+    top: min(calc(var(--alto-cabecera) + 16px), calc(100svh - 960px));
+  }
+}
+
 /* ---------- Página de contacto ---------- */
 
 .contacto-portada { padding: 0 0 64px; }

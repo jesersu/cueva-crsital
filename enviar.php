@@ -13,7 +13,9 @@
  * - Responses: JSON {ok, message} for fetch requests (Accept:
  *   application/json or X-Requested-With: fetch); otherwise a 303 redirect
  *   back to the form page with #enviado or #error. User input is never
- *   reflected in a response.
+ *   reflected in a response. The optional hidden field "pagina" (a key of
+ *   PAGINAS_TOUR) lets a tour page receive that redirect instead of the
+ *   contact page; it is looked up in a constant map and never emailed.
  * - Language: the optional hidden field "idioma" (es | en, whitelisted,
  *   default es) picks the language of the visitor-facing responses (JSON
  *   message, no-JS page) and the redirect target (/en/<page> for English).
@@ -43,6 +45,22 @@ const PAGINAS = [
 const PAGINAS_EN = [
     'contacto' => '/en/contacto.html',
     'reclamo' => '/en/libro-de-reclamaciones.html',
+];
+
+// Optional hidden field "pagina" (tour pages only): a key of these maps. It only
+// picks where the no-JS redirect of a "contacto" submission goes; the target is
+// always looked up here, never built from the input, and the field is not part
+// of the email.
+const CAMPO_PAGINA = 'pagina';
+const PAGINAS_TOUR = [
+    'parque-nacional-tingo-maria' => '/parque-nacional-tingo-maria.html',
+    'laguna-de-los-milagros' => '/laguna-de-los-milagros.html',
+    'catarata-honolulo' => '/catarata-honolulo.html',
+];
+const PAGINAS_TOUR_EN = [
+    'parque-nacional-tingo-maria' => '/en/parque-nacional-tingo-maria.html',
+    'laguna-de-los-milagros' => '/en/laguna-de-los-milagros.html',
+    'catarata-honolulo' => '/en/catarata-honolulo.html',
 ];
 
 const IDIOMAS = ['es', 'en'];
@@ -191,6 +209,15 @@ function responder($formulario, $ok, $estado, $mensaje, $mostrarMensaje = false)
 
     $paginas = idioma() === 'en' ? PAGINAS_EN : PAGINAS;
     $pagina = array_key_exists($formulario, $paginas) ? $paginas[$formulario] : $paginas['contacto'];
+
+    // A contact request sent from a tour page returns to that page.
+    if ($formulario === 'contacto'
+        && isset($_POST[CAMPO_PAGINA]) && is_string($_POST[CAMPO_PAGINA])) {
+        $tours = idioma() === 'en' ? PAGINAS_TOUR_EN : PAGINAS_TOUR;
+        if (array_key_exists($_POST[CAMPO_PAGINA], $tours)) {
+            $pagina = $tours[$_POST[CAMPO_PAGINA]];
+        }
+    }
 
     // Without JS, a message that carries generated data (the claim number)
     // can't travel in a redirect fragment, so render it on a minimal page.
