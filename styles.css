@@ -1418,7 +1418,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 @media (max-width: 560px) {
   .pie-grid { grid-template-columns: minmax(0, 1fr); }
 }
-.pie h4 {
+.pie h3 {
   color: var(--oro);
   font-family: var(--fuente);
   font-size: 12px;
@@ -1636,6 +1636,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
 }
 .credito img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radio-medio);
@@ -1693,7 +1694,7 @@ form.reclamo:has(#menor-si:checked) .tutor { display: block; }
   gap: 20px;
   margin-top: 16px;
 }
-.carteles img { width: 100%; border-radius: var(--radio-medio); }
+.carteles img { width: 100%; height: auto; border-radius: var(--radio-medio); }
 
 .otras-politicas { margin: 16px 0 120px; padding-top: 48px; }
 .otras-politicas h2 {

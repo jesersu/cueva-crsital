@@ -30,7 +30,7 @@ New business facts, destination name, other languages, deploy without approval.
 ## Tasks
 - [x] T1 — i18n infrastructure + core EN pages + forms/JS/PHP. Route: delegated.
 - [x] T2 — English legal pages. Route: delegated.
-- [ ] T3 — SEO pass. Route: delegated.
+- [x] T3 — SEO pass. Route: delegated.
 - [x] T4 — Hero Próximamente photos cover the whole screen (user request; accepted change, both languages). Route: delegated.
 
 ## Acceptance criteria
@@ -47,5 +47,7 @@ T4: `.hero-foto` is `inset: 0; width: 100%` at every width (no right-side fade; 
 
 T2: five `en/` legal twins built (courtesy translations, not legally reviewed; notice + link to the Spanish original under the h1). python check: h1=1, h2/h3/li/tr/ul/img/select/option/textarea counts identical to ES twins (only +1 p, +1 a for the notice, +1 hidden `idioma` input on libro), all internal refs resolve (the dangling footer links are now resolved), chrome md5 identical to `en/index.html` after normalisation, switch hrefs/`aria-current` correct, every number/date/percentage of each Spanish page appears in its twin. Playwright (new tab, port 8015): no horizontal scroll at 1366/390 on all five, notice visible, ES<->EN switch lands on the twin for all five pairs, EN libro validation hints in English, mocked success shows the English claim-number message and the POST carries `idioma=en` + `formulario=reclamo`, no console errors. Only styles.css change: `.legal .nota` gets `margin-bottom: 24px`. Commit: see git log.
 
+T3: unique titles (29-56 chars) and descriptions (139-158) on all 22 pages; self canonical + reciprocal hreflang es/en/x-default; OG/Twitter with existing business photos (pntm-01, lagu-11, honol-08, prox-01, logo.png); JSON-LD TravelAgency (homes), TouristTrip + BreadcrumbList (tours), BreadcrumbList (other inner pages); sitemap.xml (22 URLs with alternates) and robots.txt (deploy excludes do not touch them); width/height on all images, hero preload, footer h4 -> h3 (CSS `.pie h3`), libro tutor h3 -> h2. Python check: 22 pages, 0 errors (titles/descriptions unique and in range, canonical, hreflang reciprocity, OG files exist, JSON-LD parses with no forbidden keys, one h1, no heading skips, no img without alt/dims, sitemap matches files, robots OK); `xmllint --noout sitemap.xml` OK; Playwright (port 8016 vs HEAD on 8017): layout of all 22 pages at 1366/390 identical to HEAD (image rects, scrollHeight, footer computed styles), no console errors, slider still advances, canonical/hreflang resolve. Commit: see git log.
+
 ## Next step
-Delegate T3 (SEO pass on all 22 pages); the business should review the English legal translations.
+The business should review the English legal translations, submit the sitemap in Search Console and set up a Google Business Profile.

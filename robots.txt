@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /enviar.php
+
+Sitemap: https://turismoloscristales.com/sitemap.xml
