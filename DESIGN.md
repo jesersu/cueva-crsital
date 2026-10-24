@@ -134,7 +134,7 @@ A 60-30-10 palette: slate surfaces, white/mist text and fills, teal for actions,
 
 ## Layout
 
-A single 1200px container with a 16px minimum gutter, sections in generous vertical bands that alternate page and band tones. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The home hero is full height (100svh minus the top bar, 620-940px): text on the left container grid, a photo stage filling the right 66% on desktop (full-bleed with a bottom scrim on phones), indicators and pause bottom-left; "Lo principal." follows directly. Nothing may scroll horizontally at 360–390px.
+A single 1200px container with a 16px minimum gutter, sections in generous vertical bands that alternate page and band tones. The header is 64px: logo left, centred nav, theme toggle and Reservar right; transparent over the home hero, solid elsewhere, hiding on scroll down. Tour cards are a 3/2/1 column grid of squares; the footer is 4/2/1 columns; contact is two columns collapsing to one at 860px. The home hero is full height (100svh minus the top bar, at least 620px): text on the left container grid, a full-bleed photo stage covering the whole first screen at every width (a left-to-right scrim on desktop keeps the text readable, a bottom scrim on phones), indicators and pause bottom-left; "Lo principal." follows directly. Nothing may scroll horizontally at 360–390px.
 
 ## Elevation & Depth
 

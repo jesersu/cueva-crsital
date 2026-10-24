@@ -20,6 +20,56 @@
   if (motionQuery.addEventListener) motionQuery.addEventListener('change', onMotionChange);
   else if (motionQuery.addListener) motionQuery.addListener(onMotionChange); // Safari < 14
 
+  /* ---------- Language strings ---------- */
+  // Every user-facing string this file produces lives here, keyed by the
+  // page language (<html lang>: "es" default, "en" under /en/). The static
+  // copy and accessible names of the markup are translated in the HTML itself.
+  const LANG = /^en/i.test(document.documentElement.lang) ? 'en' : 'es';
+  const STRINGS = {
+    es: {
+      pausePhotos: 'Pausar fotos',
+      resumePhotos: 'Reanudar fotos',
+      checkbox: 'Marca esta casilla para continuar.',
+      select: 'Selecciona una opción.',
+      required: 'Este campo es obligatorio.',
+      email: 'Escribe un correo válido, por ejemplo nombre@correo.com.',
+      number: (min, max) => `Escribe un número entre ${min} y ${max}.`,
+      review: 'Revisa este campo.',
+      sending: 'Enviando…',
+      successTitle: 'Consulta enviada.',
+      sendAnother: 'Enviar otro mensaje',
+      sendFail: 'No pudimos enviar el formulario. Inténtalo más tarde.',
+      netFail: 'No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.',
+      gallery: 'Galería de fotos',
+      close: 'Cerrar',
+      prev: 'Foto anterior',
+      next: 'Foto siguiente',
+    },
+    en: {
+      pausePhotos: 'Pause photos',
+      resumePhotos: 'Resume photos',
+      checkbox: 'Tick this box to continue.',
+      select: 'Choose an option.',
+      required: 'This field is required.',
+      email: 'Enter a valid email address, for example name@email.com.',
+      number: (min, max) => `Enter a number between ${min} and ${max}.`,
+      review: 'Please check this field.',
+      sending: 'Sending…',
+      successTitle: 'Inquiry sent.',
+      sendAnother: 'Send another message',
+      sendFail: 'We could not send the form. Please try again later.',
+      netFail: 'We could not reach the server. Check your connection and try again.',
+      gallery: 'Photo gallery',
+      close: 'Close',
+      prev: 'Previous photo',
+      next: 'Next photo',
+    },
+  };
+  const t = (key, ...args) => {
+    const value = STRINGS[LANG][key];
+    return typeof value === 'function' ? value(...args) : value;
+  };
+
   const hasIO = 'IntersectionObserver' in window;
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
@@ -59,7 +109,7 @@
     const theme = currentTheme();
     if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
     themeButtons.forEach((button) => {
-      // Fixed accessible name ("Tema claro" in the HTML); aria-pressed carries the state.
+      // Fixed accessible name in the HTML ("Tema claro" / "Light theme"); aria-pressed carries the state.
       button.setAttribute('aria-pressed', String(theme === 'light'));
     });
   };
@@ -306,7 +356,7 @@
     const syncButton = () => {
       pauseButton.hidden = reducedMotion;
       pauseButton.classList.toggle('pausado', userPaused);
-      pauseButton.setAttribute('aria-label', userPaused ? 'Reanudar fotos' : 'Pausar fotos');
+      pauseButton.setAttribute('aria-label', userPaused ? t('resumePhotos') : t('pausePhotos'));
     };
 
     dots.forEach((dot) => {
@@ -450,15 +500,15 @@
   const fieldMessage = (field) => {
     const v = field.validity;
     if (v.valueMissing) {
-      if (field.type === 'checkbox') return 'Marca esta casilla para continuar.';
-      if (field.tagName === 'SELECT') return 'Selecciona una opción.';
-      return 'Este campo es obligatorio.';
+      if (field.type === 'checkbox') return t('checkbox');
+      if (field.tagName === 'SELECT') return t('select');
+      return t('required');
     }
-    if (v.typeMismatch && field.type === 'email') return 'Escribe un correo válido, por ejemplo nombre@correo.com.';
+    if (v.typeMismatch && field.type === 'email') return t('email');
     if (v.rangeUnderflow || v.rangeOverflow || v.stepMismatch || v.badInput) {
-      if (field.type === 'number') return `Escribe un número entre ${field.min || 1} y ${field.max || 9999}.`;
+      if (field.type === 'number') return t('number', field.min || 1, field.max || 9999);
     }
-    return field.validationMessage || 'Revisa este campo.';
+    return (LANG === 'es' && field.validationMessage) || t('review');
   };
 
   let hintCount = 0;
@@ -564,7 +614,7 @@
       form.setAttribute('aria-busy', String(on));
       if (!button) return;
       button.disabled = on;
-      button.textContent = on ? 'Enviando…' : buttonText;
+      button.textContent = on ? t('sending') : buttonText;
     };
 
     const showSuccess = (message) => {
@@ -574,13 +624,13 @@
       successPanel.tabIndex = -1;
       const title = document.createElement('p');
       title.className = 'exito-titulo';
-      title.textContent = 'Consulta enviada.';
+      title.textContent = t('successTitle');
       const text = document.createElement('p');
       text.textContent = message;
       const again = document.createElement('button');
       again.type = 'button';
       again.className = 'boton fantasma';
-      again.textContent = 'Enviar otro mensaje';
+      again.textContent = t('sendAnother');
       again.addEventListener('click', () => {
         successPanel.remove();
         successPanel = null;
@@ -622,7 +672,7 @@
             const ok = Boolean(res.ok && data && data.ok);
             const message = data && typeof data.message === 'string' && data.message
               ? data.message
-              : 'No pudimos enviar el formulario. Inténtalo más tarde.';
+              : t('sendFail');
             if (!ok) { report(message, true); return; }
             form.reset();
             validation.clear();
@@ -634,7 +684,7 @@
           // enviar.php (a retry would send a duplicate message or claim), and
           // an offline native post would lose everything typed in the form.
           setSending(false);
-          report('No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.', true);
+          report(t('netFail'), true);
         });
     });
   });
@@ -653,12 +703,12 @@
     box.hidden = true;
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-modal', 'true');
-    box.setAttribute('aria-label', 'Galería de fotos');
+    box.setAttribute('aria-label', t('gallery'));
     box.innerHTML = `
-      <button class="lb-cerrar" type="button" aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-      <button class="lb-prev" type="button" aria-label="Foto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"/></svg></button>
+      <button class="lb-cerrar" type="button" aria-label="${t('close')}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="lb-prev" type="button" aria-label="${t('prev')}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"/></svg></button>
       <figure><img alt=""><figcaption></figcaption></figure>
-      <button class="lb-next" type="button" aria-label="Foto siguiente"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></button>`;
+      <button class="lb-next" type="button" aria-label="${t('next')}"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></button>`;
     document.body.appendChild(box);
 
     const img = box.querySelector('img');

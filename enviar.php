@@ -14,6 +14,11 @@
  *   application/json or X-Requested-With: fetch); otherwise a 303 redirect
  *   back to the form page with #enviado or #error. User input is never
  *   reflected in a response.
+ * - Language: the optional hidden field "idioma" (es | en, whitelisted,
+ *   default es) picks the language of the visitor-facing responses (JSON
+ *   message, no-JS page) and the redirect target (/en/<page> for English).
+ *   The consumer's copy of a complaint follows the same language; the
+ *   business email stays in Spanish and gets an "Idioma: es|en" line.
  *
  * Plain PHP 7.4+, no dependencies.
  */
@@ -33,6 +38,66 @@ const PAGINAS = [
     'contacto' => 'contacto.html',
     'reclamo' => 'libro-de-reclamaciones.html',
 ];
+
+// Redirect targets for English submissions (the /en/ twins of PAGINAS).
+const PAGINAS_EN = [
+    'contacto' => '/en/contacto.html',
+    'reclamo' => '/en/libro-de-reclamaciones.html',
+];
+
+const IDIOMAS = ['es', 'en'];
+const CAMPO_IDIOMA = 'idioma'; // optional hidden field: es | en
+
+/** Visitor-facing messages per language, keyed by a fixed identifier. */
+const MENSAJES = [
+    'es' => [
+        'metodo' => 'Método no permitido.',
+        'formulario' => 'No pudimos procesar el formulario. Inténtalo de nuevo.',
+        'gracias' => 'Gracias, recibimos tu mensaje.',
+        'rapido' => 'El formulario se envió demasiado rápido. Espera unos segundos e inténtalo de nuevo.',
+        'campos' => 'Revisa los campos obligatorios e inténtalo de nuevo.',
+        'limite' => 'Recibimos demasiados envíos desde tu conexión. Inténtalo de nuevo en unos minutos.',
+        'contacto_error' => 'No pudimos enviar tu consulta. Inténtalo más tarde o escríbenos por WhatsApp.',
+        'contacto_ok' => 'Gracias, recibimos tu consulta. Te contactaremos pronto.',
+        'reclamo_error' => 'No pudimos registrar tu reclamo. Inténtalo más tarde o comunícate con nosotros por teléfono.',
+        'pagina_titulo' => 'Reclamo registrado',
+        'pagina_h1' => 'Reclamo registrado.',
+        'pagina_volver' => 'Volver al Libro de Reclamaciones',
+    ],
+    'en' => [
+        'metodo' => 'Method not allowed.',
+        'formulario' => 'We could not process the form. Please try again.',
+        'gracias' => 'Thank you, we have received your message.',
+        'rapido' => 'The form was sent too quickly. Wait a few seconds and try again.',
+        'campos' => 'Check the required fields and try again.',
+        'limite' => 'We received too many submissions from your connection. Please try again in a few minutes.',
+        'contacto_error' => 'We could not send your inquiry. Please try again later or message us on WhatsApp.',
+        'contacto_ok' => 'Thank you, we have received your inquiry. We will get back to you soon.',
+        'reclamo_error' => 'We could not register your complaint. Please try again later or contact us by phone.',
+        'pagina_titulo' => 'Complaint registered',
+        'pagina_h1' => 'Complaint registered.',
+        'pagina_volver' => 'Back to the Complaints Book',
+    ],
+];
+
+/**
+ * Language of this request: set once from the whitelisted "idioma" field,
+ * "es" until then (and for anything not in IDIOMAS).
+ */
+function idioma($nuevo = null)
+{
+    static $actual = 'es';
+    if ($nuevo !== null && in_array($nuevo, IDIOMAS, true)) {
+        $actual = $nuevo;
+    }
+    return $actual;
+}
+
+/** Visitor-facing message for the request language. */
+function mensaje($clave)
+{
+    return MENSAJES[idioma()][$clave];
+}
 
 const TIPOS_DOCUMENTO = ['DNI', 'CE', 'Pasaporte', 'RUC'];
 
@@ -124,7 +189,8 @@ function responder($formulario, $ok, $estado, $mensaje, $mostrarMensaje = false)
         exit;
     }
 
-    $pagina = array_key_exists($formulario, PAGINAS) ? PAGINAS[$formulario] : PAGINAS['contacto'];
+    $paginas = idioma() === 'en' ? PAGINAS_EN : PAGINAS;
+    $pagina = array_key_exists($formulario, $paginas) ? $paginas[$formulario] : $paginas['contacto'];
 
     // Without JS, a message that carries generated data (the claim number)
     // can't travel in a redirect fragment, so render it on a minimal page.
@@ -132,15 +198,16 @@ function responder($formulario, $ok, $estado, $mensaje, $mostrarMensaje = false)
         http_response_code($estado);
         header('Content-Type: text/html; charset=UTF-8');
         $texto = htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8');
-        echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">'
+        $hoja = idioma() === 'en' ? '/styles.css' : 'styles.css';
+        echo '<!DOCTYPE html><html lang="' . idioma() . '"><head><meta charset="UTF-8">'
             . '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
             . '<meta name="theme-color" content="#000000"><meta name="color-scheme" content="dark">'
             . '<meta name="robots" content="noindex">'
-            . '<title>Reclamo registrado | Los Cristales</title>'
-            . '<link rel="stylesheet" href="styles.css"></head><body>'
+            . '<title>' . mensaje('pagina_titulo') . ' | Los Cristales</title>'
+            . '<link rel="stylesheet" href="' . $hoja . '"></head><body>'
             . '<main class="seccion"><div class="contenedor"><div class="bloque legal">'
-            . '<h1>Reclamo registrado.</h1><p role="status">' . $texto . '</p>'
-            . '<p><a class="boton" href="' . $pagina . '">Volver al Libro de Reclamaciones</a></p>'
+            . '<h1>' . mensaje('pagina_h1') . '</h1><p role="status">' . $texto . '</p>'
+            . '<p><a class="boton" href="' . $pagina . '">' . mensaje('pagina_volver') . '</a></p>'
             . '</div></div></main></body></html>';
         exit;
     }
@@ -402,39 +469,44 @@ $metodo = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQU
 if ($metodo !== 'POST') {
     header('Allow: POST');
     if (quiere_json()) {
-        responder('', false, 405, 'Método no permitido.');
+        responder('', false, 405, mensaje('metodo'));
     }
     header('Cache-Control: no-store');
     header('Location: contacto.html', true, 303);
     exit;
 }
 
+// Visitor language (whitelisted; anything else keeps the Spanish default).
+if (isset($_POST[CAMPO_IDIOMA]) && is_string($_POST[CAMPO_IDIOMA])) {
+    idioma(strtolower(trim($_POST[CAMPO_IDIOMA])));
+}
+
 $formulario = isset($_POST['formulario']) && is_string($_POST['formulario']) ? $_POST['formulario'] : '';
 if (!array_key_exists($formulario, PAGINAS)) {
-    responder('', false, 400, 'No pudimos procesar el formulario. Inténtalo de nuevo.');
+    responder('', false, 400, mensaje('formulario'));
 }
 
 // Honeypot: humans never see this field. Pretend success and send nothing.
 $trampa = isset($_POST[CAMPO_TRAMPA]) ? $_POST[CAMPO_TRAMPA] : '';
 if (!is_string($trampa) || trim($trampa) !== '') {
-    responder($formulario, true, 200, 'Gracias, recibimos tu mensaje.');
+    responder($formulario, true, 200, mensaje('gracias'));
 }
 
 // Minimum fill time, reported by script.js (absent without JS: skipped).
 $tiempo = isset($_POST[CAMPO_TIEMPO]) && is_string($_POST[CAMPO_TIEMPO]) ? trim($_POST[CAMPO_TIEMPO]) : '';
 if ($tiempo !== '' && preg_match('/^\d{1,12}$/', $tiempo) && (int) $tiempo < TIEMPO_MINIMO_MS) {
-    responder($formulario, false, 400, 'El formulario se envió demasiado rápido. Espera unos segundos e inténtalo de nuevo.');
+    responder($formulario, false, 400, mensaje('rapido'));
 }
 
 $campos = definicion_campos($formulario);
 $valores = validar($campos);
 if ($valores === null) {
-    responder($formulario, false, 400, 'Revisa los campos obligatorios e inténtalo de nuevo.');
+    responder($formulario, false, 400, mensaje('campos'));
 }
 
 $ip = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
 if (limite_superado($ip)) {
-    responder($formulario, false, 429, 'Recibimos demasiados envíos desde tu conexión. Inténtalo de nuevo en unos minutos.');
+    responder($formulario, false, 429, mensaje('limite'));
 }
 
 $ahora = new DateTime('now', new DateTimeZone('America/Lima'));
@@ -443,6 +515,7 @@ $fechaHora = $ahora->format('d/m/Y H:i') . ' (hora de Lima)';
 if ($formulario === 'contacto') {
     $cuerpo = "Nueva consulta desde el formulario de contacto de la web.\n"
         . "Formulario: Contacto\n"
+        . 'Idioma: ' . idioma() . "\n"
         . 'Fecha y hora: ' . $fechaHora . "\n\n"
         . listado($campos, $valores) . "\n";
 
@@ -451,9 +524,9 @@ if ($formulario === 'contacto') {
 
     if (!enviar_correo(DESTINO, 'Consulta web - Los Cristales', $cuerpo, $responderA)) {
         error_log('enviar.php: mail() failed (formulario=contacto)');
-        responder($formulario, false, 500, 'No pudimos enviar tu consulta. Inténtalo más tarde o escríbenos por WhatsApp.');
+        responder($formulario, false, 500, mensaje('contacto_error'));
     }
-    responder($formulario, true, 200, 'Gracias, recibimos tu consulta. Te contactaremos pronto.');
+    responder($formulario, true, 200, mensaje('contacto_ok'));
 }
 
 // Libro de Reclamaciones
@@ -464,24 +537,42 @@ $hoja = 'Número de reclamo: ' . $numero . "\n"
     . listado($campos, $valores) . "\n";
 
 $cuerpo = "Nuevo reclamo registrado en el Libro de Reclamaciones virtual de la web.\n"
-    . "Formulario: Libro de Reclamaciones\n\n"
+    . "Formulario: Libro de Reclamaciones\n"
+    . 'Idioma: ' . idioma() . "\n\n"
     . $hoja;
 
 if (!enviar_correo(DESTINO, 'Libro de Reclamaciones ' . $numero . ' - Los Cristales', $cuerpo, $valores['correo'])) {
     error_log('enviar.php: mail() failed (formulario=reclamo)');
-    responder($formulario, false, 500, 'No pudimos registrar tu reclamo. Inténtalo más tarde o comunícate con nosotros por teléfono.');
+    responder($formulario, false, 500, mensaje('reclamo_error'));
 }
 
-// Copy for the consumer, with the same claim number.
-$copia = 'Hola, ' . $valores['nombre'] . ":\n\n"
-    . "Hemos recibido tu reclamo en el Libro de Reclamaciones virtual de Los Cristales.\n"
-    . "Conserva este correo como constancia; a continuación encontrarás una copia de tu hoja de reclamación.\n\n"
-    . $hoja . "\n"
-    . "El proveedor debe responder a la reclamación en un plazo no superior a quince (15) días naturales, pudiendo ampliar el plazo hasta quince días más.\n"
-    . "La formulación del reclamo no excluye el recurso a otros medios de resolución de controversias ni es un requisito previo para presentar una denuncia ante el Indecopi.\n";
+// Copy for the consumer, with the same claim number, in the visitor's
+// language. The complaint sheet itself keeps its Spanish labels: it is the
+// registered document.
+if (idioma() === 'en') {
+    $asuntoCopia = 'Copy of your complaint ' . $numero . ' - Los Cristales';
+    $copia = 'Hello, ' . $valores['nombre'] . ":\n\n"
+        . "We have received your complaint in the virtual Complaints Book (Libro de Reclamaciones) of Los Cristales.\n"
+        . "Please keep this email as proof; below is a copy of your complaint sheet (the sheet keeps its original Spanish labels).\n\n"
+        . $hoja . "\n"
+        . "The provider must reply to the complaint within fifteen (15) calendar days at most, and may extend that period by up to another fifteen days.\n"
+        . "Filing a complaint does not exclude other means of dispute resolution, nor is it a prerequisite for filing a report with Indecopi.\n";
+} else {
+    $asuntoCopia = 'Copia de tu reclamo ' . $numero . ' - Los Cristales';
+    $copia = 'Hola, ' . $valores['nombre'] . ":\n\n"
+        . "Hemos recibido tu reclamo en el Libro de Reclamaciones virtual de Los Cristales.\n"
+        . "Conserva este correo como constancia; a continuación encontrarás una copia de tu hoja de reclamación.\n\n"
+        . $hoja . "\n"
+        . "El proveedor debe responder a la reclamación en un plazo no superior a quince (15) días naturales, pudiendo ampliar el plazo hasta quince días más.\n"
+        . "La formulación del reclamo no excluye el recurso a otros medios de resolución de controversias ni es un requisito previo para presentar una denuncia ante el Indecopi.\n";
+}
 
-if (!enviar_correo($valores['correo'], 'Copia de tu reclamo ' . $numero . ' - Los Cristales', $copia, DESTINO)) {
+if (!enviar_correo($valores['correo'], $asuntoCopia, $copia, DESTINO)) {
     error_log('enviar.php: mail() failed (formulario=reclamo, consumer copy)');
-    responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. No pudimos enviarte la copia por correo: guarda este número.', true);
+    responder($formulario, true, 200, idioma() === 'en'
+        ? 'Your complaint was registered with number ' . $numero . '. We could not email you a copy: please keep this number.'
+        : 'Tu reclamo fue registrado con el número ' . $numero . '. No pudimos enviarte la copia por correo: guarda este número.', true);
 }
-responder($formulario, true, 200, 'Tu reclamo fue registrado con el número ' . $numero . '. Te enviamos una copia a tu correo electrónico.', true);
+responder($formulario, true, 200, idioma() === 'en'
+    ? 'Your complaint was registered with number ' . $numero . '. We emailed a copy to your email address.'
+    : 'Tu reclamo fue registrado con el número ' . $numero . '. Te enviamos una copia a tu correo electrónico.', true);
