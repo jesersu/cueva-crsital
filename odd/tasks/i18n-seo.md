@@ -31,6 +31,7 @@ New business facts, destination name, other languages, deploy without approval.
 - [x] T1 — i18n infrastructure + core EN pages + forms/JS/PHP. Route: delegated.
 - [ ] T2 — English legal pages. Route: delegated.
 - [ ] T3 — SEO pass. Route: delegated.
+- [ ] T4 — Hero Próximamente photos cover the whole screen (user request; accepted change, both languages). Route: delegated.
 
 ## Acceptance criteria
 - Every Spanish page has an English twin with a working switch both ways; `<html lang>` correct; forms work in EN with EN messages.
