@@ -24,7 +24,7 @@ Local operator in Tingo María, with tours to Parque Nacional Tingo María, Lagu
 - Pages: home, three tour pages, contact, credits, four legal pages, Libro de Reclamaciones (11 pages, shared chrome copy-pasted).
 - Copy is Spanish today. Both domestic and international audiences were confirmed, so an EN/ES version is likely wanted; not yet decided or scheduled.
 - Open, undecided facts: the name of the upcoming destination; whether the Términos rows "Libro de Reclamaciones Virtual" and "Constancia DNPST" are needed; the deposit (30% in the new document vs 50% before).
-- Contact data is hardcoded in many places (phone 978571323, info@turismoloscristales.com, WhatsApp wa.me/51978571323).
+- Contact data is hardcoded in many places (phone 974340132, info@turismoloscristales.com, WhatsApp wa.me/51974340132).
 
 ## Brand Commitments
 - Current visual system is the user-supplied "Terra" spec (brand-agnostic parts): light by default with a dark theme behind a header toggle (hero, covers and footer stay dark), teal actions, aged-gold accents, Playfair Display and Lato. It lives on branches `feat/terra-redesign` and `feat/home-modern` and is not yet in production.
