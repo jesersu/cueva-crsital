@@ -20,3 +20,17 @@ RedirectMatch 404 ^/\.ftp-deploy-sync-state\.json$
 
 # The data-protection page was merged into the combined privacy policy.
 RedirectMatch 301 ^/proteccion-de-datos-personales\.html$ /politicas-de-privacidad.html
+
+# Compress text assets and let browsers keep images for a month (file names are not fingerprinted, so CSS/JS stay short-lived).
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType text/css "access plus 1 day"
+  ExpiresByType application/javascript "access plus 1 day"
+  ExpiresByType text/javascript "access plus 1 day"
+</IfModule>
